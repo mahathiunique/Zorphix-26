@@ -60,43 +60,81 @@ const Hero = () => {
             onMouseMove={handleMouseMove}
             ref={containerRef}
         >
-            {/* 3D Tunnel Background */}
-            <div
-                className="absolute inset-0 transform-style-3d transition-transform duration-100 ease-out"
-                style={{ transform: `rotateX(${-mousePos.y}deg) rotateY(${mousePos.x}deg)` }}
-            >
-                {/* Tunnel Walls */}
-                <div className="absolute inset-0 flex items-center justify-center transform-style-3d animate-tunnel opacity-30">
-                    {/* Top Wall */}
-                    <div className="absolute w-[200vw] h-[200vh] bg-[linear-gradient(to_bottom,transparent_0%,#e33e33_50%,transparent_100%)] opacity-10 transform rotateX(90deg) translateZ(500px)"></div>
-                    {/* Bottom Wall */}
-                    <div className="absolute w-[200vw] h-[200vh] bg-[linear-gradient(to_bottom,transparent_0%,#97b85d_50%,transparent_100%)] opacity-10 transform rotateX(-90deg) translateZ(500px)"></div>
-                    {/* Left Wall */}
-                    <div className="absolute w-[200vw] h-[200vh] bg-[linear-gradient(to_right,transparent_0%,#e33e33_50%,transparent_100%)] opacity-10 transform rotateY(-90deg) translateZ(500px)"></div>
-                    {/* Right Wall */}
-                    <div className="absolute w-[200vw] h-[200vh] bg-[linear-gradient(to_right,transparent_0%,#97b85d_50%,transparent_100%)] opacity-10 transform rotateY(90deg) translateZ(500px)"></div>
-                </div>
+            {/* Dynamic Market Graph Background */}
+            <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-30">
+                {/* Moving Line Graph */}
+                <svg className="absolute w-full h-64 md:h-96 top-1/3" viewBox="0 0 1000 200" preserveAspectRatio="none">
+                    <path
+                        d="M0,100 Q100,50 200,100 T400,100 T600,100 T800,100 T1000,100"
+                        fill="none"
+                        stroke="#e33e33"
+                        strokeWidth="3"
+                        className="animate-pulse-graph drop-shadow-[0_0_10px_rgba(227,62,51,0.5)]"
+                    />
+                    <path
+                        d="M0,100 Q150,150 300,100 T600,100 T900,100"
+                        fill="none"
+                        stroke="#97b85d"
+                        strokeWidth="3"
+                        className="animate-pulse-graph animation-delay-2000 drop-shadow-[0_0_10px_rgba(151,184,93,0.5)]"
+                        style={{ opacity: 0.5 }}
+                    />
+                </svg>
 
-                {/* Floating Particles/Data Points */}
-                <div className="absolute inset-0 pointer-events-none">
-                    {[...Array(20)].map((_, i) => (
+                {/* Vertical Bar Graph */}
+                <div className="absolute inset-0 flex items-end justify-between px-2 pb-20">
+                    {[...Array(40)].map((_, i) => (
                         <div
-                            key={i}
-                            className="absolute w-1 h-1 bg-white rounded-full animate-float"
+                            key={`bar-${i}`}
+                            className="w-1 md:w-4 bg-gradient-to-t from-[#e33e33]/20 to-[#97b85d]/20 rounded-t-lg animate-graph-bar backdrop-blur-sm border-t border-white/10"
                             style={{
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                                animationDelay: `${Math.random() * 5}s`,
-                                opacity: Math.random() * 0.5 + 0.2
+                                height: `${Math.random() * 50 + 10}%`,
+                                animationDelay: `${Math.random() * 2}s`,
+                                animationDuration: `${Math.random() * 3 + 2}s`
                             }}
                         ></div>
                     ))}
                 </div>
             </div>
 
+            {/* Matrix Code Rain */}
+            <div className="absolute inset-0 pointer-events-none opacity-20">
+                {[...Array(30)].map((_, i) => (
+                    <div
+                        key={`code-${i}`}
+                        className="absolute text-[#97b85d] font-mono text-xs animate-code-rain whitespace-nowrap"
+                        style={{
+                            left: `${(i * 100) / 30}%`,
+                            animationDelay: `${Math.random() * 5}s`,
+                            animationDuration: `${Math.random() * 5 + 5}s`
+                        }}
+                    >
+                        {Array.from({ length: 20 }, () => String.fromCharCode(Math.floor(Math.random() * 94) + 33)).join('')}
+                    </div>
+                ))}
+            </div>
+
+            {/* Grid Floor with Perspective */}
+            <div
+                className="absolute bottom-0 left-0 right-0 h-[50vh] opacity-30 pointer-events-none transform-style-3d"
+                style={{
+                    transform: `rotateX(60deg) translateZ(-200px) translateY(${mousePos.y * 20}px)`,
+                    backgroundImage: `
+                        linear-gradient(to right, #e33e33 1px, transparent 1px),
+                        linear-gradient(to bottom, #97b85d 1px, transparent 1px)
+                    `,
+                    backgroundSize: '50px 50px'
+                }}
+            >
+                <div className="absolute inset-0 bg-gradient-to-t from-transparent to-black"></div>
+            </div>
+
             {/* Scanline Overlay */}
             <div className="absolute inset-0 pointer-events-none z-50 bg-[linear-gradient(to_bottom,rgba(255,255,255,0),rgba(255,255,255,0)_50%,rgba(0,0,0,0.2)_50%,rgba(0,0,0,0.2))] bg-[size:100%_4px]"></div>
             <div className="absolute inset-0 pointer-events-none z-50 bg-gradient-to-b from-transparent via-[#e33e33]/10 to-transparent h-[10%] w-full animate-scanline"></div>
+
+            {/* Vignette Effect */}
+            <div className="absolute inset-0 pointer-events-none z-40 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.7)_100%)]"></div>
 
             {/* Main Content - Holographic HUD */}
             <div className="relative z-40 flex flex-col items-center justify-center min-h-screen pointer-events-none">
@@ -131,34 +169,79 @@ const Hero = () => {
                     <p className="text-center text-xl md:text-2xl tracking-[1em] text-gray-400 mt-8 uppercase font-light">Symposium '26</p>
                 </div>
 
-                {/* Circular Holographic Countdown */}
-                <div className="relative w-64 h-64 md:w-96 md:h-96 flex items-center justify-center pointer-events-auto">
-                    {/* Rotating Rings */}
-                    <div className="absolute inset-0 border border-[#e33e33]/30 rounded-full animate-spin-slow border-t-transparent border-l-transparent"></div>
-                    <div className="absolute inset-4 border border-[#97b85d]/30 rounded-full animate-spin-slow border-b-transparent border-r-transparent" style={{ animationDirection: 'reverse', animationDuration: '10s' }}></div>
-                    <div className="absolute inset-0 rounded-full border border-white/5 shadow-[0_0_50px_rgba(227,62,51,0.2)]"></div>
+                {/* 3D Holographic Access Card */}
+                <div className="relative w-[340px] h-[200px] md:w-[500px] md:h-[300px] perspective-1000 pointer-events-auto my-8 group">
+                    <div
+                        className="w-full h-full relative transform-style-3d transition-transform duration-100 ease-out shadow-[0_0_50px_rgba(227,62,51,0.3)] group-hover:scale-105"
+                        style={{ transform: `rotateX(${mousePos.y}deg) rotateY(${mousePos.x}deg)` }}
+                    >
+                        {/* Card Front */}
+                        <div className="absolute inset-0 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden backface-hidden flex flex-col p-6 md:p-8">
+                            {/* Holographic Overlay */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/5 pointer-events-none"></div>
+                            <div className="absolute -inset-full bg-gradient-to-r from-transparent via-white/10 to-transparent rotate-45 animate-scanline opacity-30"></div>
 
-                    {/* Center Data */}
-                    <div className="flex flex-col items-center justify-center z-10 bg-black/50 backdrop-blur-sm rounded-full w-full h-full border border-white/10">
-                        <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-center">
-                            <div className="flex flex-col">
-                                <span className="text-4xl font-bold text-white">{timeLeft.days}</span>
-                                <span className="text-[10px] text-[#e33e33] tracking-widest">DAYS</span>
+                            {/* Card Header */}
+                            <div className="flex justify-between items-start mb-4">
+                                <div className="flex items-center gap-3">
+                                    {/* Chip */}
+                                    <div className="w-10 h-8 md:w-14 md:h-10 bg-gradient-to-br from-yellow-200 to-yellow-600 rounded-md border border-yellow-700 flex items-center justify-center overflow-hidden shadow-inner">
+                                        <div className="w-full h-[1px] bg-black/30 my-[3px]"></div>
+                                        <div className="absolute w-[1px] h-full bg-black/30 mx-[3px]"></div>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-white/80 text-[10px] md:text-xs tracking-[0.2em] font-bold">ACCESS PASS</span>
+                                        <span className="text-[#e33e33] text-xs md:text-sm font-bold tracking-widest">VIP TIER</span>
+                                    </div>
+                                </div>
+                                <img src={zorphixLogo} alt="Logo" className="w-8 h-8 md:w-12 md:h-12 opacity-80" />
                             </div>
-                            <div className="flex flex-col">
-                                <span className="text-4xl font-bold text-white">{timeLeft.hours}</span>
-                                <span className="text-[10px] text-[#97b85d] tracking-widest">HRS</span>
+
+                            {/* Card Body - Countdown */}
+                            <div className="flex-1 flex items-center justify-center my-2">
+                                <div className="flex gap-4 md:gap-6 text-center">
+                                    <div>
+                                        <div className="text-2xl md:text-4xl font-bold text-white font-mono">{String(timeLeft.days).padStart(2, '0')}</div>
+                                        <div className="text-[8px] md:text-[10px] text-[#97b85d] tracking-widest mt-1">DAYS</div>
+                                    </div>
+                                    <div className="text-2xl md:text-4xl font-bold text-white/30">:</div>
+                                    <div>
+                                        <div className="text-2xl md:text-4xl font-bold text-white font-mono">{String(timeLeft.hours).padStart(2, '0')}</div>
+                                        <div className="text-[8px] md:text-[10px] text-[#97b85d] tracking-widest mt-1">HRS</div>
+                                    </div>
+                                    <div className="text-2xl md:text-4xl font-bold text-white/30">:</div>
+                                    <div>
+                                        <div className="text-2xl md:text-4xl font-bold text-white font-mono">{String(timeLeft.minutes).padStart(2, '0')}</div>
+                                        <div className="text-[8px] md:text-[10px] text-[#97b85d] tracking-widest mt-1">MIN</div>
+                                    </div>
+                                    <div className="text-2xl md:text-4xl font-bold text-white/30">:</div>
+                                    <div>
+                                        <div className="text-2xl md:text-4xl font-bold text-white font-mono">{String(timeLeft.seconds).padStart(2, '0')}</div>
+                                        <div className="text-[8px] md:text-[10px] text-[#97b85d] tracking-widest mt-1">SEC</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="flex flex-col">
-                                <span className="text-4xl font-bold text-white">{timeLeft.minutes}</span>
-                                <span className="text-[10px] text-[#e33e33] tracking-widest">MIN</span>
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="text-4xl font-bold text-white">{timeLeft.seconds}</span>
-                                <span className="text-[10px] text-[#97b85d] tracking-widest">SEC</span>
+
+                            {/* Card Footer */}
+                            <div className="flex justify-between items-end mt-auto">
+                                <div className="font-mono text-white/60 text-xs md:text-sm tracking-widest">
+                                    **** **** **** 2026
+                                </div>
+                                <div className="text-right">
+                                    <div className="text-[8px] md:text-[10px] text-gray-400">HOLDER</div>
+                                    <div className="text-white text-xs md:text-sm font-bold tracking-wider">SYMPOSIUM ATTENDEE</div>
+                                </div>
                             </div>
                         </div>
-                        <div className="mt-4 text-xs text-gray-500 animate-pulse">SYSTEM STATUS: ONLINE</div>
+
+                        {/* Card Back (Reflection/Depth) */}
+                        <div
+                            className="absolute inset-0 bg-[#111] rounded-2xl backface-hidden transform rotate-y-180 border border-white/10 flex items-center justify-center"
+                            style={{ transform: 'rotateY(180deg)' }}
+                        >
+                            <div className="w-full h-10 bg-black absolute top-6"></div>
+                            <div className="text-white/20 font-mono text-sm transform scale-x-[-1]">AUTHORIZED PERSONNEL ONLY</div>
+                        </div>
                     </div>
                 </div>
 
@@ -175,8 +258,8 @@ const Hero = () => {
                 </div>
             </div>
 
-            {/* Bottom Scrolling Ticker */}
-            <div className="absolute bottom-0 w-full bg-black/80 border-t border-white/10 backdrop-blur-md py-2 z-50">
+            {/* Top Scrolling Ticker */}
+            <div className="absolute top-0 w-full bg-black/80 border-b border-white/10 backdrop-blur-md py-2 z-50">
                 <div className="flex animate-ticker whitespace-nowrap text-xs font-mono">
                     <span className="mx-4 text-[#e33e33]">WARNING: MARKET VOLATILITY DETECTED</span>
                     {stockTickerItems.map((item, i) => (
