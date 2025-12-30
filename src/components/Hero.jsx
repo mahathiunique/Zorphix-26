@@ -56,7 +56,7 @@ const Hero = () => {
 
     return (
         <div
-            className="relative min-h-screen bg-black text-white overflow-hidden font-mono perspective-1000"
+            className="relative min-h-screen bg-black text-white overflow-hidden font-mono perspective-1000 pt-20 md:pt-16"
             onMouseMove={handleMouseMove}
             ref={containerRef}
         >
@@ -140,14 +140,14 @@ const Hero = () => {
             <div className="relative z-40 flex flex-col items-center justify-center min-h-screen pointer-events-none">
 
                 {/* Floating Header */}
-                <div className="mb-12 relative group pointer-events-auto flex flex-col items-center">
+                <div className="mb-8 md:mb-12 mt-4 md:mt-0 relative group pointer-events-auto flex flex-col items-center px-4">
                     <div className="absolute -inset-10 bg-gradient-to-r from-[#e33e33] to-[#97b85d] rounded-full opacity-20 blur-3xl group-hover:opacity-40 transition duration-500"></div>
 
                     {/* Logo and Name Container */}
-                    <div className="relative z-10 flex items-center justify-center gap-6 md:gap-10 animate-float">
+                    <div className="relative z-10 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10 animate-float">
 
                         {/* Logo Image with Glitch Effect */}
-                        <div className="relative w-24 md:w-40">
+                        <div className="relative w-16 sm:w-20 md:w-32 lg:w-40">
                             <div className="relative">
                                 <img src={zorphixLogo} alt="Logo" className="w-full h-auto relative z-10 drop-shadow-[0_0_25px_rgba(227,62,51,0.3)]" />
                                 <img src={zorphixLogo} alt="" className="absolute top-0 left-0 w-full h-full opacity-50 animate-glitch mix-blend-screen filter hue-rotate-90" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 45%, 0 45%)', transform: 'translate(-2px, -2px)' }} />
@@ -156,7 +156,7 @@ const Hero = () => {
                         </div>
 
                         {/* Name Image with Glitch Effect */}
-                        <div className="relative w-48 md:w-80">
+                        <div className="relative w-40 sm:w-48 md:w-64 lg:w-80">
                             <div className="relative">
                                 <img src={zorphixName} alt="ZORPHIX" className="w-full h-auto relative z-10 drop-shadow-[0_0_25px_rgba(151,184,93,0.3)]" />
                                 <img src={zorphixName} alt="" className="absolute top-0 left-0 w-full h-full opacity-50 animate-glitch mix-blend-screen filter hue-rotate-90" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 45%, 0 45%)', transform: 'translate(-2px, -2px)' }} />
@@ -166,17 +166,16 @@ const Hero = () => {
 
                     </div>
 
-                    <p className="text-center text-xl md:text-2xl tracking-[1em] text-gray-400 mt-8 uppercase font-light">Symposium '26</p>
+                    <p className="text-center text-xs sm:text-sm md:text-lg lg:text-xl text-gray-400 mt-4 md:mt-8 uppercase font-light px-4 leading-relaxed">Department of Computer Science and Business Systems</p>
                 </div>
 
                 {/* 3D Holographic Access Card */}
-                <div className="relative w-[340px] h-[200px] md:w-[500px] md:h-[300px] perspective-1000 pointer-events-auto my-8 group">
+                <div className="relative w-[280px] h-[180px] sm:w-[340px] sm:h-[200px] md:w-[450px] md:h-[270px] lg:w-[500px] lg:h-[300px] perspective-1000 pointer-events-auto md:my-8 mx-4">
                     <div
-                        className="w-full h-full relative transform-style-3d transition-transform duration-100 ease-out shadow-[0_0_50px_rgba(227,62,51,0.3)] group-hover:scale-105"
-                        style={{ transform: `rotateX(${mousePos.y}deg) rotateY(${mousePos.x}deg)` }}
+                        className="w-full h-full relative transform-style-3d transition-transform duration-100 ease-out shadow-[0_0_50px_rgba(227,62,51,0.3)]"
                     >
                         {/* Card Front */}
-                        <div className="absolute inset-0 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden backface-hidden flex flex-col p-6 md:p-8">
+                        <div className="absolute inset-0 bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden backface-hidden flex flex-col p-4 sm:p-6 md:p-8">
                             {/* Holographic Overlay */}
                             <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/5 pointer-events-none"></div>
                             <div className="absolute -inset-full bg-gradient-to-r from-transparent via-white/10 to-transparent rotate-45 animate-scanline opacity-30"></div>
@@ -246,12 +245,12 @@ const Hero = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="mt-16 flex gap-8 pointer-events-auto">
-                    <button className="relative px-8 py-3 bg-transparent border border-[#e33e33] text-[#e33e33] font-bold uppercase tracking-widest hover:bg-[#e33e33] hover:text-white transition-all duration-300 group overflow-hidden">
+                <div className="mt-8 md:mt-16 flex flex-col sm:flex-row gap-4 md:gap-8 pointer-events-auto px-4">
+                    <button className="relative px-6 py-2.5 md:px-8 md:py-3 bg-transparent border border-[#e33e33] text-[#e33e33] font-bold uppercase tracking-widest hover:bg-[#e33e33] hover:text-white transition-all duration-300 group overflow-hidden text-sm md:text-base">
                         <span className="relative z-10">Initialize</span>
                         <div className="absolute inset-0 bg-[#e33e33] transform -translate-x-full skew-x-12 group-hover:translate-x-0 transition-transform duration-300"></div>
                     </button>
-                    <button className="relative px-8 py-3 bg-transparent border border-[#97b85d] text-[#97b85d] font-bold uppercase tracking-widest hover:bg-[#97b85d] hover:text-black transition-all duration-300 group overflow-hidden">
+                    <button className="relative px-6 py-2.5 md:px-8 md:py-3 bg-transparent border border-[#97b85d] text-[#97b85d] font-bold uppercase tracking-widest hover:bg-[#97b85d] hover:text-black transition-all duration-300 group overflow-hidden text-sm md:text-base">
                         <span className="relative z-10">Analyze Data</span>
                         <div className="absolute inset-0 bg-[#97b85d] transform translate-x-full skew-x-12 group-hover:translate-x-0 transition-transform duration-300"></div>
                     </button>
@@ -259,8 +258,8 @@ const Hero = () => {
             </div>
 
             {/* Top Scrolling Ticker */}
-            <div className="absolute top-0 w-full bg-black/80 border-b border-white/10 backdrop-blur-md py-2 z-50">
-                <div className="flex animate-ticker whitespace-nowrap text-xs font-mono">
+            <div className="absolute top-16 w-full bg-black/80 border-b border-white/10 backdrop-blur-md py-2 z-50">
+                <div className="flex animate-ticker whitespace-nowrap text-s font-mono">
                     <span className="mx-4 text-[#e33e33]">WARNING: MARKET VOLATILITY DETECTED</span>
                     {stockTickerItems.map((item, i) => (
                         <span key={i} className="mx-4">
