@@ -47,14 +47,24 @@ const Navbar = () => {
                         {/* Desktop Navigation Links */}
                         <div className="hidden md:flex items-center gap-8">
                             {navLinks.map((link) => (
-                                <Link
-                                    key={link.name}
-                                    to={link.href.replace('#', '/').replace('//', '/')}
-                                    className="text-gray-300 hover:text-white transition-colors duration-300 font-mono uppercase text-sm tracking-wider relative group"
-                                >
-                                    {link.name}
-                                    <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-[#e33e33] to-[#97b85d] group-hover:w-full transition-all duration-300"></span>
-                                </Link>
+                                link.name === 'Register' ? (
+                                    <Link
+                                        key={link.name}
+                                        to={link.href}
+                                        className="px-6 py-2 bg-gradient-to-r from-[#e33e33] to-[#97b85d] text-white font-mono uppercase text-sm font-bold tracking-wider rounded-lg hover:shadow-[0_0_15px_rgba(227,62,51,0.5)] transition-all duration-300 transform hover:-translate-y-0.5"
+                                    >
+                                        {link.name}
+                                    </Link>
+                                ) : (
+                                    <Link
+                                        key={link.name}
+                                        to={link.href.replace('#', '/').replace('//', '/')}
+                                        className="text-gray-300 hover:text-white transition-colors duration-300 font-mono uppercase text-sm tracking-wider relative group"
+                                    >
+                                        {link.name}
+                                        <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-[#e33e33] to-[#97b85d] group-hover:w-full transition-all duration-300"></span>
+                                    </Link>
+                                )
                             ))}
                         </div>
 
@@ -138,11 +148,14 @@ const Navbar = () => {
                             key={link.name}
                             to={link.href.replace('#', '/').replace('//', '/')}
                             onClick={toggleSidebar}
-                            className="text-gray-300 hover:text-white hover:bg-white/5 px-4 py-3 rounded-lg transition-all duration-300 font-mono uppercase text-sm tracking-wider border border-transparent hover:border-white/10 group"
+                            className={`${link.name === 'Register'
+                                ? 'bg-gradient-to-r from-[#e33e33] to-[#97b85d] text-white border-none shadow-[0_0_10px_rgba(227,62,51,0.3)]'
+                                : 'text-gray-300 hover:text-white hover:bg-white/5 border-transparent hover:border-white/10'
+                                } px-4 py-3 rounded-lg transition-all duration-300 font-mono uppercase text-sm tracking-wider border group`}
                             style={{ animationDelay: `${index * 50}ms` }}
                         >
                             <div className="flex items-center justify-between">
-                                <span>{link.name}</span>
+                                <span className={link.name === 'Register' ? 'font-bold' : ''}>{link.name}</span>
                                 <svg
                                     className="w-4 h-4 opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-1 transition-all duration-300"
                                     fill="none"
