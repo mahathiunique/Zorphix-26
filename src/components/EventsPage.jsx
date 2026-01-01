@@ -225,76 +225,74 @@ const EventsPage = () => {
                                 transition={{ duration: 0.3 }}
                                 className="group relative"
                             >
-                                {/* Card Background - Ultra Realistic Credit Card Style */}
-                                <div className="relative w-full aspect-[1.58/1] bg-gradient-to-br from-[#2a2a2a] via-[#111] to-[#000] rounded-xl overflow-hidden shadow-2xl border border-white/10 flex flex-col transition-all duration-300 transform group-hover:scale-[1.02] group-hover:shadow-[0_0_30px_rgba(255,215,0,0.2)]">
+                                {/* Card Background - Massive Realistic Metal Card */}
+                                <div className="relative w-full aspect-[1.58/1] bg-gradient-to-br from-[#1c1c1c] via-[#0d0d0d] to-[#000] rounded-2xl overflow-hidden shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] border border-white/5 flex flex-col transition-all duration-500 transform group-hover:scale-[1.05] group-hover:shadow-[0_20px_50px_rgba(227,62,51,0.15)] group-hover:-translate-y-2">
 
-                                    {/* Noise Texture */}
-                                    <div className="absolute inset-0 opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div>
+                                    {/* Brushed Metal Texture */}
+                                    <div className="absolute inset-0 opacity-30 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div>
+                                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none"></div>
 
-                                    {/* Glossy Sheen */}
-                                    <div className="absolute -inset-full bg-gradient-to-r from-transparent via-white/5 to-transparent rotate-45 transform translate-x-[-150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out pointer-events-none"></div>
+                                    {/* Holographic Sheen */}
+                                    <div className="absolute -inset-[200%] bg-gradient-to-r from-transparent via-white/10 to-transparent rotate-[25deg] translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-[1.5s] ease-in-out pointer-events-none blur-sm"></div>
 
-                                    {/* World Map / Pattern Overlay */}
-                                    <div className="absolute inset-0 opacity-10 bg-[url('https://upload.wikimedia.org/wikipedia/commons/8/87/World_map_blank_gmt.svg')] bg-cover bg-center mix-blend-overlay pointer-events-none"></div>
+                                    {/* World Map Pattern (Subtle) */}
+                                    <div className="absolute inset-0 opacity-[0.07] bg-[url('https://upload.wikimedia.org/wikipedia/commons/8/87/World_map_blank_gmt.svg')] bg-cover bg-center mix-blend-overlay"></div>
 
                                     {/* Card Content */}
-                                    <div className="p-4 md:p-6 flex-1 flex flex-col justify-between relative z-10 h-full">
-                                        <div>
-                                            {/* Top Row: Bank Name & Contactless */}
-                                            <div className="flex justify-between items-start mb-2 md:mb-6">
-                                                <div className="flex items-center gap-2">
-                                                    <FaBolt className="text-[#e33e33]" />
-                                                    <span className="text-[10px] md:text-xs font-bold tracking-[0.2em] text-gray-300 uppercase font-mono">
-                                                        ZORPHIX
-                                                    </span>
+                                    <div className="p-5 md:p-7 flex-1 flex flex-col justify-between relative z-10 h-full">
+
+                                        {/* Top Header */}
+                                        <div className="flex justify-between items-start">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#e33e33] to-[#800000] flex items-center justify-center shadow-inner border border-white/10">
+                                                    <FaBolt className="text-white text-xs" />
                                                 </div>
-                                                {/* Contactless Symbol */}
-                                                <svg className="w-6 h-6 md:w-8 md:h-8 text-white/80 rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+                                                <span className="text-xs font-bold tracking-[0.25em] text-gray-400 uppercase font-mono text-shadow-sm">ZORPHIX BANK</span>
+                                            </div>
+                                            {/* Contactless Icon */}
+                                            <svg className="w-8 h-8 text-white/50" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" opacity=".3" />
+                                                <path d="M4.93 4.93c-1.2 1.2-1.93 2.76-1.93 4.57s.73 3.37 1.93 4.57l1.41-1.41c-.82-.82-1.34-1.95-1.34-3.16s.52-2.34 1.34-3.16L4.93 4.93zM8.46 8.46c-.43.43-.69.99-.69 1.62s.26 1.19.69 1.62l1.41-1.41c-.06-.06-.1-.13-.1-.21s.04-.15.1-.21L8.46 8.46zM12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" />
+                                            </svg>
+                                        </div>
+
+                                        {/* Chip & Event Title */}
+                                        <div className="mt-2">
+                                            <div className="w-12 h-9 bg-gradient-to-br from-[#FFD700] via-[#FDB931] to-[#C49303] rounded-md border border-[#FDB931] shadow-md relative overflow-hidden mb-4">
+                                                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+                                                <div className="absolute top-1/2 left-0 w-full h-[1px] bg-black/40"></div>
+                                                <div className="absolute top-0 left-1/2 h-full w-[1px] bg-black/40"></div>
+                                                <div className="absolute top-1/2 left-1/2 w-4 h-3 border border-black/40 rounded-[2px] -translate-x-1/2 -translate-y-1/2"></div>
                                             </div>
 
-                                            {/* Middle: Chip & Number */}
-                                            <div className="flex items-center gap-4 md:gap-6 mb-2 md:mb-4">
-                                                <div className="w-10 h-7 md:w-12 md:h-9 bg-gradient-to-br from-[#ffd700] to-[#b8860b] rounded-md border border-[#ffd700]/50 relative overflow-hidden shadow-md">
-                                                    <div className="absolute inset-0 border border-black/20 rounded-md"></div>
-                                                    <div className="w-full h-[1px] bg-black/30 absolute top-1/2 -translate-y-1/2"></div>
-                                                    <div className="h-full w-[1px] bg-black/30 absolute left-1/2 -translate-x-1/2"></div>
-                                                    <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 border border-black/30 rounded-sm"></div>
-                                                </div>
-                                                <div className="text-xl md:text-2xl font-mono text-white/50 tracking-widest">
-                                                    ••••
-                                                </div>
-                                            </div>
-
-                                            {/* Event Title as Card Number */}
-                                            <h3 className="text-lg md:text-2xl font-mono text-white tracking-[0.15em] uppercase drop-shadow-md truncate font-bold" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.9)' }}>
+                                            <h3 className="text-xl md:text-2xl lg:text-3xl font-mono text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-200 to-gray-400 tracking-[0.15em] uppercase truncate drop-shadow-[2px_4px_6px_rgba(0,0,0,0.8)] filter shadow-inner font-bold" style={{ textShadow: '-1px -1px 0 rgba(255,255,255,0.1), 2px 2px 4px rgba(0,0,0,0.8)' }}>
                                                 {event.title}
                                             </h3>
 
-                                            <div className="flex items-center gap-2 md:gap-3 mt-1 md:mt-2">
-                                                <span className="text-[8px] md:text-[10px] font-mono text-white/60">4242</span>
-                                                <span className="text-[8px] md:text-[10px] font-mono text-white/60">7569</span>
-                                                <span className="text-[8px] md:text-[10px] font-mono text-white/60">0000</span>
-                                                <span className="text-[8px] md:text-[10px] font-mono text-white/60">{2026 + event.id}</span>
+                                            <div className="flex gap-4 mt-2">
+                                                <span className="font-mono text-[10px] md:text-xs text-white/40 tracking-widest">4520</span>
+                                                <span className="font-mono text-[10px] md:text-xs text-white/40 tracking-widest">****</span>
+                                                <span className="font-mono text-[10px] md:text-xs text-white/40 tracking-widest">****</span>
+                                                <span className="font-mono text-[10px] md:text-xs text-white/40 tracking-widest">8892</span>
                                             </div>
                                         </div>
 
-                                        <div className="flex justify-between items-end mt-2 md:mt-4">
+                                        {/* Bottom Footer */}
+                                        <div className="flex justify-between items-end">
                                             <div>
-                                                <div className="flex gap-2 md:gap-4 text-[8px] md:text-[9px] text-gray-400 uppercase font-mono mb-1">
-                                                    <div>
-                                                        <span className="block text-[5px] md:text-[6px]">Valid Thru</span>
-                                                        <span className="text-white">{event.date}</span>
-                                                    </div>
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <span className="text-[6px] md:text-[8px] text-gray-400 uppercase tracking-widest">VALID THRU</span>
+                                                    <span className="text-xs md:text-sm text-white font-mono">{event.date}</span>
                                                 </div>
-                                                <p className="font-mono text-xs md:text-sm tracking-widest text-[#97b85d] uppercase shadow-black drop-shadow-sm">
-                                                    {event.venue}
-                                                </p>
+                                                <div className="text-xs md:text-sm text-gray-300 font-mono uppercase tracking-wider">{event.venue}</div>
                                             </div>
-                                            <div className="flex flex-col items-end">
-                                                <div className="text-white font-bold italic tracking-wider text-sm md:text-lg opacity-80">RuptPay</div>
-                                                <div className="text-xl md:text-3xl font-bold text-[#e33e33] tracking-widest text-shadow-sm">₹{event.price}</div>
+
+                                            <div className="text-right">
+                                                <div className="text-white/30 font-bold italic text-lg md:text-xl tracking-tighter">VISA</div>
+                                                <div className="text-lg md:text-2xl font-bold text-[#e33e33] font-mono tracking-widest drop-shadow-lg">₹{event.price}</div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
 
