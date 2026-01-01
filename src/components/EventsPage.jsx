@@ -247,48 +247,70 @@ const EventsPage = () => {
                                                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#e33e33] to-[#800000] flex items-center justify-center shadow-inner border border-white/10">
                                                     <FaBolt className="text-white text-xs" />
                                                 </div>
-                                                <span className="text-xs font-bold tracking-[0.25em] text-gray-400 uppercase font-mono text-shadow-sm">ZORPHIX BANK</span>
+                                                <div className="flex flex-col">
+                                                    <span className="text-xs font-bold tracking-[0.25em] text-gray-300 uppercase font-mono text-shadow-sm leading-none">ZORPHIX BANK</span>
+                                                    <span className="text-[6px] tracking-[0.2em] text-[#e33e33] uppercase font-mono mt-1">WORLD ELITE</span>
+                                                </div>
                                             </div>
-                                            {/* Contactless Icon */}
-                                            <svg className="w-8 h-8 text-white/50" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" opacity=".3" />
-                                                <path d="M4.93 4.93c-1.2 1.2-1.93 2.76-1.93 4.57s.73 3.37 1.93 4.57l1.41-1.41c-.82-.82-1.34-1.95-1.34-3.16s.52-2.34 1.34-3.16L4.93 4.93zM8.46 8.46c-.43.43-.69.99-.69 1.62s.26 1.19.69 1.62l1.41-1.41c-.06-.06-.1-.13-.1-.21s.04-.15.1-.21L8.46 8.46zM12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" />
-                                            </svg>
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-[8px] font-mono text-white/40 tracking-widest border border-white/20 px-1 rounded">DEBIT</span>
+                                                {/* Contactless Icon */}
+                                                <svg className="w-8 h-8 text-white/50" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" opacity=".3" />
+                                                    <path d="M4.93 4.93c-1.2 1.2-1.93 2.76-1.93 4.57s.73 3.37 1.93 4.57l1.41-1.41c-.82-.82-1.34-1.95-1.34-3.16s.52-2.34 1.34-3.16L4.93 4.93zM8.46 8.46c-.43.43-.69.99-.69 1.62s.26 1.19.69 1.62l1.41-1.41c-.06-.06-.1-.13-.1-.21s.04-.15.1-.21L8.46 8.46zM12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" />
+                                                </svg>
+                                            </div>
                                         </div>
 
                                         {/* Chip & Event Title */}
                                         <div className="mt-2">
-                                            <div className="w-12 h-9 bg-gradient-to-br from-[#FFD700] via-[#FDB931] to-[#C49303] rounded-md border border-[#FDB931] shadow-md relative overflow-hidden mb-4">
-                                                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
-                                                <div className="absolute top-1/2 left-0 w-full h-[1px] bg-black/40"></div>
-                                                <div className="absolute top-0 left-1/2 h-full w-[1px] bg-black/40"></div>
-                                                <div className="absolute top-1/2 left-1/2 w-4 h-3 border border-black/40 rounded-[2px] -translate-x-1/2 -translate-y-1/2"></div>
+                                            <div className="flex justify-between items-end mb-4">
+                                                <div className="w-12 h-9 bg-gradient-to-br from-[#FFD700] via-[#FDB931] to-[#C49303] rounded-md border border-[#FDB931] shadow-md relative overflow-hidden">
+                                                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+                                                    <div className="absolute top-1/2 left-0 w-full h-[1px] bg-black/40"></div>
+                                                    <div className="absolute top-0 left-1/2 h-full w-[1px] bg-black/40"></div>
+                                                    <div className="absolute top-1/2 left-1/2 w-4 h-3 border border-black/40 rounded-[2px] -translate-x-1/2 -translate-y-1/2"></div>
+                                                </div>
+                                                <div className="text-[8px] text-white/30 font-mono tracking-widest">
+                                                    AUTHORIZED SIGNATURE
+                                                </div>
                                             </div>
 
                                             <h3 className="text-xl md:text-2xl lg:text-3xl font-mono text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-200 to-gray-400 tracking-[0.15em] uppercase truncate drop-shadow-[2px_4px_6px_rgba(0,0,0,0.8)] filter shadow-inner font-bold" style={{ textShadow: '-1px -1px 0 rgba(255,255,255,0.1), 2px 2px 4px rgba(0,0,0,0.8)' }}>
                                                 {event.title}
                                             </h3>
 
-                                            <div className="flex gap-4 mt-2">
+                                            <div className="flex gap-4 mt-2 mb-4">
                                                 <span className="font-mono text-[10px] md:text-xs text-white/40 tracking-widest">4520</span>
                                                 <span className="font-mono text-[10px] md:text-xs text-white/40 tracking-widest">****</span>
                                                 <span className="font-mono text-[10px] md:text-xs text-white/40 tracking-widest">****</span>
                                                 <span className="font-mono text-[10px] md:text-xs text-white/40 tracking-widest">8892</span>
                                             </div>
+
+                                            <div className="flex items-center gap-6">
+                                                <div>
+                                                    <span className="block text-[5px] md:text-[6px] text-gray-400 uppercase tracking-widest mb-0.5">MEMBER SINCE</span>
+                                                    <span className="text-xs md:text-sm text-white font-mono tracking-wider">2024</span>
+                                                </div>
+                                                <div>
+                                                    <span className="block text-[5px] md:text-[6px] text-gray-400 uppercase tracking-widest mb-0.5">VALID THRU</span>
+                                                    <span className="text-xs md:text-sm text-white font-mono tracking-wider">{event.date}</span>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         {/* Bottom Footer */}
-                                        <div className="flex justify-between items-end">
-                                            <div>
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    <span className="text-[6px] md:text-[8px] text-gray-400 uppercase tracking-widest">VALID THRU</span>
-                                                    <span className="text-xs md:text-sm text-white font-mono">{event.date}</span>
+                                        <div className="flex justify-between items-end border-t border-white/5 pt-2 mt-2">
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-6 h-4 bg-white/10 rounded-sm flex items-center justify-center border border-white/5">
+                                                    <span className="text-[6px] text-white/50 font-bold">VIP</span>
                                                 </div>
-                                                <div className="text-xs md:text-sm text-gray-300 font-mono uppercase tracking-wider">{event.venue}</div>
+                                                <div className="text-[10px] md:text-xs text-gray-300 font-mono uppercase tracking-wider">{event.venue}</div>
                                             </div>
 
-                                            <div className="text-right">
+                                            <div className="text-right flex items-center gap-3">
                                                 <div className="text-white/30 font-bold italic text-lg md:text-xl tracking-tighter">VISA</div>
+                                                <div className="h-6 w-[1px] bg-white/10"></div>
                                                 <div className="text-lg md:text-2xl font-bold text-[#e33e33] font-mono tracking-widest drop-shadow-lg">₹{event.price}</div>
                                             </div>
                                         </div>
