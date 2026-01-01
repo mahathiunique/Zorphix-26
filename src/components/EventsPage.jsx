@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaBolt, FaPalette, FaTools, FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaTrophy } from 'react-icons/fa';
 
@@ -9,6 +9,27 @@ import CurrencyBackground from './CurrencyBackground';
 const EventsPage = () => {
     const [activeTab, setActiveTab] = useState('technical');
     const [selectedEvent, setSelectedEvent] = useState(null);
+    const [selectedEventsList, setSelectedEventsList] = useState([]);
+
+    useEffect(() => {
+        const storedEvents = JSON.parse(localStorage.getItem('selectedEvents') || '[]');
+        setSelectedEventsList(storedEvents);
+    }, []);
+
+    const handleAddeEvent = (event) => {
+        let updatedList;
+        // Check if event is already in list (case-insensitive check for robustness, though we prefer exact match based on strategy)
+        // We decided to store UPPERCASE. event.title is 'CODE WARS' (uppercase).
+        if (selectedEventsList.includes(event.title)) {
+            // Remove
+            updatedList = selectedEventsList.filter(title => title !== event.title);
+        } else {
+            // Add
+            updatedList = [...selectedEventsList, event.title];
+        }
+        setSelectedEventsList(updatedList);
+        localStorage.setItem('selectedEvents', JSON.stringify(updatedList));
+    };
 
     const categories = [
         { id: 'technical', label: 'TECHNICAL', icon: FaBolt, color: '#e33e33' },
@@ -19,7 +40,7 @@ const EventsPage = () => {
     const events = {
         technical: [
             {
-                id: 1, title: 'CODE WARS', date: 'March 15', venue: 'Main Lab', team: '2-3', prize: '₹15,000', desc: 'The ultimate competitive coding battle. Solve complex algorithms and climb the leaderboard.',
+                id: 1, title: 'CODE WARS', date: 'March 15', venue: 'Main Lab', team: '2-3', prize: '₹15,000', price: '149', desc: 'The ultimate competitive coding battle. Solve complex algorithms and climb the leaderboard.',
                 rules: [
                     'Participants must have a valid symposium ID.',
                     'Use of ChatGPT or any AI tools is strictly prohibited.',
@@ -28,7 +49,7 @@ const EventsPage = () => {
                 ]
             },
             {
-                id: 2, title: 'CYBER HEIST', date: 'March 16', venue: 'Security Lab', team: '4', prize: '₹10,000', desc: 'A CTF challenge where you hack into secure systems to retrieve the flags.',
+                id: 2, title: 'CYBER HEIST', date: 'March 16', venue: 'Security Lab', team: '4', prize: '₹10,000', price: '149', desc: 'A CTF challenge where you hack into secure systems to retrieve the flags.',
                 rules: [
                     'Do not attack the game infrastructure.',
                     'Flag sharing is strictly prohibited.',
@@ -36,7 +57,7 @@ const EventsPage = () => {
                 ]
             },
             {
-                id: 3, title: 'AI NEXUS', date: 'March 15', venue: 'Seminar Hall', team: '2', prize: '₹12,000', desc: 'Build and showcase innovative AI models to solve real-world problems.',
+                id: 3, title: 'AI NEXUS', date: 'March 15', venue: 'Seminar Hall', team: '2', prize: '₹12,000', price: '149', desc: 'Build and showcase innovative AI models to solve real-world problems.',
                 rules: [
                     'Model must be trained on open-source datasets.',
                     'Plagiarism will lead to immediate disqualification.',
@@ -44,7 +65,7 @@ const EventsPage = () => {
                 ]
             },
             {
-                id: 4, title: 'WEB WIZARDS', date: 'March 16', venue: 'Browsing Centre', team: '2-3', prize: '₹8,000', desc: 'Design and deploy a stunning web application within a set timeframe.',
+                id: 4, title: 'WEB WIZARDS', date: 'March 16', venue: 'Browsing Centre', team: '2-3', prize: '₹8,000', price: '149', desc: 'Design and deploy a stunning web application within a set timeframe.',
                 rules: [
                     'No pre-made templates allowed.',
                     'Code must be pushed to GitHub repository.',
@@ -52,7 +73,7 @@ const EventsPage = () => {
                 ]
             },
             {
-                id: 5, title: 'ROBO RUMBLE', date: 'March 15', venue: 'Open Ground', team: '4', prize: '₹20,000', desc: 'Heavy metal mayhem. Build robots to destroy your opponents in the arena.',
+                id: 5, title: 'ROBO RUMBLE', date: 'March 15', venue: 'Open Ground', team: '4', prize: '₹20,000', price: '149', desc: 'Heavy metal mayhem. Build robots to destroy your opponents in the arena.',
                 rules: [
                     'Robot weight must not exceed 15kg.',
                     'No flamethrowers or explosives allowed.',
@@ -60,7 +81,7 @@ const EventsPage = () => {
                 ]
             },
             {
-                id: 6, title: 'CIRCUITRIX', date: 'March 16', venue: 'Hardware Lab', team: '2', prize: '₹7,000', desc: 'Debug complex circuits and design efficient hardware solutions.',
+                id: 6, title: 'CIRCUITRIX', date: 'March 16', venue: 'Hardware Lab', team: '2', prize: '₹7,000', price: '149', desc: 'Debug complex circuits and design efficient hardware solutions.',
                 rules: [
                     'Components will be provided at the venue.',
                     'Bring your own breadboard and multimeter if possible.',
@@ -70,7 +91,7 @@ const EventsPage = () => {
         ],
         'non-technical': [
             {
-                id: 7, title: 'LENS LEGENDS', date: 'March 15', venue: 'Campus wide', team: '1', prize: '₹5,000', desc: 'Capture the essence of the symposium through your lens. Photography contest.',
+                id: 7, title: 'LENS LEGENDS', date: 'March 15', venue: 'Campus wide', team: '1', prize: '₹5,000', price: '99', desc: 'Capture the essence of the symposium through your lens. Photography contest.',
                 rules: [
                     'Photos must be taken during the symposium event.',
                     'Basic editing is allowed, but manipulation is not.',
@@ -78,7 +99,7 @@ const EventsPage = () => {
                 ]
             },
             {
-                id: 8, title: 'MEME MASTERS', date: 'Online', venue: 'Discord', team: '1', prize: '₹3,000', desc: 'Create the most hilarious and relatable tech memes.',
+                id: 8, title: 'MEME MASTERS', date: 'Online', venue: 'Discord', team: '1', prize: '₹3,000', price: '99', desc: 'Create the most hilarious and relatable tech memes.',
                 rules: [
                     'Content must be original and related to tech/college life.',
                     'No offensive or political content.',
@@ -86,7 +107,7 @@ const EventsPage = () => {
                 ]
             },
             {
-                id: 9, title: 'GAMING ARENA', date: 'March 15-16', venue: 'Gaming Zone', team: '5', prize: '₹15,000', desc: 'Valorant and BGMI tournaments. Dominate the server.',
+                id: 9, title: 'GAMING ARENA', date: 'March 15-16', venue: 'Gaming Zone', team: '5', prize: '₹15,000', price: '99', desc: 'Valorant and BGMI tournaments. Dominate the server.',
                 rules: [
                     'Bring your own peripherals (mouse, headphones).',
                     'Toxic behavior will result in a ban.',
@@ -94,7 +115,7 @@ const EventsPage = () => {
                 ]
             },
             {
-                id: 10, title: 'TREASURE HUNT', date: 'March 16', venue: 'Campus wide', team: '3', prize: '₹6,000', desc: 'Solve riddles and follow clues to find the hidden treasure.',
+                id: 10, title: 'TREASURE HUNT', date: 'March 16', venue: 'Campus wide', team: '3', prize: '₹6,000', price: '99', desc: 'Solve riddles and follow clues to find the hidden treasure.',
                 rules: [
                     'Teams must stay together at all times.',
                     'Do not damage college property.',
@@ -102,7 +123,7 @@ const EventsPage = () => {
                 ]
             },
             {
-                id: 11, title: 'QUIZ BOWL', date: 'March 15', venue: 'Auditorium', team: '2', prize: '₹4,000', desc: 'Test your general knowledge and tech trivia skills.',
+                id: 11, title: 'QUIZ BOWL', date: 'March 15', venue: 'Auditorium', team: '2', prize: '₹4,000', price: '99', desc: 'Test your general knowledge and tech trivia skills.',
                 rules: [
                     'No mobile phones allowed during the quiz.',
                     'Questions range from tech, sci-fi to general knowledge.',
@@ -112,7 +133,7 @@ const EventsPage = () => {
         ],
         workshops: [
             {
-                id: 12, title: 'ETHICAL HACKING', date: 'March 15', venue: 'Lab 1', team: 'Individual', prize: 'Certificate', desc: 'Learn the fundamentals of cybersecurity and penetration testing.',
+                id: 12, title: 'ETHICAL HACKING', date: 'March 15', venue: 'Lab 1', team: 'Individual', prize: 'Certificate', price: '199', desc: 'Learn the fundamentals of cybersecurity and penetration testing.',
                 rules: [
                     'Laptop is mandatory.',
                     'Pre-install Kali Linux (VM or Dual boot).',
@@ -120,7 +141,7 @@ const EventsPage = () => {
                 ]
             },
             {
-                id: 13, title: 'APP DEV', date: 'March 16', venue: 'Lab 2', team: 'Individual', prize: 'Certificate', desc: 'Master Flutter and build cross-platform mobile applications.',
+                id: 13, title: 'APP DEV', date: 'March 16', venue: 'Lab 2', team: 'Individual', prize: 'Certificate', price: '199', desc: 'Master Flutter and build cross-platform mobile applications.',
                 rules: [
                     'Laptop with VS Code and Flutter SDK installed.',
                     'Basic knowledge of programming is recommended.',
@@ -128,7 +149,7 @@ const EventsPage = () => {
                 ]
             },
             {
-                id: 14, title: 'BLOCKCHAIN', date: 'March 15', venue: 'Lab 3', team: 'Individual', prize: 'Certificate', desc: 'Understand the decentralized web and build your first DApp.',
+                id: 14, title: 'BLOCKCHAIN', date: 'March 15', venue: 'Lab 3', team: 'Individual', prize: 'Certificate', price: '199', desc: 'Understand the decentralized web and build your first DApp.',
                 rules: [
                     'Laptop required.',
                     'Node.js and Metamask wallet must be installed.',
@@ -264,18 +285,14 @@ const EventsPage = () => {
                                                         <span className="block text-[5px] md:text-[6px]">Valid Thru</span>
                                                         <span className="text-white">{event.date}</span>
                                                     </div>
-                                                    <div>
-                                                        <span className="block text-[5px] md:text-[6px]">Prize Limit</span>
-                                                        <span className="text-[#e33e33] font-bold tracking-widest">₹{event.prize.replace('₹', '')}</span>
-                                                    </div>
                                                 </div>
                                                 <p className="font-mono text-xs md:text-sm tracking-widest text-[#97b85d] uppercase shadow-black drop-shadow-sm">
                                                     {event.venue}
                                                 </p>
                                             </div>
                                             <div className="flex flex-col items-end">
-                                                <div className="text-white font-bold italic tracking-wider text-base md:text-xl opacity-80">RuptPay</div>
-                                                <div className="text-[5px] md:text-[6px] text-gray-500 uppercase">Platinum</div>
+                                                <div className="text-white font-bold italic tracking-wider text-sm md:text-lg opacity-80">RuptPay</div>
+                                                <div className="text-xl md:text-3xl font-bold text-[#e33e33] tracking-widest text-shadow-sm">₹{event.price}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -289,8 +306,13 @@ const EventsPage = () => {
                                     >
                                         Know More
                                     </button>
-                                    <button className="flex-1 py-3 bg-[#1a1a1a] rounded-lg border border-[#97b85d] text-[#97b85d] font-mono text-xs font-bold uppercase tracking-widest hover:bg-[#97b85d] hover:text-black transition-all duration-300 shadow-[0_0_10px_rgba(151,184,93,0.2)] hover:shadow-[0_0_20px_rgba(151,184,93,0.6)]">
-                                        Register
+                                    <button
+                                        onClick={() => handleAddeEvent(event)}
+                                        className={`flex-1 py-3 rounded-lg border font-mono text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-[0_0_10px_rgba(151,184,93,0.2)] hover:shadow-[0_0_20px_rgba(151,184,93,0.6)] ${selectedEventsList.includes(event.title)
+                                            ? 'bg-[#97b85d] text-black border-[#97b85d]'
+                                            : 'bg-[#1a1a1a] border-[#97b85d] text-[#97b85d] hover:bg-[#97b85d] hover:text-black'
+                                            }`}>
+                                        {selectedEventsList.includes(event.title) ? 'Added' : 'Add'}
                                     </button>
                                 </div>
                             </motion.div>

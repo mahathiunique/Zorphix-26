@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { auth, googleProvider, db } from '../firebase';
 import { signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
@@ -7,6 +8,24 @@ import { FaGoogle, FaUserTie, FaUniversity, FaBuilding, FaPhone, FaCheckCircle, 
 import CurrencyBackground from './CurrencyBackground';
 
 const Register = () => {
+    // Defined properly at the top or outside to be accessible
+    const eventOptions = [
+        { name: 'Code Wars', type: 'tech', price: 149 },
+        { name: 'Cyber Heist', type: 'tech', price: 149 },
+        { name: 'AI Nexus', type: 'tech', price: 149 },
+        { name: 'Web Wizards', type: 'tech', price: 149 },
+        { name: 'Robo Rumble', type: 'tech', price: 149 },
+        { name: 'Circuitrix', type: 'tech', price: 149 },
+        { name: 'Lens Legends', type: 'non-tech', price: 99 },
+        { name: 'Meme Masters', type: 'non-tech', price: 99 },
+        { name: 'Gaming Arena', type: 'non-tech', price: 99 },
+        { name: 'Treasure Hunt', type: 'non-tech', price: 99 },
+        { name: 'Quiz Bowl', type: 'non-tech', price: 99 },
+        { name: 'Ethical Hacking', type: 'workshop', price: 199 },
+        { name: 'App Dev', type: 'workshop', price: 199 },
+        { name: 'Blockchain', type: 'workshop', price: 199 }
+    ];
+
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({
@@ -16,6 +35,26 @@ const Register = () => {
         phone: '',
         events: []
     });
+
+    const location = useLocation();
+
+    // Handle pre-selection of event from Events page (via localStorage)
+    useEffect(() => {
+        const storedEvents = JSON.parse(localStorage.getItem('selectedEvents') || '[]');
+        if (storedEvents.length > 0) {
+            setFormData(prev => {
+                // Map stored uppercase/mixed case to exact eventOptions names
+                const normalizedEvents = storedEvents.map(storedName => {
+                    const match = eventOptions.find(opt => opt.name.toLowerCase() === storedName.toLowerCase() || opt.name.toUpperCase() === storedName.toUpperCase());
+                    return match ? match.name : null;
+                }).filter(Boolean);
+
+                // Merge and deduplicate
+                const newEvents = [...new Set([...prev.events, ...normalizedEvents])];
+                return { ...prev, events: newEvents };
+            });
+        }
+    }, [location.state]); // Keep location dependency if needed, or just [] if we only care about mount/updates logic
     const [submitted, setSubmitted] = useState(false);
 
     useEffect(() => {
@@ -61,11 +100,19 @@ const Register = () => {
     const handleEventChange = (e) => {
         const { value, checked } = e.target;
         const { events } = formData;
+
+        let newEvents;
         if (checked) {
-            setFormData({ ...formData, events: [...events, value] });
+            newEvents = [...events, value];
         } else {
-            setFormData({ ...formData, events: events.filter((e) => e !== value) });
+            newEvents = events.filter((e) => e !== value);
         }
+        setFormData({ ...formData, events: newEvents });
+
+        // Sync with localStorage
+        // Convert to UPPERCASE to match EventsPage format
+        const storedEvents = newEvents.map(name => name.toUpperCase());
+        localStorage.setItem('selectedEvents', JSON.stringify(storedEvents));
     };
 
     const handleSubmit = async (e) => {
@@ -89,11 +136,14 @@ const Register = () => {
         }
     };
 
-    const eventOptions = [
-        'Code Wars', 'Cyber Heist', 'AI Nexus', 'Web Wizards',
-        'Robo Rumble', 'Circuitrix', 'Lens Legends', 'Meme Masters',
-        'Gaming Arena', 'Treasure Hunt', 'Quiz Bowl'
-    ];
+    // eventOptions removed (moved to top)
+
+    const calculateTotal = () => {
+        return formData.events.reduce((total, eventName) => {
+            const event = eventOptions.find(e => e.name === eventName);
+            return total + (event ? event.price : 0);
+        }, 0);
+    };
 
     if (loading) {
         return (
@@ -292,21 +342,24 @@ const Register = () => {
 
                                                 <div className="space-y-2 max-h-[300px] overflow-y-auto custom-scrollbar">
                                                     {eventOptions.map(event => (
-                                                        <label key={event} className={`flex items-center justify-between p-3 border rounded cursor-pointer transition-all ${formData.events.includes(event)
+                                                        <label key={event.name} className={`flex items-center justify-between p-3 border rounded cursor-pointer transition-all ${formData.events.includes(event.name)
                                                             ? 'border-[#97b85d] bg-[#97b85d]/10'
                                                             : 'border-[#333] hover:border-gray-500'
                                                             }`}>
-                                                            <span className={`text-xs font-mono uppercase ${formData.events.includes(event) ? 'text-white' : 'text-gray-500'
-                                                                }`}>{event}</span>
+                                                            <div className="flex flex-col">
+                                                                <span className={`text-xs font-mono uppercase ${formData.events.includes(event.name) ? 'text-white' : 'text-gray-500'
+                                                                    }`}>{event.name}</span>
+                                                                <span className="text-[10px] text-[#e33e33] mt-1">₹{event.price}</span>
+                                                            </div>
 
-                                                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${formData.events.includes(event) ? 'border-[#97b85d] bg-[#97b85d]' : 'border-gray-600'
+                                                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${formData.events.includes(event.name) ? 'border-[#97b85d] bg-[#97b85d]' : 'border-gray-600'
                                                                 }`}>
-                                                                {formData.events.includes(event) && <FaCheckCircle className="text-black text-[10px]" />}
+                                                                {formData.events.includes(event.name) && <FaCheckCircle className="text-black text-[10px]" />}
                                                             </div>
                                                             <input
                                                                 type="checkbox"
-                                                                value={event}
-                                                                checked={formData.events.includes(event)}
+                                                                value={event.name}
+                                                                checked={formData.events.includes(event.name)}
                                                                 onChange={handleEventChange}
                                                                 className="hidden"
                                                             />
@@ -314,16 +367,22 @@ const Register = () => {
                                                     ))}
                                                 </div>
 
-                                                <div className="mt-6 pt-6 border-t border-[#333] flex justify-between items-center text-xs">
-                                                    <span className="text-gray-500 uppercase tracking-wider">Total Selected</span>
-                                                    <span className="text-[#97b85d] font-mono font-bold">{formData.events.length} EVENTS</span>
+                                                <div className="mt-6 pt-6 border-t border-[#333] flex flex-col gap-2">
+                                                    <div className="flex justify-between items-center text-xs">
+                                                        <span className="text-gray-500 uppercase tracking-wider">Total Selected</span>
+                                                        <span className="text-white font-mono">{formData.events.length} EVENTS</span>
+                                                    </div>
+                                                    <div className="flex justify-between items-center text-sm">
+                                                        <span className="text-[#e33e33] uppercase tracking-wider font-bold">Total Cost</span>
+                                                        <span className="text-[#97b85d] font-mono font-bold text-lg">₹{calculateTotal()}</span>
+                                                    </div>
                                                 </div>
 
                                                 <button
                                                     type="submit"
                                                     className="w-full mt-6 py-4 bg-gradient-to-r from-[#e33e33] to-[#97b85d] hover:from-[#c2352b] hover:to-[#86a352] text-white font-bold uppercase tracking-[0.2em] rounded shadow-[0_5px_15px_rgba(227,62,51,0.3)] transition-all transform hover:-translate-y-1"
                                                 >
-                                                    Register Now
+                                                    Pay & Register
                                                 </button>
                                             </div>
                                         </form>
