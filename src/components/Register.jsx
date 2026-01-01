@@ -4,6 +4,7 @@ import { auth, googleProvider, db } from '../firebase';
 import { signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { FaGoogle, FaUserTie, FaUniversity, FaBuilding, FaPhone, FaCheckCircle, FaChartLine, FaBriefcase, FaWallet, FaHandshake } from 'react-icons/fa';
+import CurrencyBackground from './CurrencyBackground';
 
 const Register = () => {
     const [user, setUser] = useState(null);
@@ -110,7 +111,7 @@ const Register = () => {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,#1f1a0e,transparent_50%)]"></div>
 
             {/* Floating Currency Symbols */}
-            <CurrencyShower />
+            <CurrencyBackground />
 
             <div className="relative z-10 container mx-auto px-4 pt-32 pb-12 flex flex-col items-center justify-center min-h-screen">
 
@@ -376,45 +377,6 @@ const Register = () => {
                     background: #333;
                 }
             `}</style>
-        </div>
-    );
-};
-
-// Text standardized
-// UI Theme: Red/Green Zorphix colors
-const CurrencyShower = () => {
-    // Increased variety and mix of crypto/fiat
-    const symbols = ['$', '€', '£', '¥', '₹', '₿', 'Ξ', '◈', '∞'];
-
-    return (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {/* Increased count for simplified 'more nice' look */}
-            {[...Array(50)].map((_, i) => {
-                // Randomize color between Zorphix Red and Green
-                const isGreen = Math.random() > 0.5;
-                const color = isGreen ? '#97b85d' : '#e33e33';
-                const duration = 15 + Math.random() * 20; // Slower, more majestic float
-                const delay = Math.random() * 20;
-                const size = 15 + Math.random() * 30;
-                const left = Math.random() * 100;
-
-                return (
-                    <div
-                        key={i}
-                        className="currency-symbol"
-                        style={{
-                            color: color,
-                            left: `${left}%`,
-                            animation: `float-up ${duration}s linear infinite`,
-                            animationDelay: `-${delay}s`, // Negative delay to start mid-animation
-                            fontSize: `${size}px`,
-                            zIndex: 0
-                        }}
-                    >
-                        {symbols[Math.floor(Math.random() * symbols.length)]}
-                    </div>
-                );
-            })}
         </div>
     );
 };

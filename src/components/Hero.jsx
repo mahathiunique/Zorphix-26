@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import zorphixLogo from '../assets/zorphix-logo.png';
 import zorphixName from '../assets/zorphix.png';
 import Background from './Background';
+import CurrencyBackground from './CurrencyBackground';
 
 const Hero = () => {
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -40,6 +41,7 @@ const Hero = () => {
         >
             {/* Ambient Animated Background */}
             <Background />
+            <CurrencyBackground />
 
             {/* Vignette Effect */}
             <div className="absolute inset-0 pointer-events-none z-40 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.7)_100%)]"></div>

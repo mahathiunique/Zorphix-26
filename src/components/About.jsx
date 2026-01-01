@@ -4,6 +4,7 @@ import Background from './Background';
 import zorphixLogo from '../assets/zorphix-logo.png';
 import zorphixName from '../assets/zorphix.png';
 import UniqueCarousel from './UniqueCarousel';
+import CurrencyBackground from './CurrencyBackground';
 
 const About = () => {
     const teamMembers = [
@@ -22,6 +23,7 @@ const About = () => {
     return (
         <div className="relative min-h-screen bg-black text-white overflow-hidden font-mono">
             <Background />
+            <CurrencyBackground />
 
             {/* Vignette Effect - keeping consistent with Hero */}
             <div className="absolute inset-0 pointer-events-none z-40 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.7)_100%)]"></div>

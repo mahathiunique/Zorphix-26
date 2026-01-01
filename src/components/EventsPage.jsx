@@ -4,6 +4,7 @@ import { FaBolt, FaPalette, FaTools, FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaT
 
 import Background from './Background';
 import EventModal from './EventModal';
+import CurrencyBackground from './CurrencyBackground';
 
 const EventsPage = () => {
     const [activeTab, setActiveTab] = useState('technical');
@@ -140,6 +141,7 @@ const EventsPage = () => {
     return (
         <div className="min-h-screen bg-black text-white font-mono relative overflow-x-hidden">
             <Background />
+            <CurrencyBackground />
 
             {/* Vignette */}
             <div className="absolute inset-0 pointer-events-none z-10 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]"></div>
