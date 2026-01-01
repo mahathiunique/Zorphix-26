@@ -391,37 +391,99 @@ const Register = () => {
                             </motion.div>
                         ) : (
                             /* ================== SUCCESS VIEW ================== */
+                            /* ================== SUCCESS VIEW: DIGITAL TICKET ================== */
                             <motion.div
                                 key="success"
                                 initial={{ scale: 0.9, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
-                                className="w-full max-w-lg"
+                                className="w-full max-w-4xl"
                             >
-                                <div className="bg-[#111] border-2 border-[#97b85d] p-10 text-center relative shadow-[0_0_50px_rgba(151,184,93,0.2)]">
-                                    <div className="w-20 h-20 mx-auto bg-[#97b85d] rounded-full flex items-center justify-center mb-6">
-                                        <FaHandshake className="text-4xl text-black" />
+                                <div className="flex flex-col md:flex-row bg-[#111] rounded-3xl overflow-hidden shadow-[0_0_80px_rgba(227,62,51,0.15)] border border-[#333]">
+                                    {/* Left Side: Ticket Details */}
+                                    <div className="flex-1 p-8 md:p-12 relative overflow-hidden">
+                                        {/* Background Texture */}
+                                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
+                                        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#e33e33]/10 to-transparent rounded-bl-full pointer-events-none"></div>
+
+                                        <div className="relative z-10 flex flex-col h-full justify-between">
+                                            <div>
+                                                <div className="flex justify-between items-start mb-8">
+                                                    <div>
+                                                        <p className="text-[#e33e33] text-xs font-mono uppercase tracking-[0.3em] mb-2">Symposium Pass</p>
+                                                        <h1 className="text-3xl md:text-5xl font-serif text-white tracking-wide">ZORPHIX '26</h1>
+                                                    </div>
+                                                    <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center">
+                                                        <FaUserTie className="text-white/50" />
+                                                    </div>
+                                                </div>
+
+                                                <div className="grid grid-cols-2 gap-8 mb-8">
+                                                    <div>
+                                                        <p className="text-gray-500 text-[10px] uppercase tracking-widest mb-1">Attendee</p>
+                                                        <p className="text-white font-mono text-lg">{user.displayName}</p>
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-gray-500 text-[10px] uppercase tracking-widest mb-1">Pass ID</p>
+                                                        <p className="text-[#97b85d] font-mono text-lg">#{user.uid.slice(0, 6).toUpperCase()}</p>
+                                                    </div>
+                                                </div>
+
+                                                <div className="mb-8">
+                                                    <p className="text-gray-500 text-[10px] uppercase tracking-widest mb-3">Registered Events</p>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {formData.events.map(event => (
+                                                            <span key={event} className="px-3 py-1 bg-[#1a1a1a] border border-[#333] rounded text-[10px] md:text-xs text-gray-300 font-mono uppercase tracking-wider">
+                                                                {event}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex justify-between items-end border-t border-[#333] pt-6">
+                                                <div>
+                                                    <p className="text-gray-600 text-[9px] uppercase tracking-widest mb-1">Date</p>
+                                                    <p className="text-gray-400 font-mono text-xs">March 15-16, 2026</p>
+                                                </div>
+                                                <div className="text-right">
+                                                    <p className="text-gray-600 text-[9px] uppercase tracking-widest mb-1">Total Paid</p>
+                                                    <p className="text-white font-mono text-xl">₹{calculateTotal()}</p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <h2 className="text-3xl font-serif text-white tracking-wide mb-2">
-                                        REGISTRATION SUCCESSFUL
-                                    </h2>
+                                    {/* Right Side: QR Code Panel (Perforated Look) */}
+                                    <div className="md:w-80 bg-white relative flex flex-col items-center justify-center p-8 border-l-4 border-dashed border-[#111]">
+                                        {/* Perforation Circles (Visual Hack) */}
+                                        <div className="absolute top-[-10px] left-[-12px] w-6 h-6 bg-[#111] rounded-full"></div>
+                                        <div className="absolute bottom-[-10px] left-[-12px] w-6 h-6 bg-[#111] rounded-full"></div>
 
-                                    <p className="text-[#97b85d] font-mono text-xs tracking-wider mb-8">
-                                        REGISTRATION ID: #{user.uid.slice(0, 6).toUpperCase()}
-                                    </p>
+                                        <div className="text-center mb-6">
+                                            <p className="text-black font-bold uppercase tracking-[0.2em] text-xs mb-1">Scan for Entry</p>
+                                            <p className="text-gray-400 text-[9px] uppercase tracking-widest">Admit One</p>
+                                        </div>
 
-                                    <div className="bg-[#080808] p-6 rounded border border-[#333] mb-8">
-                                        <p className="text-gray-400 text-sm italic leading-relaxed font-serif">
-                                            "Welcome aboard, {user.displayName.split(' ')[0]}. You have successfully registered for the events. Check your email for details."
+                                        <div className="p-4 bg-white border-2 border-black rounded-lg mb-6 shadow-xl">
+                                            <img
+                                                src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${user.uid}`}
+                                                alt="Entry QR Code"
+                                                className="w-32 h-32 md:w-40 md:h-40"
+                                            />
+                                        </div>
+
+                                        <p className="text-[10px] text-gray-400 font-mono text-center mb-8 break-all px-4">
+                                            {user.uid}
                                         </p>
-                                    </div>
 
-                                    <div className="flex gap-4 justify-center">
-                                        <button onClick={() => setSubmitted(false)} className="text-xs text-gray-500 hover:text-[#e33e33] uppercase tracking-widest underline">
+                                        <button
+                                            onClick={() => {
+                                                setSubmitted(false);
+                                                setFormData({ college: '', department: '', year: '1', phone: '', events: [] });
+                                            }}
+                                            className="w-full py-3 bg-[#111] text-white font-bold uppercase tracking-widest text-xs hover:bg-[#e33e33] transition-colors"
+                                        >
                                             Register Another
-                                        </button>
-                                        <button className="px-6 py-2 border border-white text-white text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-colors">
-                                            Return Home
                                         </button>
                                     </div>
                                 </div>
