@@ -28,34 +28,44 @@ const Register = () => {
 
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [formData, setFormData] = useState({
-        college: '',
-        department: '',
-        year: '1',
-        phone: '',
-        events: []
-    });
+    const [formData, setFormData] = useState(() => {
+        const initial = {
+            college: '',
+            department: '',
+            year: '1',
+            phone: '',
+            events: []
+        };
 
-    const location = useLocation();
-
-    // Handle pre-selection of event from Events page (via localStorage)
-    useEffect(() => {
-        const storedEvents = JSON.parse(localStorage.getItem('selectedEvents') || '[]');
-        if (storedEvents.length > 0) {
-            setFormData(prev => {
+        try {
+            const storedEvents = JSON.parse(localStorage.getItem('selectedEvents') || '[]');
+            if (storedEvents.length > 0) {
                 // Map stored uppercase/mixed case to exact eventOptions names
                 const normalizedEvents = storedEvents.map(storedName => {
+                    // Need to access eventOptions. Since it's defined in component scope (which is inside render), 
+                    // we can accessing it if it's hoisted or defined before. 
+                    // To be safe, we should assume eventOptions is available or redefine the lookup.
+                    // Actually, eventOptions is defined at top of component.
                     const match = eventOptions.find(opt => opt.name.toLowerCase() === storedName.toLowerCase() || opt.name.toUpperCase() === storedName.toUpperCase());
                     return match ? match.name : null;
                 }).filter(Boolean);
 
-                // Merge and deduplicate
-                const newEvents = [...new Set([...prev.events, ...normalizedEvents])];
-                return { ...prev, events: newEvents };
-            });
+                // Deduplicate
+                const uniqueEvents = Array.from(new Set(normalizedEvents));
+                if (uniqueEvents.length > 0) {
+                    return { ...initial, events: uniqueEvents };
+                }
+            }
+        } catch (e) {
+            console.error(e);
         }
-    }, [location.state]); // Keep location dependency if needed, or just [] if we only care about mount/updates logic
+        return initial;
+    });
+
+    const location = useLocation();
+    // Removed the useEffect that was setting form data from localStorage
     const [submitted, setSubmitted] = useState(false);
+    const [alreadyRegistered, setAlreadyRegistered] = useState([]);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -65,6 +75,10 @@ const Register = () => {
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     setSubmitted(true);
+                    const data = docSnap.data();
+                    if (data.events && Array.isArray(data.events)) {
+                        setAlreadyRegistered(data.events);
+                    }
                 }
             }
             setLoading(false);
@@ -84,6 +98,7 @@ const Register = () => {
     const handleSignOut = () => {
         signOut(auth);
         setSubmitted(false);
+        setAlreadyRegistered([]);
         setFormData({
             college: '',
             department: '',
@@ -120,8 +135,12 @@ const Register = () => {
         if (!user) return;
 
         try {
+            // Merge already registered events with new events
+            const allEvents = [...new Set([...alreadyRegistered, ...formData.events])];
+
             await setDoc(doc(db, 'registrations', user.uid), {
                 ...formData,
+                events: allEvents, // Save the merged list
                 uid: user.uid,
                 displayName: user.displayName,
                 email: user.email,
@@ -129,6 +148,10 @@ const Register = () => {
                 registeredAt: serverTimestamp(),
                 portfolioValue: 'PENDING VALUATION'
             });
+            // Update local state to reflect the new total
+            setAlreadyRegistered(allEvents);
+            setFormData(prev => ({ ...prev, events: [] })); // Clear selected events as they are now registered
+            localStorage.removeItem('selectedEvents'); // Clear local storage selection
             setSubmitted(true);
         } catch (error) {
             console.error("Error saving registration:", error);
@@ -341,30 +364,44 @@ const Register = () => {
                                                 </div>
 
                                                 <div className="space-y-2 max-h-[300px] overflow-y-auto custom-scrollbar">
-                                                    {eventOptions.map(event => (
-                                                        <label key={event.name} className={`flex items-center justify-between p-3 border rounded cursor-pointer transition-all ${formData.events.includes(event.name)
-                                                            ? 'border-[#97b85d] bg-[#97b85d]/10'
-                                                            : 'border-[#333] hover:border-gray-500'
-                                                            }`}>
-                                                            <div className="flex flex-col">
-                                                                <span className={`text-xs font-mono uppercase ${formData.events.includes(event.name) ? 'text-white' : 'text-gray-500'
-                                                                    }`}>{event.name}</span>
-                                                                <span className="text-[10px] text-[#e33e33] mt-1">₹{event.price}</span>
-                                                            </div>
+                                                    {eventOptions.map(event => {
+                                                        const isRegistered = alreadyRegistered.includes(event.name);
+                                                        const isSelected = formData.events.includes(event.name);
 
-                                                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${formData.events.includes(event.name) ? 'border-[#97b85d] bg-[#97b85d]' : 'border-gray-600'
+                                                        return (
+                                                            <label key={event.name} className={`flex items-center justify-between p-3 border rounded transition-all ${isRegistered
+                                                                ? 'border-blue-500/50 bg-blue-500/10 cursor-not-allowed opacity-70'
+                                                                : isSelected
+                                                                    ? 'border-[#97b85d] bg-[#97b85d]/10 cursor-pointer'
+                                                                    : 'border-[#333] hover:border-gray-500 cursor-pointer'
                                                                 }`}>
-                                                                {formData.events.includes(event.name) && <FaCheckCircle className="text-black text-[10px]" />}
-                                                            </div>
-                                                            <input
-                                                                type="checkbox"
-                                                                value={event.name}
-                                                                checked={formData.events.includes(event.name)}
-                                                                onChange={handleEventChange}
-                                                                className="hidden"
-                                                            />
-                                                        </label>
-                                                    ))}
+                                                                <div className="flex flex-col">
+                                                                    <span className={`text-xs font-mono uppercase ${isRegistered ? 'text-blue-400' : isSelected ? 'text-white' : 'text-gray-500'
+                                                                        }`}>
+                                                                        {event.name} {isRegistered && '(REGISTERED)'}
+                                                                    </span>
+                                                                    <span className="text-[10px] text-[#e33e33] mt-1">₹{event.price}</span>
+                                                                </div>
+
+                                                                <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${isRegistered
+                                                                    ? 'border-blue-500 bg-blue-500'
+                                                                    : isSelected
+                                                                        ? 'border-[#97b85d] bg-[#97b85d]'
+                                                                        : 'border-gray-600'
+                                                                    }`}>
+                                                                    {(isSelected || isRegistered) && <FaCheckCircle className="text-black text-[10px]" />}
+                                                                </div>
+                                                                <input
+                                                                    type="checkbox"
+                                                                    value={event.name}
+                                                                    checked={isSelected || isRegistered}
+                                                                    onChange={handleEventChange}
+                                                                    disabled={isRegistered}
+                                                                    className="hidden"
+                                                                />
+                                                            </label>
+                                                        )
+                                                    })}
                                                 </div>
 
                                                 <div className="mt-6 pt-6 border-t border-[#333] flex flex-col gap-2">
@@ -431,7 +468,7 @@ const Register = () => {
                                                 <div className="mb-8">
                                                     <p className="text-gray-500 text-[10px] uppercase tracking-widest mb-3">Registered Events</p>
                                                     <div className="flex flex-wrap gap-2">
-                                                        {formData.events.map(event => (
+                                                        {alreadyRegistered.map(event => (
                                                             <span key={event} className="px-3 py-1 bg-[#1a1a1a] border border-[#333] rounded text-[10px] md:text-xs text-gray-300 font-mono uppercase tracking-wider">
                                                                 {event}
                                                             </span>
@@ -483,7 +520,7 @@ const Register = () => {
                                             }}
                                             className="w-full py-3 bg-[#111] text-white font-bold uppercase tracking-widest text-xs hover:bg-[#e33e33] transition-colors"
                                         >
-                                            Register Another
+                                            Register More Events
                                         </button>
                                     </div>
                                 </div>

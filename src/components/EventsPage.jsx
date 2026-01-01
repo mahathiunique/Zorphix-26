@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaBolt, FaPalette, FaTools, FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaTrophy } from 'react-icons/fa';
+import { auth, db } from '../firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 
 import Background from './Background';
 import EventModal from './EventModal';
@@ -9,14 +12,55 @@ import CurrencyBackground from './CurrencyBackground';
 const EventsPage = () => {
     const [activeTab, setActiveTab] = useState('technical');
     const [selectedEvent, setSelectedEvent] = useState(null);
-    const [selectedEventsList, setSelectedEventsList] = useState([]);
+    const [selectedEventsList, setSelectedEventsList] = useState(() => {
+        try {
+            const stored = localStorage.getItem('selectedEvents');
+            return stored ? JSON.parse(stored) : [];
+        } catch {
+            return [];
+        }
+    });
+    const [registeredEventsList, setRegisteredEventsList] = useState([]);
 
     useEffect(() => {
-        const storedEvents = JSON.parse(localStorage.getItem('selectedEvents') || '[]');
-        setSelectedEventsList(storedEvents);
+        // Listen for auth state changes to sync with DB if registered
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    const docRef = doc(db, 'registrations', user.uid);
+                    const docSnap = await getDoc(docRef);
+
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        if (data.events && Array.isArray(data.events)) {
+                            // Database has Mixed Case (e.g. "Code Wars"), mapped to Upper Case for local logic
+                            const dbEvents = data.events.map(e => e.toUpperCase());
+
+                            // Update state
+                            setRegisteredEventsList(dbEvents);
+
+                            // Merge DB events with existing local selection to ensure nothing is lost
+                            setSelectedEventsList(prev => {
+                                const newSet = new Set([...prev, ...dbEvents]);
+                                const newList = Array.from(newSet);
+                                localStorage.setItem('selectedEvents', JSON.stringify(newList));
+                                return newList;
+                            });
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error syncing events from DB:", error);
+                }
+            }
+        });
+
+        return () => unsubscribe();
     }, []);
 
     const handleAddeEvent = (event) => {
+        // Prevent removing/toggling if already registered
+        if (registeredEventsList.includes(event.title)) return;
+
         let updatedList;
         // Check if event is already in list (case-insensitive check for robustness, though we prefer exact match based on strategy)
         // We decided to store UPPERCASE. event.title is 'CODE WARS' (uppercase).
@@ -226,7 +270,21 @@ const EventsPage = () => {
                                 className="group relative"
                             >
                                 {/* Card Background - Massive Realistic Metal Card */}
-                                <div className="relative w-full aspect-[1.58/1] bg-gradient-to-br from-[#1c1c1c] via-[#0d0d0d] to-[#000] rounded-2xl overflow-hidden shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] border border-white/5 flex flex-col transition-all duration-500 transform group-hover:scale-[1.05] group-hover:shadow-[0_20px_50px_rgba(227,62,51,0.15)] group-hover:-translate-y-2">
+                                <div className={`relative w-full aspect-[1.58/1] bg-gradient-to-br from-[#1c1c1c] via-[#0d0d0d] to-[#000] rounded-2xl overflow-hidden shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] flex flex-col transition-all duration-500 transform group-hover:scale-[1.05] group-hover:-translate-y-2 ${registeredEventsList.includes(event.title)
+                                        ? 'border-2 border-blue-500/50 shadow-[0_0_30px_rgba(59,130,246,0.2)] grayscale-[0.3]'
+                                        : selectedEventsList.includes(event.title)
+                                            ? 'border-2 border-[#97b85d] shadow-[0_0_30px_rgba(151,184,93,0.3)]'
+                                            : 'border border-white/5 group-hover:shadow-[0_20px_50px_rgba(227,62,51,0.15)]'
+                                    }`}>
+
+                                    {/* Registered Watermark */}
+                                    {registeredEventsList.includes(event.title) && (
+                                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none rotate-[-30deg]">
+                                            <span className="text-6xl md:text-8xl font-black text-blue-500/10 tracking-widest border-4 border-blue-500/10 px-8 py-2 rounded-xl">
+                                                REGISTERED
+                                            </span>
+                                        </div>
+                                    )}
 
                                     {/* Brushed Metal Texture */}
                                     <div className="absolute inset-0 opacity-30 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div>
@@ -244,12 +302,24 @@ const EventsPage = () => {
                                         {/* Top Header */}
                                         <div className="flex justify-between items-start">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#e33e33] to-[#800000] flex items-center justify-center shadow-inner border border-white/10">
+                                                <div className={`w-8 h-8 rounded-full flex items-center justify-center shadow-inner border border-white/10 ${registeredEventsList.includes(event.title)
+                                                        ? 'bg-gradient-to-br from-blue-600 to-blue-900'
+                                                        : selectedEventsList.includes(event.title)
+                                                            ? 'bg-gradient-to-br from-[#97b85d] to-[#4a5c2d]'
+                                                            : 'bg-gradient-to-br from-[#e33e33] to-[#800000]'
+                                                    }`}>
                                                     <FaBolt className="text-white text-xs" />
                                                 </div>
                                                 <div className="flex flex-col">
                                                     <span className="text-xs font-bold tracking-[0.25em] text-gray-300 uppercase font-mono text-shadow-sm leading-none">ZORPHIX BANK</span>
-                                                    <span className="text-[6px] tracking-[0.2em] text-[#e33e33] uppercase font-mono mt-1">WORLD ELITE</span>
+                                                    <span className={`text-[6px] tracking-[0.2em] uppercase font-mono mt-1 ${registeredEventsList.includes(event.title)
+                                                            ? 'text-blue-400'
+                                                            : selectedEventsList.includes(event.title)
+                                                                ? 'text-[#97b85d]'
+                                                                : 'text-[#e33e33]'
+                                                        }`}>
+                                                        {registeredEventsList.includes(event.title) ? 'REGISTERED MEMBER' : 'WORLD ELITE'}
+                                                    </span>
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-3">
@@ -257,7 +327,7 @@ const EventsPage = () => {
                                                 {/* Contactless Icon */}
                                                 <svg className="w-8 h-8 text-white/50" fill="currentColor" viewBox="0 0 24 24">
                                                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" opacity=".3" />
-                                                    <path d="M4.93 4.93c-1.2 1.2-1.93 2.76-1.93 4.57s.73 3.37 1.93 4.57l1.41-1.41c-.82-.82-1.34-1.95-1.34-3.16s.52-2.34 1.34-3.16L4.93 4.93zM8.46 8.46c-.43.43-.69.99-.69 1.62s.26 1.19.69 1.62l1.41-1.41c-.06-.06-.1-.13-.1-.21s.04-.15.1-.21L8.46 8.46zM12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" />
+                                                    <path d="M4.93 4.93c-1.2 1.2-1.93 2.76-1.93 4.57s.73 3.37 1.93 4.57l1.41-1.41c-.82-.82-1.34-1.95-1.34-3.16s.52-2.34 1.34-3.16L4.93 4.93zM8.46 8.46c-.43.43-.69.99-.69 1.62s.26 1.19.69 1.62l1.41-1.41c-.06-.06-.1-.13-.1-.21s.04-.15.1-.21L8.46 8.46zM12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 1.79 4 4-1.79 4-4 4z" />
                                                 </svg>
                                             </div>
                                         </div>
@@ -328,11 +398,16 @@ const EventsPage = () => {
                                     </button>
                                     <button
                                         onClick={() => handleAddeEvent(event)}
-                                        className={`flex-1 py-3 rounded-lg border font-mono text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-[0_0_10px_rgba(151,184,93,0.2)] hover:shadow-[0_0_20px_rgba(151,184,93,0.6)] ${selectedEventsList.includes(event.title)
-                                            ? 'bg-[#97b85d] text-black border-[#97b85d]'
-                                            : 'bg-[#1a1a1a] border-[#97b85d] text-[#97b85d] hover:bg-[#97b85d] hover:text-black'
+                                        disabled={registeredEventsList.includes(event.title)}
+                                        className={`flex-1 py-3 rounded-lg border font-mono text-xs font-bold uppercase tracking-widest transition-all duration-300 ${registeredEventsList.includes(event.title)
+                                            ? 'bg-gradient-to-r from-gray-800 to-gray-900 border-gray-600 text-gray-400 shadow-none cursor-not-allowed opacity-80'
+                                            : selectedEventsList.includes(event.title)
+                                                ? 'bg-[#97b85d] text-black border-[#97b85d] shadow-[0_0_10px_rgba(151,184,93,0.2)]'
+                                                : 'bg-[#1a1a1a] border-[#97b85d] text-[#97b85d] hover:bg-[#97b85d] hover:text-black shadow-[0_0_10px_rgba(151,184,93,0.2)] hover:shadow-[0_0_20px_rgba(151,184,93,0.6)]'
                                             }`}>
-                                        {selectedEventsList.includes(event.title) ? 'Added' : 'Add'}
+                                        {registeredEventsList.includes(event.title)
+                                            ? 'REGISTERED'
+                                            : selectedEventsList.includes(event.title) ? 'ADDED' : 'ADD'}
                                     </button>
                                 </div>
                             </motion.div>
