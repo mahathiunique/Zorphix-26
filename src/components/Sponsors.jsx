@@ -166,24 +166,7 @@ const Sponsors = () => {
                 </div>
             </div>
 
-            {/* Stock Ticker Footer */}
-            <div className="w-full bg-[#111] border-y border-[#333] mt-20 py-2 relative overflow-hidden">
-                <motion.div
-                    className="whitespace-nowrap flex gap-12 font-mono text-sm"
-                    animate={{ x: [0, -1000] }}
-                    transition={{ duration: 20, ease: "linear", repeat: Infinity }}
-                >
-                    {[...Array(10)].map((_, i) => (
-                        <React.Fragment key={i}>
-                            <span className="text-gray-400">NASDAQ <span className="text-[#97b85d]">▲ 1.2%</span></span>
-                            <span className="text-gray-400">BTC <span className="text-[#e33e33]">▼ 0.5%</span></span>
-                            <span className="text-gray-400">ETH <span className="text-[#97b85d]">▲ 2.4%</span></span>
-                            <span className="text-[#e33e33] font-bold">ZPX <span className="text-[#e33e33]">▲ 1000%</span></span>
-                            <span className="text-gray-400">S&P 500 <span className="text-[#97b85d]">▲ 0.8%</span></span>
-                        </React.Fragment>
-                    ))}
-                </motion.div>
-            </div>
+            {/* Stock Ticker Footer Removed */}
         </section>
     );
 };

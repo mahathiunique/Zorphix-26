@@ -4,6 +4,7 @@ import Home from './components/Home'
 import About from './components/About'
 import EventsPage from './components/EventsPage'
 import Register from './components/Register'
+import Footer from './components/Footer'
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/events" element={<EventsPage />} />
         <Route path="/register" element={<Register />} />
       </Routes>
+      <Footer />
     </div>
   )
 }
