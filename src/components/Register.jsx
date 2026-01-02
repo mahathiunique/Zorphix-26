@@ -5,7 +5,7 @@ import { auth, googleProvider, db } from '../firebase';
 import { signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { FaGoogle, FaUserTie, FaUniversity, FaBuilding, FaPhone, FaCheckCircle, FaChartLine, FaBriefcase, FaWallet, FaHandshake } from 'react-icons/fa';
-import CurrencyBackground from './CurrencyBackground';
+
 
 const Register = () => {
     // Defined properly at the top or outside to be accessible
@@ -170,12 +170,10 @@ const Register = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#0a0f0d] text-white font-serif relative overflow-hidden flex flex-col items-center justify-center selection:bg-[#e33e33] selection:text-black">
+            <div className="min-h-screen text-white font-serif relative overflow-hidden flex flex-col items-center justify-center selection:bg-[#e33e33] selection:text-black">
                 {/* Background Elements */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,#1a2e26,transparent_50%)]"></div>
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,#1f1a0e,transparent_50%)]"></div>
-
-                <CurrencyBackground />
 
                 <div className="relative z-10 flex flex-col items-center justify-center text-[#e33e33]">
                     <FaChartLine className="text-3xl md:text-5xl mb-6 md:mb-8 animate-bounce drop-shadow-[0_0_10px_rgba(227,62,51,0.5)]" />
@@ -194,13 +192,12 @@ const Register = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#0a0f0d] text-white font-serif relative overflow-hidden selection:bg-[#e33e33] selection:text-black">
+        <div className="min-h-screen text-white font-serif relative overflow-hidden selection:bg-[#e33e33] selection:text-black">
             {/* Background Elements */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,#1a2e26,transparent_50%)]"></div>
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,#1f1a0e,transparent_50%)]"></div>
 
             {/* Floating Currency Symbols */}
-            <CurrencyBackground />
 
             <div className="relative z-10 container mx-auto px-4 pt-32 pb-12 flex flex-col items-center justify-center min-h-screen">
 

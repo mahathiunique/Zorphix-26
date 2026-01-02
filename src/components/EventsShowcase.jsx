@@ -37,7 +37,7 @@ const EventsShowcase = () => {
     ];
 
     return (
-        <div className="relative min-h-screen bg-black text-white py-20 overflow-hidden">
+        <div className="relative min-h-screen text-white py-20 overflow-hidden">
             {/* Animated Background */}
             <div className="absolute inset-0 opacity-10">
                 <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#e33e33] rounded-full blur-[120px] animate-pulse"></div>

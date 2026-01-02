@@ -5,9 +5,7 @@ import { auth, db } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 
-import Background from './Background';
 import EventModal from './EventModal';
-import CurrencyBackground from './CurrencyBackground';
 
 const EventsPage = () => {
     const [activeTab, setActiveTab] = useState('technical');
@@ -204,9 +202,7 @@ const EventsPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-black text-white font-mono relative overflow-x-hidden">
-            <Background />
-            <CurrencyBackground />
+        <div className="min-h-screen text-white font-mono relative overflow-x-hidden">
 
             {/* Vignette */}
             <div className="absolute inset-0 pointer-events-none z-10 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]"></div>
@@ -271,10 +267,10 @@ const EventsPage = () => {
                             >
                                 {/* Card Background - Massive Realistic Metal Card */}
                                 <div className={`relative w-full aspect-[1.58/1] bg-gradient-to-br from-[#1c1c1c] via-[#0d0d0d] to-[#000] rounded-2xl overflow-hidden shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] flex flex-col transition-all duration-500 transform group-hover:scale-[1.05] group-hover:-translate-y-2 ${registeredEventsList.includes(event.title)
-                                        ? 'border-2 border-blue-500/50 shadow-[0_0_30px_rgba(59,130,246,0.2)] grayscale-[0.3]'
-                                        : selectedEventsList.includes(event.title)
-                                            ? 'border-2 border-[#97b85d] shadow-[0_0_30px_rgba(151,184,93,0.3)]'
-                                            : 'border border-white/5 group-hover:shadow-[0_20px_50px_rgba(227,62,51,0.15)]'
+                                    ? 'border-2 border-blue-500/50 shadow-[0_0_30px_rgba(59,130,246,0.2)] grayscale-[0.3]'
+                                    : selectedEventsList.includes(event.title)
+                                        ? 'border-2 border-[#97b85d] shadow-[0_0_30px_rgba(151,184,93,0.3)]'
+                                        : 'border border-white/5 group-hover:shadow-[0_20px_50px_rgba(227,62,51,0.15)]'
                                     }`}>
 
                                     {/* Registered Watermark */}
@@ -303,20 +299,20 @@ const EventsPage = () => {
                                         <div className="flex justify-between items-start">
                                             <div className="flex items-center gap-3">
                                                 <div className={`w-8 h-8 rounded-full flex items-center justify-center shadow-inner border border-white/10 ${registeredEventsList.includes(event.title)
-                                                        ? 'bg-gradient-to-br from-blue-600 to-blue-900'
-                                                        : selectedEventsList.includes(event.title)
-                                                            ? 'bg-gradient-to-br from-[#97b85d] to-[#4a5c2d]'
-                                                            : 'bg-gradient-to-br from-[#e33e33] to-[#800000]'
+                                                    ? 'bg-gradient-to-br from-blue-600 to-blue-900'
+                                                    : selectedEventsList.includes(event.title)
+                                                        ? 'bg-gradient-to-br from-[#97b85d] to-[#4a5c2d]'
+                                                        : 'bg-gradient-to-br from-[#e33e33] to-[#800000]'
                                                     }`}>
                                                     <FaBolt className="text-white text-xs" />
                                                 </div>
                                                 <div className="flex flex-col">
                                                     <span className="text-xs font-bold tracking-[0.25em] text-gray-300 uppercase font-mono text-shadow-sm leading-none">ZORPHIX BANK</span>
                                                     <span className={`text-[6px] tracking-[0.2em] uppercase font-mono mt-1 ${registeredEventsList.includes(event.title)
-                                                            ? 'text-blue-400'
-                                                            : selectedEventsList.includes(event.title)
-                                                                ? 'text-[#97b85d]'
-                                                                : 'text-[#e33e33]'
+                                                        ? 'text-blue-400'
+                                                        : selectedEventsList.includes(event.title)
+                                                            ? 'text-[#97b85d]'
+                                                            : 'text-[#e33e33]'
                                                         }`}>
                                                         {registeredEventsList.includes(event.title) ? 'REGISTERED MEMBER' : 'WORLD ELITE'}
                                                     </span>
