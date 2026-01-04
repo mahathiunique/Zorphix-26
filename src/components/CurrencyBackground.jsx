@@ -1,23 +1,21 @@
-import React, { useMemo } from 'react';
+import React from 'react';
+import './CurrencyBackground.css';
 
 const CurrencyBackground = () => {
     // Generate particle data only once
-    const particles = useMemo(() => {
-        // Increased variety and mix of crypto/fiat
+    const [particles, setParticles] = React.useState([]);
+
+    React.useEffect(() => {
         const symbols = ['$', '€', '£', '¥', '₹', '₿', 'Ξ', '◈', '∞'];
-        // Increased count for simplified 'more nice' look
-        return [...Array(50)].map(() => {
-            // Randomize color between Zorphix Red and Green
-            const isGreen = Math.random() > 0.5;
-            return {
-                symbol: symbols[Math.floor(Math.random() * symbols.length)],
-                color: isGreen ? '#97b85d' : '#e33e33',
-                duration: 15 + Math.random() * 20, // Slower, more majestic float
-                delay: -(Math.random() * 20), // Negative delay to start mid-animation
-                size: 15 + Math.random() * 30,
-                left: Math.random() * 100
-            };
-        });
+        const newParticles = [...Array(50)].map(() => ({
+            symbol: symbols[Math.floor(Math.random() * symbols.length)],
+            color: Math.random() > 0.5 ? '#97b85d' : '#e33e33',
+            duration: 15 + Math.random() * 20,
+            delay: -(Math.random() * 20),
+            size: 15 + Math.random() * 30,
+            left: Math.random() * 100
+        }));
+        setParticles(newParticles);
     }, []);
 
     return (
@@ -38,15 +36,6 @@ const CurrencyBackground = () => {
                     {particle.symbol}
                 </div>
             ))}
-
-            <style jsx>{`
-                @keyframes float-up {
-                    0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-                    10% { opacity: 0.8; }
-                    90% { opacity: 0.6; }
-                    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-                }
-            `}</style>
         </div>
     );
 };

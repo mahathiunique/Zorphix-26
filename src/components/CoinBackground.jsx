@@ -1,15 +1,18 @@
-import React, { useMemo } from 'react';
+import React from 'react';
+import './CoinBackground.css';
 
 const CoinBackground = () => {
-    const coins = useMemo(() => {
-        return [...Array(20)].map(() => ({
-            // Randomize positions and animations
+    const [coins, setCoins] = React.useState([]);
+
+    React.useEffect(() => {
+        const newCoins = [...Array(20)].map(() => ({
             left: Math.random() * 100,
             duration: 15 + Math.random() * 20,
             delay: -(Math.random() * 20),
             size: 20 + Math.random() * 30,
             rotation: Math.random() * 360,
         }));
+        setCoins(newCoins);
     }, []);
 
     return (
@@ -42,25 +45,6 @@ const CoinBackground = () => {
                     </svg>
                 </div>
             ))}
-
-            <style jsx>{`
-                @keyframes float-coin {
-                    0% {
-                        transform: translateY(110vh) rotate(0deg) scale(0.8);
-                        opacity: 0;
-                    }
-                    10% {
-                        opacity: 0.8;
-                    }
-                    90% {
-                        opacity: 0.6;
-                    }
-                    100% {
-                        transform: translateY(-10vh) rotate(720deg) scale(0.8);
-                        opacity: 0;
-                    }
-                }
-            `}</style>
         </div>
     );
 };

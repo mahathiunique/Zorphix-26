@@ -45,22 +45,19 @@ const Home = () => {
         }
     }, [showShutter]);
 
-    // Generate static particle data for consistent hydration
-    const leftParticles = useMemo(() => [...Array(20)].map(() => ({
-        symbol: ['$', '€', '▼', '₿', '¥'][Math.floor(Math.random() * 5)],
-        left: Math.random() * 100,
-        delay: Math.random() * 5,
-        duration: 5 + Math.random() * 10,
-        size: 20 + Math.random() * 40
-    })), []);
+    // Generate static particle data deterministically
+    const particles = useMemo(() => {
+        const generate = (count) => [...Array(count)].map((_, i) => ({
+            symbol: ['$', '€', '▼', '₿', '¥'][(i * 3 + 2) % 5],
+            left: ((i * 17) % 100),
+            delay: ((i * 5) % 8),
+            duration: 5 + ((i * 7) % 10),
+            size: 20 + ((i * 13) % 40)
+        }));
+        return { left: generate(20), right: generate(20) };
+    }, []);
 
-    const rightParticles = useMemo(() => [...Array(20)].map(() => ({
-        symbol: ['$', '£', '▲', '₿', '₹'][Math.floor(Math.random() * 5)],
-        left: Math.random() * 100,
-        delay: Math.random() * 5,
-        duration: 5 + Math.random() * 10,
-        size: 20 + Math.random() * 40
-    })), []);
+    const { left: leftParticles, right: rightParticles } = particles;
 
     return (
         <div className="relative min-h-screen">

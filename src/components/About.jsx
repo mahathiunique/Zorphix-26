@@ -1,221 +1,202 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import zorphixName from '../assets/zorphix.png';
-import UniqueCarousel from './UniqueCarousel';
+import CurrencyBackground from './CurrencyBackground';
 
 const About = () => {
+    const [tickerTime, setTickerTime] = useState(new Date());
+
+    useEffect(() => {
+        const timer = setInterval(() => setTickerTime(new Date()), 1000);
+        return () => clearInterval(timer);
+    }, []);
+
     const teamMembers = [
-        { role: "Chief Architect", name: "SYSTEM_ADMIN", status: "ACTIVE" },
-        { role: "Lead Developer", name: "CODE_MASTER", status: "ACTIVE" },
-        { role: "Security Chief", name: "FIREWALL_01", status: "ACTIVE" },
-        { role: "Data Analyst", name: "ANALYTICS_CORE", status: "ACTIVE" },
+        { role: "Chief Architect", name: "SYSTEM_ADMIN", id: "0XA1", status: "ONLINE", clearance: "Level 5" },
+        { role: "Lead Developer", name: "CODE_MASTER", id: "0XB2", status: "BUSY", clearance: "Level 4" },
+        { role: "Security Ops", name: "FIREWALL_01", id: "0XC3", status: "ACTIVE", clearance: "Level 5" },
+        { role: "Data Analyst", name: "ANALYTICS", id: "0XD4", status: "PROCESSING", clearance: "Level 4" },
     ];
 
     const stats = [
-        { label: "EVENTS", value: "25+", color: "#97b85d" },
-        { label: "WORKSHOPS", value: "15+", color: "#e33e33" },
-        { label: "SPONSORS", value: "30+", color: "#97b85d" },
+        { label: "Total Events", value: "25+", change: "▲ 12.5%", trend: "up" },
+        { label: "Workshops", value: "15+", change: "▲ 5.2%", trend: "up" },
+        { label: "Participants", value: "5000+", change: "▲ 24.8%", trend: "up" },
+        { label: "Sponsors", value: "30+", change: "▲ 8.1%", trend: "up" },
+    ];
+
+    const offerings = [
+        { title: "Technical Workshops", type: "Education", size: "Hands-on Sesh", desc: "Learn from industry experts." },
+        { title: "Hackathons", type: "Competition", size: "24 Hours", desc: "Build solutions that matter." },
+        { title: "Networking", type: "Community", size: "Unlimited", desc: "Connect with peers and mentors." },
     ];
 
     return (
-        <div className="relative min-h-screen text-white overflow-hidden font-mono">
+        <div className="relative min-h-screen bg-[#0a0a0a] text-white font-sans overflow-x-hidden selection:bg-[#97b85d] selection:text-black">
 
-            {/* Vignette Effect - keeping consistent with Hero */}
-            <div className="absolute inset-0 pointer-events-none z-40 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.7)_100%)]"></div>
+            <CurrencyBackground />
 
+            {/* Subtle Grid Overlay */}
+            <div className="fixed inset-0 pointer-events-none z-0 opacity-20" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '60px 60px' }}></div>
 
-
-            {/* Main Content */}
-            <div className="relative z-40 max-w-7xl mx-auto px-6 py-16">
-
-                {/* Header Section */}
-                <div className="text-center mt-16 sm:mt-0 md:mt-20">
-                    <div className="inline-block relative group mb-6">
-                        <div className="absolute -inset-4 bg-gradient-to-r from-[#e33e33] to-[#97b85d] rounded-lg opacity-20 blur-2xl group-hover:opacity-40 transition duration-500"></div>
-                        <h1 className="relative text-5xl md:text-7xl font-bold tracking-wider flex flex-col md:flex-row items-center justify-center gap-4">
-                            <span className="text-white">ABOUT </span>
-                            <img src={zorphixName} alt="ZORPHIX" className="h-16 md:h-32 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(227,62,51,0.5)]" />
-                        </h1>
-                    </div>
-                    <p className="text-gray-400 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
-                        A cutting-edge technical symposium where innovation meets execution.
-                        <span className="text-[#97b85d]"> Symposium '26 </span>
-                        brings together the brightest minds in technology.
-                    </p>
+            {/* TOP TICKER BAR - Simplified */}
+            <div className="sticky top-0 z-50 bg-black/80 border-b border-white/5 backdrop-blur-md flex justify-between items-center px-6 py-3 text-xs tracking-wider text-gray-400">
+                <div className="flex gap-6">
+                    <span className="text-[#97b85d] font-semibold">ZORPHIX SYSTEM: STABLE</span>
+                    <span className="hidden md:inline">VOLUME: 24.5M</span>
                 </div>
-
-                {/* Unique Carousel Section */}
-                <div className="mb-4 md:mb-20">
-                    <UniqueCarousel />
+                <div>
+                    {tickerTime.toLocaleTimeString()} // SYMPOSIUM '26
                 </div>
+            </div>
 
-                {/* Stats Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-12 md:mb-20">
-                    {stats.map((stat, index) => (
-                        <div
-                            key={index}
-                            className="relative group"
-                        >
-                            <div className="absolute -inset-1 bg-gradient-to-r from-[#e33e33] to-[#97b85d] rounded-lg opacity-20 blur group-hover:opacity-40 transition duration-300"></div>
-                            <div className="relative bg-black/60 backdrop-blur-xl border border-white/10 rounded-lg p-4 md:p-6 text-center hover:border-white/30 transition-all duration-300">
-                                <div
-                                    className="text-3xl md:text-5xl font-bold mb-2 font-mono"
-                                    style={{ color: stat.color }}
-                                >
-                                    {stat.value}
-                                </div>
-                                <div className="text-gray-400 text-xs md:text-sm tracking-widest">{stat.label}</div>
-                            </div>
+            <div className="max-w-6xl mx-auto px-6 py-12 md:py-20 relative z-10 flex flex-col gap-20">
+
+                {/* HERO SECTION - Spacious & Clean */}
+                <div className="flex flex-col md:flex-row items-center justify-between gap-12">
+                    <div className="flex-1 space-y-6">
+                        <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 bg-[#97b85d] rounded-full animate-pulse"></div>
+                            <span className="text-[#97b85d] text-sm font-medium tracking-widest">STATUS: PRE-REGISTRATION</span>
                         </div>
+                        <h1 className="text-6xl md:text-8xl font-bold tracking-tight leading-none text-white">
+                            ABOUT <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">ZORPHIX</span>
+                        </h1>
+                        <p className="text-xl text-gray-400 max-w-xl leading-relaxed">
+                            A cutting-edge technical symposium where innovation meets execution. We are building the infrastructure for the next generation of tech leaders.
+                        </p>
+                    </div>
+                    {/* Hero Graphic / Decorative Market Cap */}
+                    <div className="hidden md:block w-72 p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                        <div className="text-sm text-gray-400 mb-2">MARKET CAP</div>
+                        <div className="text-4xl font-bold text-white mb-2">$ZPX 2.4B</div>
+                        <div className="text-[#97b85d] text-sm flex items-center gap-2">
+                            <span>▲ 4.2% (24h)</span>
+                            <span className="px-2 py-0.5 bg-[#97b85d]/20 rounded text-[10px] font-bold">BULLISH</span>
+                        </div>
+                        <div className="h-16 mt-6 flex items-end gap-1 opacity-50">
+                            {[...Array(12)].map((_, j) => (
+                                <div key={j} className="w-full bg-[#97b85d]" style={{ height: `${20 + (j * 37) % 80}%` }}></div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* STATS - Spacious Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {stats.map((stat, i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.1 }}
+                            className="bg-zinc-900/50 border border-white/5 data-card p-6 rounded-xl hover:border-[#97b85d]/50 transition-colors group"
+                        >
+                            <div className="flex justify-between items-start mb-4">
+                                <span className="text-gray-400 text-sm font-medium">{stat.label}</span>
+                                <span className="text-xs font-bold text-[#97b85d] bg-[#97b85d]/10 px-2 py-1 rounded">{stat.change}</span>
+                            </div>
+                            <div className="text-4xl font-bold text-white mb-2">{stat.value}</div>
+                            {/* Simple trend line */}
+                            <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                                <div className="h-full bg-[#97b85d] w-2/3 group-hover:w-full transition-all duration-500 ease-out"></div>
+                            </div>
+                        </motion.div>
                     ))}
                 </div>
 
-                {/* Mission Section */}
-                <div className="mb-12 md:mb-20">
-                    <div className="relative group">
-                        <div className="absolute -inset-4 bg-gradient-to-r from-[#e33e33] to-[#97b85d] rounded-2xl opacity-10 blur-xl group-hover:opacity-20 transition duration-500"></div>
-                        <div className="relative bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-12">
-                            <div className="flex items-center gap-4 mb-6">
-                                <div className="w-2 h-12 bg-gradient-to-b from-[#e33e33] to-[#97b85d] rounded-full"></div>
-                                <h2 className="text-2xl md:text-4xl font-bold text-white tracking-wider">MISSION STATEMENT</h2>
-                            </div>
-                            <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-4">
-                                To create an immersive platform where technology enthusiasts, developers, and innovators
-                                converge to share knowledge, showcase cutting-edge projects, and collaborate on solutions
-                                that shape the future of computing.
-                            </p>
-                            <p className="text-gray-400 text-base md:text-lg leading-relaxed">
-                                Through hands-on workshops, competitive events, and expert-led sessions, we aim to
-                                <span className="text-[#e33e33]"> inspire innovation</span>,
-                                <span className="text-[#97b85d]"> foster collaboration</span>, and
-                                <span className="text-[#e33e33]"> empower the next generation</span> of tech leaders.
-                            </p>
+                {/* MISSION & VISION - Readable */}
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+                    <div className="md:col-span-4">
+                        <h2 className="text-3xl font-bold mb-4">Our Mission</h2>
+                        <div className="w-12 h-1 bg-[#e33e33] mb-6"></div>
+                        <p className="text-gray-400 leading-relaxed text-lg">
+                            To construct a trading environment for ideas. We provide the infrastructure for developers to deploy reckless innovation.
+                        </p>
+                    </div>
+                    <div className="md:col-span-8 bg-zinc-900/30 border border-white/5 rounded-2xl p-8 backdrop-blur-md">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="w-3 h-3 rounded-full bg-[#e33e33]"></div>
+                            <div className="w-3 h-3 rounded-full bg-[#fdb931]"></div>
+                            <div className="w-3 h-3 rounded-full bg-[#97b85d]"></div>
+                            <span className="text-xs text-gray-500 uppercase tracking-widest ml-2">Executive Summary</span>
                         </div>
+                        <p className="text-xl md:text-2xl text-white font-light leading-relaxed">
+                            "Zorphix Symposium is not merely an event; it is a catalyst. A localized singularity where the vector sum of ambition and capability approaches infinity."
+                        </p>
                     </div>
                 </div>
 
-                {/* Team Section */}
-                <div className="mb-12 md:mb-20">
-                    <h2 className="text-2xl md:text-4xl font-bold text-white tracking-wider mb-6 md:mb-10 text-center">
-                        CORE <span className="text-[#97b85d]">TEAM</span>
-                    </h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                        {teamMembers.map((member, index) => (
-                            <div
-                                key={index}
-                                className="relative group perspective-1000"
-                            >
-                                <div className="absolute -inset-1 bg-gradient-to-r from-[#e33e33] to-[#97b85d] rounded-lg opacity-20 blur group-hover:opacity-40 transition duration-300"></div>
-                                <div
-                                    className="relative bg-black/60 backdrop-blur-xl border border-white/10 rounded-lg p-4 md:p-6 hover:border-white/30 transition-all duration-300 transform hover:scale-105"
-                                >
-                                    {/* Status Indicator */}
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <div className="w-2 h-2 bg-[#97b85d] rounded-full animate-pulse-fast shadow-[0_0_10px_rgba(151,184,93,0.5)]"></div>
-                                        <span className="text-[#97b85d] text-[10px] md:text-xs tracking-widest">{member.status}</span>
-                                    </div>
+                {/* OFFERINGS - Clean List */}
+                <div>
+                    <div className="flex items-center justify-between mb-8">
+                        <h2 className="text-3xl font-bold">Offerings Portfolio</h2>
+                        <button className="text-[#97b85d] hover:text-white transition-colors text-sm font-bold tracking-widest">VIEW ALL ASSETS →</button>
+                    </div>
+                    <div className="border border-white/10 rounded-xl overflow-hidden">
+                        <div className="grid grid-cols-12 bg-white/5 p-4 text-xs font-bold text-gray-500 uppercase tracking-widest border-b border-white/10">
+                            <div className="col-span-4">Asset Name</div>
+                            <div className="col-span-2">Category</div>
+                            <div className="col-span-2">Duration</div>
+                            <div className="col-span-4">Description</div>
+                        </div>
+                        {offerings.map((offer, i) => (
+                            <div key={i} className="grid grid-cols-12 p-6 border-b border-white/5 hover:bg-white/5 transition-colors items-center group">
+                                <div className="col-span-4 text-lg font-bold text-white group-hover:text-[#97b85d] transition-colors">{offer.title}</div>
+                                <div className="col-span-2 text-sm text-gray-400 bg-white/5 self-start inline-block px-2 py-1 rounded w-max">{offer.type}</div>
+                                <div className="col-span-2 text-sm text-gray-400">{offer.size}</div>
+                                <div className="col-span-4 text-sm text-gray-500">{offer.desc}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
 
-                                    {/* Avatar Placeholder */}
-                                    <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 bg-gradient-to-br from-[#e33e33] to-[#97b85d] rounded-full flex items-center justify-center">
-                                        <div className="w-14 h-14 md:w-16 md:h-16 bg-black rounded-full flex items-center justify-center">
-                                            <span className="text-xl md:text-2xl font-bold text-white">{member.name.charAt(0)}</span>
-                                        </div>
-                                    </div>
+                {/* TEAM - Clean Cards */}
+                <div>
+                    <h2 className="text-3xl font-bold mb-12 text-center">Core Operatives</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {teamMembers.map((member, i) => (
+                            <div key={i} className="bg-zinc-900 border border-white/10 rounded-xl p-6 hover:border-[#97b85d] transition-colors group relative overflow-hidden">
+                                <div className={`absolute top-4 right-4 text-[10px] font-bold px-2 py-1 rounded ${member.status === 'ONLINE' || member.status === 'ACTIVE' ? 'bg-[#97b85d]/20 text-[#97b85d]' : 'bg-[#e33e33]/20 text-[#e33e33]'}`}>
+                                    {member.status}
+                                </div>
 
-                                    <div className="text-center">
-                                        <div className="text-white font-bold text-sm mb-1 tracking-wider text-xs md:text-sm">{member.name}</div>
-                                        <div className="text-gray-400 text-[10px] md:text-xs tracking-widest">{member.role}</div>
+                                <div className="w-20 h-20 bg-gradient-to-br from-[#e33e33] to-[#97b85d] rounded-full p-[2px] mb-6">
+                                    <div className="w-full h-full bg-black rounded-full flex items-center justify-center">
+                                        <span className="text-2xl font-bold">{member.name[0]}</span>
                                     </div>
+                                </div>
+
+                                <h3 className="text-lg font-bold text-white mb-1">{member.name}</h3>
+                                <p className="text-[#97b85d] text-sm uppercase tracking-wider mb-4">{member.role}</p>
+
+                                <div className="pt-4 border-t border-white/10 text-xs text-gray-500 flex justify-between">
+                                    <span>ID: {member.id}</span>
+                                    <span>CLR: {member.clearance}</span>
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>
 
-                {/* What We Offer Section */}
-                <div className="mb-12 md:mb-20">
-                    <h2 className="text-2xl md:text-4xl font-bold text-white tracking-wider mb-6 md:mb-10 text-center">
-                        WHAT WE <span className="text-[#e33e33]">OFFER</span>
-                    </h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-                        {[
-                            {
-                                title: "WORKSHOPS",
-                                description: "Hands-on technical sessions led by industry experts covering the latest technologies and frameworks.",
-                                icon: "⚡"
-                            },
-                            {
-                                title: "COMPETITIONS",
-                                description: "Challenging hackathons and coding contests designed to test your skills and creativity.",
-                                icon: "🏆"
-                            },
-                            {
-                                title: "NETWORKING",
-                                description: "Connect with like-minded individuals, mentors, and potential collaborators from across the tech community.",
-                                icon: "🌐"
-                            }
-                        ].map((offer, index) => (
-                            <div
-                                key={index}
-                                className="relative group"
-                            >
-                                <div className="absolute -inset-1 bg-gradient-to-r from-[#e33e33] to-[#97b85d] rounded-lg opacity-20 blur group-hover:opacity-40 transition duration-300"></div>
-                                <div className="relative bg-black/60 backdrop-blur-xl border border-white/10 rounded-lg p-6 md:p-8 hover:border-white/30 transition-all duration-300 h-full">
-                                    <div className="text-4xl md:text-5xl mb-4 filter grayscale hover:grayscale-0 transition-all duration-300">{offer.icon}</div>
-                                    <h3 className="text-lg md:text-xl font-bold text-white mb-3 tracking-wider">{offer.title}</h3>
-                                    <p className="text-gray-400 leading-relaxed text-xs md:text-sm">{offer.description}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* CTA Section */}
-                <div className="text-center">
-                    <div className="relative inline-block group">
-                        <div className="absolute -inset-4 bg-gradient-to-r from-[#e33e33] to-[#97b85d] rounded-lg opacity-30 blur-xl group-hover:opacity-50 transition duration-500"></div>
-                        <div className="relative bg-black/60 backdrop-blur-xl border border-white/10 rounded-lg p-8">
-                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-wider">
-                                READY TO <span className="text-[#97b85d]">JOIN US?</span>
-                            </h3>
-                            <p className="text-gray-400 mb-6 max-w-2xl">
-                                Be part of the most anticipated technical symposium of 2026.
-                                Register now and secure your access pass.
-                            </p>
-                            <div className="flex gap-6 justify-center flex-wrap">
-                                <div className="group/button">
-                                    <Link
-                                        to="/"
-                                        className="relative px-8 py-3 bg-transparent border border-[#e33e33] text-[#e33e33] group-hover:text-white font-bold uppercase tracking-widest group-hover/button:!text-black transition-all duration-300 overflow-hidden inline-block"
-                                    >
-                                        <span className="relative z-20">Back to Home</span>
-                                        <div className="absolute inset-0 bg-[#e33e33] transform -translate-x-full skew-x-12 group-hover/button:translate-x-0 transition-transform duration-300"></div>
-                                    </Link>
-                                </div>
-                                <div className="group/button">
-                                    <button className="relative px-8 py-3 bg-transparent border border-[#97b85d] text-[#97b85d] group-hover:text-white font-bold uppercase tracking-widest group-hover/button:!text-black transition-all duration-300 overflow-hidden">
-                                        <span className="relative z-20">Register Now</span>
-                                        <div className="absolute inset-0 bg-[#97b85d] transform translate-x-full skew-x-12 group-hover/button:translate-x-0 transition-transform duration-300"></div>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                {/* CTA - Spacious */}
+                <div className="text-center py-20 border-t border-white/10">
+                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Ready to Invest in <span className="text-[#97b85d]">Your Future?</span></h2>
+                    <p className="text-gray-400 max-w-2xl mx-auto mb-10 text-lg">
+                        Join the most innovative technical symposium of 2026. Secure your spot on the register.
+                    </p>
+                    <div className="flex gap-6 justify-center">
+                        <Link to="/" className="px-8 py-4 bg-[#97b85d] text-black font-bold rounded hover:bg-white transition-colors text-lg">
+                            Initialize Registration
+                        </Link>
+                        <Link to="/" className="px-8 py-4 border border-white/20 text-white font-bold rounded hover:bg-white/10 transition-colors text-lg">
+                            View Prospectus
+                        </Link>
                     </div>
                 </div>
 
             </div>
-
-            {/* Footer */}
-            <footer className="relative z-40 border-t border-white/10 bg-black/40 backdrop-blur-md py-8 mt-20">
-                <div className="max-w-7xl mx-auto px-6 text-center">
-                    <p className="text-gray-400 text-sm tracking-wider">
-                        © 2026 ZORPHIX SYMPOSIUM. ALL RIGHTS RESERVED.
-                    </p>
-                    <p className="text-gray-600 text-xs mt-2">
-                        SYSTEM STATUS: <span className="text-[#97b85d]">OPERATIONAL</span>
-                    </p>
-                </div>
-            </footer>
         </div>
     );
 };
