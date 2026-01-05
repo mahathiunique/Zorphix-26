@@ -75,104 +75,123 @@ const EventsPage = () => {
 
     const categories = [
         { id: 'technical', label: 'TECHNICAL', icon: FaBolt, color: '#e33e33' },
-        { id: 'non-technical', label: 'NON-TECHNICAL', icon: FaPalette, color: '#97b85d' },
         { id: 'workshops', label: 'WORKSHOPS', icon: FaTools, color: '#ffa500' },
     ];
 
     const events = {
         technical: [
             {
-                id: 1, title: 'CODE WARS', date: 'March 15', venue: 'Main Lab', team: '2-3', prize: '₹15,000', price: '149', desc: 'The ultimate competitive coding battle. Solve complex algorithms and climb the leaderboard.',
+                id: 1, title: 'Pixel Reforge', date: 'March 15', venue: 'Main Lab', team: '2-3', prize: '₹15,000', price: '149', desc: 'Pixel Reforge is a two-stage UI engineering challenge that evaluates participants’ frontend fundamentals first, followed by real-world UI enhancement skills using AI as an accelerator. Teams redesign a given interface to improve usability, aesthetics, and functionality while meeting fixed benchmarks in both rounds.',
+                rounds: [
+                    'Round 1: Core UI Fundamentals (No AI)',
+                    'Round 2: Advanced UI Enhancement (AI Allowed)',
+                ],
                 rules: [
-                    'Participants must have a valid symposium ID.',
-                    'Use of ChatGPT or any AI tools is strictly prohibited.',
-                    'Teams must consist of 2-3 members.',
-                    'The decision of the judges is final.'
+                    'Only shortlisted teams from Round 1 may participate',
+                    'Time limit: 45 minutes',
+                    'AI tools are allowed (ChatGPT, Copilot, design generators, etc.)',
+                    'Teams must enhance the same UI from Round 1',
                 ]
             },
             {
-                id: 2, title: 'CYBER HEIST', date: 'March 16', venue: 'Security Lab', team: '4', prize: '₹10,000', price: '149', desc: 'A CTF challenge where you hack into secure systems to retrieve the flags.',
+                id: 2,title: 'PromptCraft',date: 'March 16',venue: 'Security Lab',team: '4',prize: '₹10,000',price: '149',
+                desc: 'A two-round prompt engineering challenge that tests how effectively teams can translate visual understanding into precise prompts. Participants attempt to recreate a given image using AI image-generation tools, first with creative freedom and then under strict prompt constraints.',
+                rounds: [
+                    'Round 1 : Open Prompt Recreation (No Prompt Restrictions) ',
+                    'Round 2 : Constrained Prompt Engineering (With Restrictions)',
+                ],
                 rules: [
-                    'Do not attack the game infrastructure.',
-                    'Flag sharing is strictly prohibited.',
-                    'Tools like Metasploit, Burp Suite, etc., are allowed.'
+                    'Teams must bring their own laptops and internet access.',
+                    'AI accounts and tools must be personally owned by participants.',
+                    'Sharing prompts or outputs with other teams is prohibited.',
+                    'Any form of plagiarism or copying prompts from other teams leads to disqualification.'
+                ]
+            },
+
+            {
+                id: 3, title: 'AlgoPulse', date: 'March 15', venue: 'Seminar Hall', team: '2', prize: '₹12,000', price: '149', desc: 'A competitive algorithmic coding event designed to test logical thinking, problem-solving ability, and implementation skills under strict proctoring, with zero AI assistance. Continuous background music will be played throughout the event, challenging participants to code despite distractions. An Advantage Task will be conducted at the beginning, where winning teams earn a 10-minute bonus. In between rounds, Hindrance Tasks will be introduced to test focus, adaptability, and pressure handling.',
+                rounds:[
+                    'Round 1 : Algorithmic Screening',
+                    'Round 2 : Advanced Algorithm Challenge'
+                ],
+                rules: [
+                    'Participants are recommended/preferred to bring their own laptops and chargers.',
+                    'Computers will also be provided for participants if required.',
+                    'Stable internet connectivity is mandatory.',
+                    'One team member must be prepared to explain the solution if asked.',
+                    'Judges decisions are final and binding.',
+                    'Any form of misconduct leads to immediate disqualification.'
                 ]
             },
             {
-                id: 3, title: 'AI NEXUS', date: 'March 15', venue: 'Seminar Hall', team: '2', prize: '₹12,000', price: '149', desc: 'Build and showcase innovative AI models to solve real-world problems.',
+                id: 4, title: 'CodeBack', date: 'March 16', venue: 'Browsing Centre', team: '2-3', prize: '₹8,000', price: '149', desc: 'A reverse-engineering coding challenge that tests participants’ ability to deduce hidden logic from outputs, reconstruct algorithms, and implement correct and efficient solutions under strict monitoring conditions.',
+                rounds:[
+                    'Round 1 : Logic Deduction & Reconstruction',
+                    'Round 2 : Advanced Reverse Engineering'
+                ],
                 rules: [
-                    'Model must be trained on open-source datasets.',
-                    'Plagiarism will lead to immediate disqualification.',
-                    'Presentation time is limited to 10 minutes.'
+                    'Participants are recommended/preferred to bring their own laptops and chargers.',
+                    'Computers will also be provided for participants if required',
+                    'Participants must have an HackerRank account.',
+                    'Judges decisions are final and binding.',
+                    'Fair play is expected; teams should work independently'
                 ]
             },
             {
-                id: 4, title: 'WEB WIZARDS', date: 'March 16', venue: 'Browsing Centre', team: '2-3', prize: '₹8,000', price: '149', desc: 'Design and deploy a stunning web application within a set timeframe.',
+                id: 5, title: 'Sip to Survive ', date: 'March 15', venue: 'Open Ground', team: '4', prize: '₹20,000', price: '149', desc: 'A fast-paced technical endurance challenge where teams solve continuous coding, debugging, and logic-based tasks while handling intentional distractions through timed beverage consumption. The event evaluates technical accuracy, focus under pressure, teamwork, and consistency.',
                 rules: [
-                    'No pre-made templates allowed.',
-                    'Code must be pushed to GitHub repository.',
-                    'Responsive design is a key evaluation metric.'
+                    'Teams must bring their own laptops and chargers.',
+                    'Only tools explicitly allowed by organizers may be used',
+                    'Judges and organizers decisions are final and binding.',
+                    'Any rule violation results in immediate disqualification.'
                 ]
             },
             {
-                id: 5, title: 'ROBO RUMBLE', date: 'March 15', venue: 'Open Ground', team: '4', prize: '₹20,000', price: '149', desc: 'Heavy metal mayhem. Build robots to destroy your opponents in the arena.',
+                id: 6, title: 'CodeCrypt', date: 'March 16', venue: 'Hardware Lab', team: '2', prize: '₹7,000', price: '149', desc: 'A multi-round technical puzzle challenge where teams analyze code snippets to uncover hidden clues. Each round progressively increases in difficulty, testing participants’ understanding of programming concepts, logical reasoning, and their ability to work accurately under time pressure.',
+                rounds:[
+                    'Round 1 : Entry Level',
+                    'Round 2 : Intermediate',
+                    'Round 3 : Advanced'
+                ],
                 rules: [
-                    'Robot weight must not exceed 15kg.',
-                    'No flamethrowers or explosives allowed.',
-                    'Wireless control is mandatory.'
+                    'No AI tools ',
+                    'No internet ',
+                    'No collaboration with other teams ',
+                    'Teams must use only the provided code',
+                    'Laptops and chargers required',
+                    'Judges decisions are final'
                 ]
             },
             {
-                id: 6, title: 'CIRCUITRIX', date: 'March 16', venue: 'Hardware Lab', team: '2', prize: '₹7,000', price: '149', desc: 'Debug complex circuits and design efficient hardware solutions.',
+                id: 7, title: 'LinkLogic', date: 'March 16', venue: 'Hardware Lab', team: '2', prize: '₹7,000', price: '149', desc: 'A multi-round technical reasoning challenge where participants identify hidden relationships between technical terms, concepts, or code elements. The event tests analytical thinking, pattern recognition, and speed.',
+                rounds:[
+                    'Round 1: Registration and team verification',
+                    'Round 2: Basic Technical Connections',
+                    'Round 3:Intermediate Concept Mapping'
+                ],
                 rules: [
-                    'Components will be provided at the venue.',
-                    'Bring your own breadboard and multimeter if possible.',
-                    'Circuit must be functional to qualify.'
+                    'Sets may include algorithms, data structures, APIs,error messages, or outputs',
+                    'Teams must explain how each element is connected,not just state the final answer',
+                    'Partial explanations may earn partial credit.',
+                    'Time-based scoring applies.'
+                ]
+            },
+            {
+                id: 8,title: 'Pitchfest',date: 'March 16',venue: 'Security Lab',team: '4',prize: '₹10,000',price: '149',
+                desc: 'Onspot problem statement will be given to the players they have to create a business model with proper revenue model and strategy and pitch the business model to the judge.',
+                rounds: [
+                    'Round 1 : Open Prompt Recreation (No Prompt Restrictions) ',
+                    'Round 2 : Constrained Prompt Engineering (With Restrictions)',
+                ],
+                rules: [
+                    'Teams must bring their own laptops and internet access.',
+                    'AI accounts and tools must be personally owned by participants.',
+                    'Sharing prompts or outputs with other teams is prohibited.',
+                    'Any form of plagiarism or copying prompts from other teams leads to disqualification.'
                 ]
             },
         ],
-        'non-technical': [
-            {
-                id: 7, title: 'LENS LEGENDS', date: 'March 15', venue: 'Campus wide', team: '1', prize: '₹5,000', price: '99', desc: 'Capture the essence of the symposium through your lens. Photography contest.',
-                rules: [
-                    'Photos must be taken during the symposium event.',
-                    'Basic editing is allowed, but manipulation is not.',
-                    'Submit raw files for verification.'
-                ]
-            },
-            {
-                id: 8, title: 'MEME MASTERS', date: 'Online', venue: 'Discord', team: '1', prize: '₹3,000', price: '99', desc: 'Create the most hilarious and relatable tech memes.',
-                rules: [
-                    'Content must be original and related to tech/college life.',
-                    'No offensive or political content.',
-                    'Memes must be submitted by 5 PM.'
-                ]
-            },
-            {
-                id: 9, title: 'GAMING ARENA', date: 'March 15-16', venue: 'Gaming Zone', team: '5', prize: '₹15,000', price: '99', desc: 'Valorant and BGMI tournaments. Dominate the server.',
-                rules: [
-                    'Bring your own peripherals (mouse, headphones).',
-                    'Toxic behavior will result in a ban.',
-                    'Matches will be spectated by moderators.'
-                ]
-            },
-            {
-                id: 10, title: 'TREASURE HUNT', date: 'March 16', venue: 'Campus wide', team: '3', prize: '₹6,000', price: '99', desc: 'Solve riddles and follow clues to find the hidden treasure.',
-                rules: [
-                    'Teams must stay together at all times.',
-                    'Do not damage college property.',
-                    'Time penalty for wrong guesses.'
-                ]
-            },
-            {
-                id: 11, title: 'QUIZ BOWL', date: 'March 15', venue: 'Auditorium', team: '2', prize: '₹4,000', price: '99', desc: 'Test your general knowledge and tech trivia skills.',
-                rules: [
-                    'No mobile phones allowed during the quiz.',
-                    'Questions range from tech, sci-fi to general knowledge.',
-                    'Buzzer round rules will be explained on spot.'
-                ]
-            },
-        ],
+
         workshops: [
             {
                 id: 12, title: 'ETHICAL HACKING', date: 'March 15', venue: 'Lab 1', team: 'Individual', prize: 'Certificate', price: '199', desc: 'Learn the fundamentals of cybersecurity and penetration testing.',
@@ -385,27 +404,20 @@ const EventsPage = () => {
                                 </div>
 
                                 {/* Actions Below Card */}
-                                <div className="mt-4 flex gap-3">
-                                    <button
-                                        onClick={() => setSelectedEvent(event)}
-                                        className="flex-1 py-3 bg-[#1a1a1a] rounded-lg border border-[#e33e33] text-[#e33e33] font-mono text-xs font-bold uppercase tracking-widest hover:bg-[#e33e33] hover:text-white transition-all duration-300 shadow-[0_0_10px_rgba(227,62,51,0.2)] hover:shadow-[0_0_20px_rgba(227,62,51,0.6)]"
-                                    >
-                                        Know More
-                                    </button>
-                                    <button
-                                        onClick={() => handleAddeEvent(event)}
-                                        disabled={registeredEventsList.includes(event.title)}
-                                        className={`flex-1 py-3 rounded-lg border font-mono text-xs font-bold uppercase tracking-widest transition-all duration-300 ${registeredEventsList.includes(event.title)
-                                            ? 'bg-gradient-to-r from-gray-800 to-gray-900 border-gray-600 text-gray-400 shadow-none cursor-not-allowed opacity-80'
-                                            : selectedEventsList.includes(event.title)
-                                                ? 'bg-[#97b85d] text-black border-[#97b85d] shadow-[0_0_10px_rgba(151,184,93,0.2)]'
-                                                : 'bg-[#1a1a1a] border-[#97b85d] text-[#97b85d] hover:bg-[#97b85d] hover:text-black shadow-[0_0_10px_rgba(151,184,93,0.2)] hover:shadow-[0_0_20px_rgba(151,184,93,0.6)]'
-                                            }`}>
-                                        {registeredEventsList.includes(event.title)
-                                            ? 'REGISTERED'
-                                            : selectedEventsList.includes(event.title) ? 'ADDED' : 'ADD'}
-                                    </button>
-                                </div>
+                                    <div className="mt-4 flex justify-center">
+                                            <button
+                                            onClick={() => setSelectedEvent(event)}
+                                            className="w-full py-3 bg-[#1a1a1a] rounded-lg border border-[#e33e33] 
+                                            text-[#e33e33] font-mono text-xs font-bold uppercase tracking-widest 
+                                            hover:bg-[#e33e33] hover:text-white transition-all duration-300 
+                                            shadow-[0_0_10px_rgba(227,62,51,0.2)] 
+                                            hover:shadow-[0_0_25px_rgba(227,62,51,0.6)]
+                                            transform hover:-translate-y-[2px]"
+                                        >
+                                            Know More
+                                        </button>
+                                    </div>
+
                             </motion.div>
                         ))}
                     </AnimatePresence>

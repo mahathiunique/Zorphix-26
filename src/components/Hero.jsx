@@ -4,6 +4,7 @@ import zorphixLogo from '../assets/zorphix-logo.png';
 import zorphixName from '../assets/zorphix.png';
 
 
+
 const Hero = () => {
     const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     const containerRef = useRef(null);

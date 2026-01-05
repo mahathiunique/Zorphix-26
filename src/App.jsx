@@ -4,6 +4,7 @@ import Home from './components/Home'
 import About from './components/About'
 import EventsPage from './components/EventsPage'
 import Register from './components/Register'
+import ProfileCompletion from './components/ProfileCompletion'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
 
@@ -17,15 +18,21 @@ const App = () => {
       <Background />
       <CurrencyBackground />
       <CoinBackground />
+
       <div className="relative z-10">
         <ScrollToTop />
         <Navbar />
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/register" element={<Register />} />
+
+          {/* 🔐 NEW PROFILE COMPLETION ROUTE */}
+          <Route path="/complete-profile" element={<ProfileCompletion />} />
         </Routes>
+
         <Footer />
       </div>
     </div>

@@ -17,18 +17,18 @@ const EventsShowcase = () => {
             description: 'Competitive coding, hackathons, and cutting-edge tech challenges'
         },
         {
-            id: 'nonTech',
-            name: 'Non-Tech Events',
-            count: '5',
-            icon: FaPalette,
-            color: '#97b85d',
-            gradient: 'from-[#97b85d] to-[#b8d96f]',
-            description: 'Business competitions, creative challenges, and strategic thinking'
-        },
-        {
             id: 'workshops',
             name: 'Workshops',
             count: '3',
+            icon: FaTools,
+            color: '#ffa500',
+            gradient: 'from-[#ffa500] to-[#ffcc00]',
+            description: 'Hands-on learning sessions with industry experts'
+        },
+        {
+            id: 'Poster Presentation',
+            name: 'Poster presentation',
+            count:2,
             icon: FaTools,
             color: '#ffa500',
             gradient: 'from-[#ffa500] to-[#ffcc00]',
