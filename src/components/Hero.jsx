@@ -93,7 +93,7 @@ const Hero = () => {
                         
 
                         {/* Name Image with Glitch Effect */}
-                        <div className="relative w-56 sm:w-64 md:w-64 lg:w-80">
+                        <div className="relative w-56 sm:w-64 md:w-64 lg:w-96">
                             <div className="relative">
                                 <img src={zorphixName} alt="ZORPHIX" className="w-full h-auto relative z-10 drop-shadow-[0_0_25px_rgba(151,184,93,0.3)]" />
                                 <img src={zorphixName} alt="" className="absolute top-0 left-0 w-full h-full opacity-50 animate-glitch mix-blend-screen filter hue-rotate-90" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 45%, 0 45%)', transform: 'translate(-2px, -2px)' }} />
