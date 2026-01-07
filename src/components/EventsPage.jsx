@@ -8,7 +8,7 @@ import {
     FaCoffee,
     FaPuzzlePiece,
     FaProjectDiagram,
-    FaBolt
+    FaLink
 } from 'react-icons/fa';
 import { auth, db } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -18,6 +18,7 @@ import EventModal from './EventModal';
 
 const EventsPage = () => {
     const [selectedEvent, setSelectedEvent] = useState(null);
+    const [activeTab, setActiveTab] = useState('events');
     const [selectedEventsList, setSelectedEventsList] = useState(() => {
         try {
             const stored = localStorage.getItem('selectedEvents');
@@ -98,7 +99,8 @@ const EventsPage = () => {
                 'AI tools are allowed (ChatGPT, Copilot, design generators, etc.)',
                 'Teams must enhance the same UI from Round 1',
                 'Mandatory benchmark enhancements must be met'
-            ]
+            ],
+            price: 'FREE'
         },
         {
             id: 'promptcraft',
@@ -118,7 +120,8 @@ const EventsPage = () => {
                 'Sharing prompts or outputs with other teams is prohibited.',
                 'Any form of plagiarism or copying prompts from other teams is prohibited.',
                 'Judges’ decision is final and binding.'
-            ]
+            ],
+            price: 'FREE'
         },
         {
             id: 'algopulse',
@@ -139,7 +142,8 @@ const EventsPage = () => {
                 'One team member must be prepared to explain the solution if asked.',
                 'Judges’ decisions are final and binding.',
                 'Any form of misconduct leads to immediate disqualification.'
-            ]
+            ],
+            price: 'FREE'
         },
         {
             id: 'codeback',
@@ -159,7 +163,8 @@ const EventsPage = () => {
                 'Participants must have an HackerRank account.',
                 'Judges’ decisions are final and binding.',
                 'Fair play is expected; teams should work independently.'
-            ]
+            ],
+            price: 'FREE'
         },
         {
             id: 'sip-to-survive',
@@ -178,7 +183,8 @@ const EventsPage = () => {
                 'Only tools explicitly allowed by organizers may be used.',
                 'Judges’ and organizers’ decisions are final and binding.',
                 'Any rule violation results in immediate disqualification.'
-            ]
+            ],
+            price: 'FREE'
         },
         {
             id: 'codecrypt',
@@ -200,7 +206,8 @@ const EventsPage = () => {
                 'Teams must use only the provided code',
                 'Laptops and chargers required',
                 'Judges’ decisions are final'
-            ]
+            ],
+            price: 'FREE'
         },
         {
             id: 'linklogic',
@@ -220,12 +227,108 @@ const EventsPage = () => {
                 'Teams must explain how each element is connected, not just state the final answer.',
                 'Partial explanations may earn partial credit.',
                 'Time-based scoring applies.'
-            ]
+            ],
+            price: 'FREE'
         }
     ];
 
+    const paperPresentation = [
+        {
+            id: 'paper-presentation',
+            name: 'Paper Presentation',
+            subtitle: 'Innovation',
+            icon: FaCode,
+            color: '#ffa500',
+            desc: 'A platform to showcase innovative ideas and technical research. Participants present their papers on trending technologies.',
+            heads: 'To be announced',
+            rounds: [
+                'Round 1 – Abstract Submission',
+                'Round 2 – Final Presentation'
+            ],
+            rules: [
+                'Teams must submit abstract before deadline.',
+                'Presentation time limit: 7 minutes + 3 minutes Q&A.',
+                'Judges’ decision is final.'
+            ],
+            price: '₹149'
+        }
+    ];
+
+    const workshops = [
+        {
+            id: 'ai-workshop',
+            name: 'AI Workshop',
+            subtitle: 'AI Genesis',
+            icon: FaCode,
+            color: '#e33e33',
+            desc: 'Explore the foundations of Artificial Intelligence and Machine Learning. Hands-on session on building your first neural network.',
+            heads: 'Expert Speaker',
+            rounds: ['Hands-on Workshop'],
+            rules: ['Laptop required', 'Basic Python knowledge preferred'],
+            price: '₹99'
+        },
+        {
+            id: 'cloud-workshop',
+            name: 'Cloud Workshop',
+            subtitle: 'Cloud Horizon',
+            icon: FaTerminal,
+            color: '#97b85d',
+            desc: 'Master the cloud. Learn to deploy scalable applications using AWS/Azure services in this intensive workshop.',
+            heads: 'Cloud Architect',
+            rounds: ['Hands-on Workshop'],
+            rules: ['Laptop required', 'AWS Free Tier account needed'],
+            price: '₹99'
+        },
+        {
+            id: 'ethical-hacking',
+            name: 'Ethical Hacking',
+            subtitle: 'White Hat',
+            icon: FaLaptopCode,
+            color: '#ffa500',
+            desc: 'Dive into cybersecurity. Learn penetration testing, vulnerability assessment, and how to secure systems.',
+            heads: 'Cybersec Expert',
+            rounds: ['Hands-on Workshop'],
+            rules: ['Laptop required', 'Kali Linux VM preferred'],
+            price: '₹99'
+        },
+        {
+            id: 'app-dev',
+            name: 'App Dev',
+            subtitle: 'Mobile Mastery',
+            icon: FaCode,
+            color: '#e33e33',
+            desc: 'Build cross-platform mobile apps using Flutter/React Native. From zero to app store ready.',
+            heads: 'App Developer',
+            rounds: ['Hands-on Workshop'],
+            rules: ['Laptop required', 'VS Code installed'],
+            price: '₹99'
+        },
+        {
+            id: 'blockchain',
+            name: 'Blockchain',
+            subtitle: 'Decentralized',
+            icon: FaLink,
+            color: '#97b85d',
+            desc: 'Understand the future of web3. Smart contracts, DApps, and blockchain fundamentals.',
+            heads: 'Blockchain Dev',
+            rounds: ['Hands-on Workshop'],
+            rules: ['Laptop required', 'Metamask wallet'],
+            price: '₹99'
+        }
+    ];
+
+    // Filter displayed events based on activeTab
+    const getDisplayedEvents = () => {
+        switch (activeTab) {
+            case 'workshops': return workshops;
+            case 'paper-presentation': return paperPresentation;
+            default: return technicalEvents;
+        }
+    };
+
     return (
         <div className="min-h-screen text-white font-mono relative overflow-x-hidden">
+
 
             {/* Vignette */}
             <div className="absolute inset-0 pointer-events-none z-10 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]"></div>
@@ -247,18 +350,45 @@ const EventsPage = () => {
                     </p>
                 </motion.div>
 
+                {/* Tabs */}
+                <div className="flex justify-center mb-12">
+                    <div className="flex overflow-x-auto custom-scrollbar gap-2 p-2 bg-white/5 backdrop-blur-md rounded-full border border-white/10 max-w-full">
+                        {['events', 'workshops', 'paper-presentation'].map((tab) => (
+                            <button
+                                key={tab}
+                                onClick={() => setActiveTab(tab)}
+                                className={`px-6 py-2 rounded-full whitespace-nowrap text-xs md:text-sm font-bold uppercase tracking-widest transition-all duration-300 relative ${activeTab === tab
+                                    ? 'text-black'
+                                    : 'text-gray-400 hover:text-white'
+                                    }`}
+                            >
+                                {activeTab === tab && (
+                                    <motion.div
+                                        layoutId="activeTab"
+                                        className="absolute inset-0 bg-[#e33e33] rounded-full"
+                                        initial={false}
+                                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                                    />
+                                )}
+                                <span className="relative z-10">{tab.replace('-', ' ')}</span>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
                 {/* Events Grid */}
                 <motion.div
                     layout
                     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
                 >
                     <AnimatePresence mode="popLayout">
-                        {technicalEvents.map((event, index) => (
+                        {getDisplayedEvents().map((event, index) => (
                             <motion.div
                                 key={event.id}
                                 layout
                                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                                 animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.9, y: 20 }}
                                 transition={{ duration: 0.3, delay: index * 0.1 }}
                                 className="group relative"
                             >
@@ -347,14 +477,20 @@ const EventsPage = () => {
                                                 <span className="font-mono text-[10px] md:text-xs text-white/40 tracking-widest">8892</span>
                                             </div>
 
-                                            <div className="flex items-center gap-6">
-                                                <div>
-                                                    <span className="block text-[5px] md:text-[6px] text-gray-400 uppercase tracking-widest mb-0.5">MEMBER SINCE</span>
-                                                    <span className="text-xs md:text-sm text-white font-mono tracking-wider">2024</span>
+                                            <div className="flex justify-between items-end">
+                                                <div className="flex items-center gap-6">
+                                                    <div>
+                                                        <span className="block text-[8px] text-gray-400 uppercase tracking-widest mb-0.5">MEMBER SINCE</span>
+                                                        <span className="text-xs md:text-sm text-white font-mono tracking-wider">2024</span>
+                                                    </div>
+                                                    <div>
+                                                        <span className="block text-[8px] text-gray-400 uppercase tracking-widest mb-0.5">VALID THRU</span>
+                                                        <span className="text-xs md:text-sm text-white font-mono tracking-wider">03/26</span>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <span className="block text-[5px] md:text-[6px] text-gray-400 uppercase tracking-widest mb-0.5">VALID THRU</span>
-                                                    <span className="text-xs md:text-sm text-white font-mono tracking-wider">03/26</span>
+                                                <div className="text-right">
+                                                    <span className="block text-[5px] md:text-[6px] text-gray-400 uppercase tracking-widest mb-0.5">PRICE</span>
+                                                    <span className="text-xl md:text-3xl font-black text-white tracking-tight drop-shadow-md block leading-none">{event.price}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -417,11 +553,12 @@ const EventsPage = () => {
                 }
                 
                 .custom-scrollbar::-webkit-scrollbar {
-                    width: 6px;
-                    height: 6px;
+                    width: 3px;
+                    height: 3px;
                 }
                 .custom-scrollbar::-webkit-scrollbar-track {
-                    background: rgba(255, 255, 255, 0.05);
+                    background: rgba(255, 255, 255, 0.02);
+                    border-radius: 10px;
                 }
                 .custom-scrollbar::-webkit-scrollbar-thumb {
                     background: #e33e33;

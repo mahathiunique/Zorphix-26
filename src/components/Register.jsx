@@ -11,23 +11,26 @@ const Register = () => {
     // Defined properly at the top or outside to be accessible
     const eventOptions = [
         // Technical Events (from EventsPage.jsx)
-        { name: 'Pixel Reforge', type: 'tech', price: 149 },
-        { name: 'PromptCraft', type: 'tech', price: 149 },
-        { name: 'AlgoPulse', type: 'tech', price: 149 },
-        { name: 'CodeBack', type: 'tech', price: 149 },
-        { name: 'Sip to Survive', type: 'tech', price: 149 },
-        { name: 'CodeCrypt', type: 'tech', price: 149 },
-        { name: 'LinkLogic', type: 'tech', price: 149 },
+        { name: 'Pixel Reforge', type: 'tech', price: 0 },
+        { name: 'PromptCraft', type: 'tech', price: 0 },
+        { name: 'AlgoPulse', type: 'tech', price: 0 },
+        { name: 'CodeBack', type: 'tech', price: 0 },
+        { name: 'Sip to Survive', type: 'tech', price: 0 },
+        { name: 'CodeCrypt', type: 'tech', price: 0 },
+        { name: 'LinkLogic', type: 'tech', price: 0 },
+        { name: 'Paper Presentation', type: 'tech', price: 149 },
 
         // Keeping existing Non-Tech and Workshops for now
-        { name: 'Lens Legends', type: 'non-tech', price: 99 },
-        { name: 'Meme Masters', type: 'non-tech', price: 99 },
-        { name: 'Gaming Arena', type: 'non-tech', price: 99 },
-        { name: 'Treasure Hunt', type: 'non-tech', price: 99 },
-        { name: 'Quiz Bowl', type: 'non-tech', price: 99 },
-        { name: 'Ethical Hacking', type: 'workshop', price: 199 },
-        { name: 'App Dev', type: 'workshop', price: 199 },
-        { name: 'Blockchain', type: 'workshop', price: 199 }
+        { name: 'Lens Legends', type: 'non-tech', price: 0 },
+        { name: 'Meme Masters', type: 'non-tech', price: 0 },
+        { name: 'Gaming Arena', type: 'non-tech', price: 0 },
+        { name: 'Treasure Hunt', type: 'non-tech', price: 0 },
+        { name: 'Quiz Bowl', type: 'non-tech', price: 0 },
+        { name: 'Ethical Hacking', type: 'workshop', price: 99 },
+        { name: 'App Dev', type: 'workshop', price: 99 },
+        { name: 'Blockchain', type: 'workshop', price: 99 },
+        { name: 'AI Workshop', type: 'workshop', price: 99 },
+        { name: 'Cloud Workshop', type: 'workshop', price: 99 }
     ];
 
     const [user, setUser] = useState(null);
@@ -384,11 +387,11 @@ const Register = () => {
                                                                     : 'border-[#333] hover:border-gray-500 cursor-pointer'
                                                                 }`}>
                                                                 <div className="flex flex-col">
-                                                                    <span className={`text-xs font-mono uppercase ${isRegistered ? 'text-blue-400' : isSelected ? 'text-white' : 'text-gray-500'
+                                                                    <span className={`text-sm font-mono uppercase ${isRegistered ? 'text-blue-400' : isSelected ? 'text-white' : 'text-gray-500'
                                                                         }`}>
                                                                         {event.name} {isRegistered && '(REGISTERED)'}
                                                                     </span>
-                                                                    <span className="text-[10px] text-[#e33e33] mt-1">₹{event.price}</span>
+                                                                    <span className="text-sm text-[#e33e33] mt-1">₹{event.price}</span>
                                                                 </div>
 
                                                                 <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${isRegistered
