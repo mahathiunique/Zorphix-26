@@ -233,12 +233,23 @@ const Register = () => {
 
     // eventOptions removed (moved to top)
 
-    const calculateTotal = () => {
-        return formData.events.reduce((total, eventName) => {
-            const event = eventOptions.find(e => e.name === eventName);
-            return total + (event ? event.price : 0);
+    const paymentSummary = (() => {
+        const paid = alreadyRegistered.reduce((sum, name) => sum + (eventOptions.find(e => e.name === name)?.price || 0), 0);
+        // Calculate cost of currently selected events that are NOT already registered
+        const toPay = formData.events.reduce((sum, name) => {
+            if (alreadyRegistered.includes(name)) return sum;
+            return sum + (eventOptions.find(e => e.name === name)?.price || 0);
         }, 0);
-    };
+
+        const uniqueSelectedCount = new Set([...alreadyRegistered, ...formData.events]).size;
+
+        return {
+            paid,
+            toPay,
+            total: paid + toPay,
+            count: uniqueSelectedCount
+        };
+    })();
 
     if (loading) {
         return (
@@ -328,7 +339,7 @@ const Register = () => {
                                 <div className="w-full max-w-5xl flex justify-end px-2">
                                     <button
                                         onClick={() => setShowTicket(true)}
-                                        className="px-6 py-3 bg-gradient-to-r from-[#1a1a1a] to-[#222] border border-[#97b85d]/30 text-[#97b85d] font-mono text-xs uppercase tracking-widest hover:bg-[#97b85d] hover:text-black transition-all shadow-lg hover:shadow-[#97b85d]/20 flex items-center gap-2 rounded-full backdrop-blur-md"
+                                            className="px-6 py-3 bg-gradient-to-r from-[#1a1a1a] to-[#222] border border-[#97b85d]/30 text-[#97b85d] font-mono text-xs uppercase tracking-widest hover:bg-[#97b85d] hover:text-[#e33e33] transition-all shadow-lg hover:shadow-[#97b85d]/20 flex items-center gap-2 rounded-full backdrop-blur-md"
                                     >
                                         <FaTicketAlt /> Show My Ticket
                                     </button>
@@ -488,14 +499,23 @@ const Register = () => {
                                                             })}
                                                         </div>
 
-                                                        <div className="mt-6 pt-6 border-t border-[#333] flex flex-col gap-2">
+                                                        <div className="mt-6 pt-6 border-t border-[#333] flex flex-col gap-3">
                                                             <div className="flex justify-between items-center text-xs">
-                                                                <span className="text-gray-500 uppercase tracking-wider">Total Selected</span>
-                                                                <span className="text-white font-mono">{formData.events.length} EVENTS</span>
+                                                                <span className="text-gray-500 uppercase tracking-wider">Total Events</span>
+                                                                <span className="text-white font-mono">{paymentSummary.count} EVENTS</span>
                                                             </div>
-                                                            <div className="flex justify-between items-center text-sm">
-                                                                <span className="text-[#e33e33] uppercase tracking-wider font-bold">Total Cost</span>
-                                                                <span className="text-[#97b85d] font-mono font-bold text-lg">₹{calculateTotal()}</span>
+                                                            <div className="flex justify-between items-center text-xs">
+                                                                <span className="text-gray-500 uppercase tracking-wider">Total Value</span>
+                                                                <span className="text-gray-300 font-mono">₹{paymentSummary.total}</span>
+                                                            </div>
+                                                            <div className="flex justify-between items-center text-xs">
+                                                                <span className="text-gray-500 uppercase tracking-wider">Already Paid</span>
+                                                                <span className="text-green-500 font-mono">- ₹{paymentSummary.paid}</span>
+                                                            </div>
+                                                            <div className="my-1 border-t border-dashed border-[#333]"></div>
+                                                            <div className="flex justify-between items-center text-sm bg-[#1a1a1a] p-2 rounded border border-[#333]">
+                                                                <span className="text-[#e33e33] uppercase tracking-wider font-bold">Need to Pay</span>
+                                                                <span className="text-[#e33e33] font-mono font-bold text-lg">₹{paymentSummary.toPay}</span>
                                                             </div>
                                                         </div>
 
@@ -568,7 +588,7 @@ const Register = () => {
                                                         </div>
                                                         <div className="text-right">
                                                             <p className="text-gray-600 text-[9px] uppercase tracking-widest mb-1">Total Paid</p>
-                                                            <p className="text-white font-mono text-xl">₹{calculateTotal()}</p>
+                                                            <p className="text-white font-mono text-xl">₹{paymentSummary.paid}</p>
                                                         </div>
                                                     </div>
                                                 </div>
