@@ -33,6 +33,34 @@ const Register = () => {
         { name: 'Cloud Workshop', type: 'workshop', price: 99 }
     ];
 
+    const location = useLocation();
+
+    // Sync with localStorage on mount (in case of navigation without full reload)
+    useEffect(() => {
+        try {
+            const storedEvents = JSON.parse(localStorage.getItem('selectedEvents') || '[]');
+            if (storedEvents.length > 0) {
+                // Normalize stored names
+                const normalizedEvents = storedEvents.map(storedName => {
+                    const match = eventOptions.find(opt => opt.name.toLowerCase() === storedName.toLowerCase() || opt.name.toUpperCase() === storedName.toUpperCase());
+                    return match ? match.name : null;
+                }).filter(Boolean);
+
+                const uniqueEvents = Array.from(new Set(normalizedEvents));
+
+                if (uniqueEvents.length > 0) {
+                    setFormData(prev => {
+                        // Merge with existing selected events in state, avoiding duplicates
+                        const merged = [...new Set([...prev.events, ...uniqueEvents])];
+                        return { ...prev, events: merged };
+                    });
+                }
+            }
+        } catch (e) {
+            console.error("Error syncing events:", e);
+        }
+    }, [location]); // Re-run if location changes
+
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState(() => {
@@ -69,10 +97,36 @@ const Register = () => {
         return initial;
     });
 
-    const location = useLocation();
     // Removed the useEffect that was setting form data from localStorage
+
     const [submitted, setSubmitted] = useState(false);
     const [alreadyRegistered, setAlreadyRegistered] = useState([]);
+
+    // Sync with localStorage on mount (in case of navigation without full reload)
+    useEffect(() => {
+        try {
+            const storedEvents = JSON.parse(localStorage.getItem('selectedEvents') || '[]');
+            if (storedEvents.length > 0) {
+                // Normalize stored names
+                const normalizedEvents = storedEvents.map(storedName => {
+                    const match = eventOptions.find(opt => opt.name.toLowerCase() === storedName.toLowerCase() || opt.name.toUpperCase() === storedName.toUpperCase());
+                    return match ? match.name : null;
+                }).filter(Boolean);
+
+                const uniqueEvents = Array.from(new Set(normalizedEvents));
+
+                if (uniqueEvents.length > 0) {
+                    setFormData(prev => {
+                        // Merge with existing selected events in state, avoiding duplicates
+                        const merged = [...new Set([...prev.events, ...uniqueEvents])];
+                        return { ...prev, events: merged };
+                    });
+                }
+            }
+        } catch (e) {
+            console.error("Error syncing events:", e);
+        }
+    }, [location]); // Re-run if location changes
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -381,26 +435,26 @@ const Register = () => {
 
                                                         return (
                                                             <label key={event.name} className={`flex items-center justify-between p-3 border rounded transition-all ${isRegistered
-                                                                ? 'border-blue-500/50 bg-blue-500/10 cursor-not-allowed opacity-70'
+                                                                ? 'border-gray-800 bg-gray-900/50 cursor-not-allowed opacity-50 grayscale'
                                                                 : isSelected
                                                                     ? 'border-[#97b85d] bg-[#97b85d]/10 cursor-pointer'
                                                                     : 'border-[#333] hover:border-gray-500 cursor-pointer'
                                                                 }`}>
                                                                 <div className="flex flex-col">
-                                                                    <span className={`text-sm font-mono uppercase ${isRegistered ? 'text-blue-400' : isSelected ? 'text-white' : 'text-gray-500'
+                                                                    <span className={`text-sm font-mono uppercase ${isRegistered ? 'text-gray-500 line-through' : isSelected ? 'text-white' : 'text-gray-500'
                                                                         }`}>
-                                                                        {event.name} {isRegistered && '(REGISTERED)'}
+                                                                        {event.name} {isRegistered && '(DONE)'}
                                                                     </span>
                                                                     <span className="text-sm text-[#e33e33] mt-1">₹{event.price}</span>
                                                                 </div>
 
                                                                 <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${isRegistered
-                                                                    ? 'border-blue-500 bg-blue-500'
+                                                                    ? 'border-gray-700 bg-gray-800'
                                                                     : isSelected
                                                                         ? 'border-[#97b85d] bg-[#97b85d]'
                                                                         : 'border-gray-600'
                                                                     }`}>
-                                                                    {(isSelected || isRegistered) && <FaCheckCircle className="text-black text-[10px]" />}
+                                                                    {(isSelected || isRegistered) && <FaCheckCircle className={`${isRegistered ? 'text-gray-500' : 'text-black'} text-[10px]`} />}
                                                                 </div>
                                                                 <input
                                                                     type="checkbox"
@@ -527,7 +581,7 @@ const Register = () => {
                                         <button
                                             onClick={() => {
                                                 setSubmitted(false);
-                                                setFormData(prev => ({ ...prev, events: [] }));
+                                                // Do not clear events; let useEffect sync persist
                                             }}
                                             className="w-full py-3 bg-[#111] text-white font-bold uppercase tracking-widest text-xs hover:bg-[#e33e33] transition-colors"
                                         >
