@@ -33,11 +33,47 @@ const Hero = () => {
 
 
 
+    const [logoParticles, setLogoParticles] = useState([]);
+
+    useEffect(() => {
+        const newParticles = [...Array(10)].map(() => ({
+            duration: 15 + Math.random() * 20,
+            delay: -(Math.random() * 20),
+            size: 30 + Math.random() * 50,
+            left: Math.random() * 100,
+            opacity: 0.1 + Math.random() * 0.2
+        }));
+        setLogoParticles(newParticles);
+    }, []);
+
+
     return (
         <div
             className="relative min-h-screen text-white overflow-hidden font-mono perspective-1000 pt-20 md:pt-16"
             ref={containerRef}
         >
+
+
+            {/* Floating Logo Particles */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-10">
+                {logoParticles.map((particle, i) => (
+                    <img
+                        key={i}
+                        src={zorphixLogo}
+                        alt=""
+                        className="absolute object-contain"
+                        style={{
+                            left: `${particle.left}%`,
+                            width: `${particle.size}px`,
+                            height: `${particle.size}px`,
+                            animation: `float-up ${particle.duration}s linear infinite`,
+                            animationDelay: `${particle.delay}s`,
+                            opacity: particle.opacity,
+                            filter: 'brightness(150%) drop-shadow(0 0 2px rgba(227,62,51,0.3))'
+                        }}
+                    />
+                ))}
+            </div>
 
             {/* Vignette Effect */}
             <div className="absolute inset-0 pointer-events-none z-40 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.7)_100%)]"></div>
@@ -54,14 +90,7 @@ const Hero = () => {
                     {/* Logo and Name Container */}
                     <div className="relative z-10 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10 animate-float">
 
-                        {/* Logo Image with Glitch Effect */}
-                        <div className="relative w-24 sm:w-28 md:w-32 lg:w-40">
-                            <div className="relative">
-                                <img src={zorphixLogo} alt="Logo" className="w-full h-auto relative z-10 drop-shadow-[0_0_25px_rgba(227,62,51,0.3)]" />
-                                <img src={zorphixLogo} alt="" className="absolute top-0 left-0 w-full h-full opacity-50 animate-glitch mix-blend-screen filter hue-rotate-90" style={{ clipPath: 'polygon(0 0, 100% 0, 100% 45%, 0 45%)', transform: 'translate(-2px, -2px)' }} />
-                                <img src={zorphixLogo} alt="" className="absolute top-0 left-0 w-full h-full opacity-50 animate-glitch mix-blend-screen filter hue-rotate-180" style={{ clipPath: 'polygon(0 60%, 100% 60%, 100% 100%, 0 100%)', transform: 'translate(2px, 2px)', animationDelay: '0.1s' }} />
-                            </div>
-                        </div>
+                        
 
                         {/* Name Image with Glitch Effect */}
                         <div className="relative w-56 sm:w-64 md:w-64 lg:w-80">

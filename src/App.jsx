@@ -10,6 +10,7 @@ import ScrollToTop from './components/ScrollToTop'
 import Background from './components/Background'
 import CurrencyBackground from './components/CurrencyBackground'
 import CoinBackground from './components/CoinBackground'
+import './App.css'
 
 const App = () => {
   return (

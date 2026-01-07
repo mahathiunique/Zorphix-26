@@ -83,6 +83,14 @@ const Register = () => {
                     if (data.events && Array.isArray(data.events)) {
                         setAlreadyRegistered(data.events);
                     }
+                    // Pre-fill form data
+                    setFormData(prev => ({
+                        ...prev,
+                        college: data.college || '',
+                        department: data.department || '',
+                        year: data.year || '1',
+                        phone: data.phone || ''
+                    }));
                 }
             }
             setLoading(false);
@@ -516,7 +524,7 @@ const Register = () => {
                                         <button
                                             onClick={() => {
                                                 setSubmitted(false);
-                                                setFormData({ college: '', department: '', year: '1', phone: '', events: [] });
+                                                setFormData(prev => ({ ...prev, events: [] }));
                                             }}
                                             className="w-full py-3 bg-[#111] text-white font-bold uppercase tracking-widest text-xs hover:bg-[#e33e33] transition-colors"
                                         >

@@ -29,7 +29,7 @@ const About = () => {
 
     const offerings = [
         { title: "Technical Workshops", type: "Education", size: "Hands-on Sesh", desc: "Learn from industry experts." },
-        { title: "Hackathons", type: "Competition", size: "24 Hours", desc: "Build solutions that matter." },
+        { title: "Technical Events", type: "Competition", size: "Showcase", desc: "Battle of the brains." },
         { title: "Networking", type: "Community", size: "Unlimited", desc: "Connect with peers and mentors." },
     ];
 
@@ -58,7 +58,7 @@ const About = () => {
 
                 {/* HERO SECTION - Spacious & Clean */}
                 <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-                    <div className="flex-1 space-y-6">
+                    <div className="flex-1 space-y-6 p-8 bg-black/60 backdrop-blur-md border border-white/10 rounded-2xl">
                         <div className="flex items-center gap-3">
                             <div className="w-2 h-2 bg-[#97b85d] rounded-full animate-pulse"></div>
                             <span className="text-[#97b85d] text-sm font-medium tracking-widest">STATUS: PRE-REGISTRATION</span>
@@ -99,7 +99,7 @@ const About = () => {
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: i * 0.1 }}
-                            className="bg-zinc-900/50 border border-white/5 data-card p-6 rounded-xl hover:border-[#97b85d]/50 transition-colors group"
+                            className="bg-black/60 backdrop-blur-md border border-white/10 data-card p-6 rounded-xl hover:border-[#97b85d]/50 transition-colors group"
                         >
                             <div className="flex justify-between items-start mb-4">
                                 <span className="text-gray-400 text-sm font-medium">{stat.label}</span>
@@ -116,7 +116,7 @@ const About = () => {
 
                 {/* MISSION & VISION - Readable */}
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
-                    <div className="md:col-span-4">
+                    <div className="md:col-span-4 p-8 bg-black/60 backdrop-blur-md border border-white/10 rounded-2xl h-full">
                         <h2 className="text-3xl font-bold mb-4">Our Mission</h2>
                         <div className="w-12 h-1 bg-[#e33e33] mb-6"></div>
                         <p className="text-gray-400 leading-relaxed text-lg">
@@ -138,11 +138,11 @@ const About = () => {
 
                 {/* OFFERINGS - Clean List */}
                 <div>
-                    <div className="flex items-center justify-between mb-8">
+                    <div className="flex items-center justify-between mb-8 p-6 bg-black/60 backdrop-blur-md border border-white/10 rounded-xl">
                         <h2 className="text-3xl font-bold">Offerings Portfolio</h2>
-                        <button className="text-[#97b85d] hover:text-white transition-colors text-sm font-bold tracking-widest">VIEW ALL ASSETS →</button>
+                        <a href="/events" className="text-[#97b85d] hover:text-white transition-colors text-sm font-bold tracking-widest">VIEW ALL ASSETS →</a>
                     </div>
-                    <div className="border border-white/10 rounded-xl overflow-hidden">
+                    <div className="border border-white/10 rounded-xl overflow-hidden bg-black/40 backdrop-blur-sm">
                         <div className="grid grid-cols-12 bg-white/5 p-4 text-xs font-bold text-gray-500 uppercase tracking-widest border-b border-white/10">
                             <div className="col-span-4">Asset Name</div>
                             <div className="col-span-2">Category</div>
@@ -165,7 +165,7 @@ const About = () => {
                     <h2 className="text-3xl font-bold mb-12 text-center">Core Operatives</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {teamMembers.map((member, i) => (
-                            <div key={i} className="bg-zinc-900 border border-white/10 rounded-xl p-6 hover:border-[#97b85d] transition-colors group relative overflow-hidden">
+                            <div key={i} className="bg-black/60 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:border-[#97b85d] transition-colors group relative overflow-hidden">
                                 <div className={`absolute top-4 right-4 text-[10px] font-bold px-2 py-1 rounded ${member.status === 'ONLINE' || member.status === 'ACTIVE' ? 'bg-[#97b85d]/20 text-[#97b85d]' : 'bg-[#e33e33]/20 text-[#e33e33]'}`}>
                                     {member.status}
                                 </div>
@@ -189,7 +189,7 @@ const About = () => {
                 </div>
 
                 {/* CTA - Spacious */}
-                <div className="text-center py-20 border-t border-white/10">
+                <div className="text-center py-20 border-t border-white/10 bg-black/60 backdrop-blur-md rounded-2xl p-8 mt-12 border border-white/10">
                     <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Ready to Invest in <span className="text-[#97b85d]">Your Future?</span></h2>
                     <p className="text-gray-400 max-w-2xl mx-auto mb-10 text-lg">
                         Join the most innovative technical symposium of 2026. Secure your spot on the register.
