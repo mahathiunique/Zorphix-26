@@ -6,12 +6,14 @@ import {
     FaWallet,
     FaTrash
 } from 'react-icons/fa';
+import axios from 'axios';
 import { auth, db } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, updateDoc, arrayUnion, setDoc } from 'firebase/firestore';
 import toast from 'react-hot-toast';
 import { technicalEvents, workshops, paperPresentation } from '../data/events';
 import EventModal from './EventModal';
+import zorphixLogo from '../assets/zorphix-logo.png';
 
 const Cart = () => {
     const navigate = useNavigate();
@@ -82,6 +84,16 @@ const Cart = () => {
         return { totalEvents, totalValue, alreadyPaid: alreadyPaidValue, amountToPay: amountToPayValue };
     };
 
+    const loadRazorpayScript = () => {
+        return new Promise((resolve) => {
+            const script = document.createElement('script');
+            script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+            script.onload = () => resolve(true);
+            script.onerror = () => resolve(false);
+            document.body.appendChild(script);
+        });
+    };
+
     const handlePayment = async () => {
         if (!auth.currentUser) {
             toast.error("Please login to pay!");
@@ -100,39 +112,118 @@ const Cart = () => {
             return;
         }
 
-        const allEvents = [...technicalEvents, ...workshops, ...paperPresentation];
-        const eventsToRegister = allEvents
-            .filter(e => selectedEventsList.includes(e.name) && !registeredEventsList.includes(e.name))
-            .map(e => e.name);
-
-        const toastId = toast.loading("Processing Payment...");
         setProcessingId('PAYMENT');
+        const toastId = toast.loading("Initializing Payment...");
 
         try {
-            const userRef = doc(db, 'registrations', auth.currentUser.uid);
-            const docSnap = await getDoc(userRef);
+            const res = await loadRazorpayScript();
 
-            if (!docSnap.exists()) {
-                await setDoc(userRef, {
-                    events: eventsToRegister,
-                    email: auth.currentUser.email,
-                    userId: auth.currentUser.uid,
-                });
-            } else {
-                await updateDoc(userRef, {
-                    events: arrayUnion(...eventsToRegister)
-                });
+            if (!res) {
+                toast.error('Razorpay SDK failed to load. Are you online?', { id: toastId });
+                setProcessingId(null);
+                return;
             }
 
-            setRegisteredEventsList(prev => [...prev, ...eventsToRegister]);
-            setSelectedEventsList([]);
-            localStorage.setItem('selectedEvents', JSON.stringify([]));
+            // Create Order on Backend
+            // Amount is in INR, Razorpay expects paise (multiply by 100)
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/create-order`, {
+                amount: amountToPay * 100
+            });
+            const orderData = response.data;
 
-            toast.success("Payment Successful! Events Registered.", { id: toastId });
+            if (!orderData.id) {
+                toast.error("Server error. Are you online?", { id: toastId });
+                setProcessingId(null);
+                return;
+            }
+
+            const options = {
+                key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+                amount: orderData.amount,
+                currency: orderData.currency,
+                name: "Zorphix 2026",
+                description: "Event Registration",
+                image: zorphixLogo, // specific logo if available
+                order_id: orderData.id,
+                handler: async function (response) {
+                    // Payment Success Handler
+                    toast.loading("Verifying Payment...", { id: toastId });
+
+                    try {
+                        const allEvents = [...technicalEvents, ...workshops, ...paperPresentation];
+                        const eventsToRegister = allEvents
+                            .filter(e => selectedEventsList.includes(e.name) && !registeredEventsList.includes(e.name))
+                            .map(e => e.name);
+
+                        const userRef = doc(db, 'registrations', auth.currentUser.uid);
+                        const docSnap = await getDoc(userRef);
+
+                        if (!docSnap.exists()) {
+                            await setDoc(userRef, {
+                                events: eventsToRegister,
+                                email: auth.currentUser.email,
+                                userId: auth.currentUser.uid,
+                            });
+                        } else {
+                            await updateDoc(userRef, {
+                                events: arrayUnion(...eventsToRegister)
+                            });
+                        }
+
+                        setRegisteredEventsList(prev => [...prev, ...eventsToRegister]);
+                        setSelectedEventsList([]);
+                        localStorage.setItem('selectedEvents', JSON.stringify([]));
+
+                        toast.success(`Payment Successful! Payment ID: ${response.razorpay_payment_id}`, { id: toastId });
+                    } catch (error) {
+                        console.error("Registration Error:", error);
+                        toast.error("Payment successful but registration failed. Contact support.", { id: toastId });
+                    } finally {
+                        setProcessingId(null);
+                    }
+                },
+                modal: {
+                    ondismiss: function () {
+                        toast.error("Payment cancelled", { id: toastId });
+                        setProcessingId(null);
+                    }
+                },
+                prefill: {
+                    name: auth.currentUser.displayName || "Student",
+                    email: auth.currentUser.email,
+                    contact: "" // Can fetch from profile if available
+                },
+                notes: {
+                    address: "Zorphix Event Office"
+                },
+                theme: {
+                    color: "#e33e33"
+                }
+            };
+
+            const paymentObject = new window.Razorpay(options);
+            paymentObject.on('payment.failed', function (response) {
+                toast.error(response.error.description, { id: toastId });
+                setProcessingId(null);
+            });
+
+            // Handle modal dismissal (user closes without paying)
+            paymentObject.on('payment.failed', function (response) {
+                toast.error(response.error.description, { id: toastId });
+                setProcessingId(null);
+            });
+
+            paymentObject.open();
+
         } catch (error) {
-            console.error("Payment Error:", error);
-            toast.error("Payment failed. Please try again.", { id: toastId });
-        } finally {
+            console.error("Payment Initialization Error:", error);
+            if (error.response) {
+                toast.error(`Server Error: ${error.response.status}`, { id: toastId });
+            } else if (error.request) {
+                toast.error("Cannot connect to backend. Is it running on port 5000?", { id: toastId });
+            } else {
+                toast.error(`Error: ${error.message}`, { id: toastId });
+            }
             setProcessingId(null);
         }
     };

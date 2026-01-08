@@ -196,7 +196,7 @@ export const workshops = [
         heads: 'Expert Speaker',
         rounds: ['Hands-on Workshop'],
         rules: ['Laptop required', 'Basic Python knowledge preferred'],
-        price: '₹99'
+        price: '₹1'
     },
     {
         id: 'cloud-workshop',
@@ -208,7 +208,7 @@ export const workshops = [
         heads: 'Cloud Architect',
         rounds: ['Hands-on Workshop'],
         rules: ['Laptop required', 'AWS Free Tier account needed'],
-        price: '₹99'
+        price: '₹1'
     },
     {
         id: 'ethical-hacking',
@@ -220,7 +220,7 @@ export const workshops = [
         heads: 'Cybersec Expert',
         rounds: ['Hands-on Workshop'],
         rules: ['Laptop required', 'Kali Linux VM preferred'],
-        price: '₹99'
+        price: '₹1'
     },
     {
         id: 'app-dev',
@@ -232,7 +232,7 @@ export const workshops = [
         heads: 'App Developer',
         rounds: ['Hands-on Workshop'],
         rules: ['Laptop required', 'VS Code installed'],
-        price: '₹99'
+        price: '₹1'
     },
     {
         id: 'blockchain',
@@ -244,6 +244,6 @@ export const workshops = [
         heads: 'Blockchain Dev',
         rounds: ['Hands-on Workshop'],
         rules: ['Laptop required', 'Metamask wallet'],
-        price: '₹99'
+        price: '₹1'
     }
 ];
