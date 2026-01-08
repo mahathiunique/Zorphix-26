@@ -8,7 +8,11 @@ import {
     FaCoffee,
     FaPuzzlePiece,
     FaProjectDiagram,
-    FaLink
+    FaLink,
+    FaBolt,
+    FaWrench,
+    FaScroll,
+    FaShoppingCart
 } from 'react-icons/fa';
 import { auth, db } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -365,34 +369,46 @@ const EventsPage = () => {
                 </motion.div>
 
                 {/* Tabs */}
-                <div className="flex justify-center mb-12">
-                    <div className="flex overflow-x-auto custom-scrollbar gap-2 p-2 bg-white/5 backdrop-blur-md rounded-full border border-white/10 max-w-full">
-                        {['events', 'workshops', 'paper-presentation', 'my-cart'].map((tab) => (
+                <div className="w-full mb-16 overflow-x-auto pb-4 md:overflow-visible custom-red-scrollbar">
+                    <div className="flex flex-nowrap md:flex-wrap items-center md:justify-center gap-4 px-4 md:px-0 min-w-max mx-auto md:w-full">
+                        {[
+                            { id: 'events', label: 'TECHNICAL', icon: FaBolt },
+                            { id: 'workshops', label: 'WORKSHOPS', icon: FaWrench },
+                            { id: 'paper-presentation', label: 'PAPERS', icon: FaScroll },
+                            { id: 'my-cart', label: 'MY CART', icon: FaShoppingCart }
+                        ].map((tab) => (
                             <button
-                                key={tab}
-                                onClick={() => setActiveTab(tab)}
-                                className={`px-6 py-2 rounded-full whitespace-nowrap text-xs md:text-sm font-bold uppercase tracking-widest transition-all duration-300 relative ${activeTab === tab
-                                    ? 'text-black'
-                                    : 'text-gray-400 hover:text-white'
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className={`group relative px-6 md:px-8 py-3 md:py-4 transition-all duration-300 transform hover:-translate-y-1 ${activeTab === tab.id
+                                    ? 'bg-[#e33e33] text-black clip-path-cyberpunk'
+                                    : 'bg-transparent text-gray-400 border border-white/20 hover:border-[#e33e33] hover:text-white clip-path-cyberpunk-outline'
                                     }`}
+                                style={{
+                                    clipPath: 'polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)',
+                                    minWidth: '160px'
+                                }}
                             >
-                                {activeTab === tab && (
-                                    <motion.div
-                                        layoutId="activeTab"
-                                        className="absolute inset-0 bg-[#e33e33] rounded-full"
-                                        initial={false}
-                                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                                    />
-                                )}
-                                <span className="relative z-10 flex items-center gap-2">
-                                    {tab.replace('-', ' ')}
-                                    {tab === 'my-cart' && getCartCount() > 0 && (
-                                        <span className={`px-2 py-0.5 rounded-full text-xs font-black ${activeTab === 'my-cart' ? 'bg-white/20' : 'bg-[#e33e33]'
+                                <div className="flex items-center justify-center gap-3 font-mono font-black tracking-widest text-sm md:text-base">
+                                    <tab.icon className={`text-lg ${activeTab === tab.id ? 'text-black' : 'text-gray-500 group-hover:text-[#e33e33]'}`} />
+                                    <span>{tab.label}</span>
+                                    {tab.id === 'my-cart' && getCartCount() > 0 && (
+                                        <span className={`ml-2 px-2 py-0.5 text-[10px] rounded-full font-bold ${activeTab === 'my-cart'
+                                            ? 'bg-black text-[#e33e33]'
+                                            : 'bg-[#e33e33] text-white'
                                             }`}>
                                             {getCartCount()}
                                         </span>
                                     )}
-                                </span>
+                                </div>
+
+                                {/* Decorative corner lines for active state */}
+                                {activeTab === tab.id && (
+                                    <>
+                                        <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-black opacity-30"></div>
+                                        <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-black opacity-30"></div>
+                                    </>
+                                )}
                             </button>
                         ))}
                     </div>

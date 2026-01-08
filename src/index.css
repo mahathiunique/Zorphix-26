@@ -329,3 +329,24 @@
         transform: translateX(2px);
     }
 }
+
+/* Custom Red Scrollbar for Tabs */
+.custom-red-scrollbar::-webkit-scrollbar {
+    height: 3px;
+    /* Very thin horizontal scrollbar */
+    width: 3px;
+}
+
+.custom-red-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.custom-red-scrollbar::-webkit-scrollbar-thumb {
+    background: #e33e33;
+    border-radius: 10px;
+}
+
+.custom-red-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #ff4d42;
+}

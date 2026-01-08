@@ -838,7 +838,7 @@ const Register = () => {
                                                         onClick={handleDownloadTicket}
                                                         className="w-full py-3 mb-3 bg-[#e33e33] text-white font-bold uppercase tracking-widest text-xs hover:bg-[#c62828] transition-colors flex items-center justify-center gap-2"
                                                     >
-                                                        <FaDownload /> Save Ticket
+                                                        <FaDownload /> Download Ticket
                                                     </button>
 
                                                     <button
