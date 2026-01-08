@@ -114,6 +114,7 @@ const Profile = () => {
 
     const handleSignOut = async () => {
         await signOut(auth);
+        localStorage.clear(); // Clear all local storage on sign out
         setFormData({ name: '', college: '', department: '', year: '1', phone: '' });
         setRegisteredEventsList([]);
         setIsProfileComplete(false);
