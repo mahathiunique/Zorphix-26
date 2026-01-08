@@ -322,8 +322,22 @@ const EventsPage = () => {
         switch (activeTab) {
             case 'workshops': return workshops;
             case 'paper-presentation': return paperPresentation;
+            case 'my-cart':
+                // Show all added/registered events from all categories
+                const allEvents = [...technicalEvents, ...workshops, ...paperPresentation];
+                return allEvents.filter(event =>
+                    selectedEventsList.includes(event.name) || registeredEventsList.includes(event.name)
+                );
             default: return technicalEvents;
         }
+    };
+
+    // Calculate cart count
+    const getCartCount = () => {
+        const allEvents = [...technicalEvents, ...workshops, ...paperPresentation];
+        return allEvents.filter(event =>
+            selectedEventsList.includes(event.name) || registeredEventsList.includes(event.name)
+        ).length;
     };
 
     return (
@@ -353,7 +367,7 @@ const EventsPage = () => {
                 {/* Tabs */}
                 <div className="flex justify-center mb-12">
                     <div className="flex overflow-x-auto custom-scrollbar gap-2 p-2 bg-white/5 backdrop-blur-md rounded-full border border-white/10 max-w-full">
-                        {['events', 'workshops', 'paper-presentation'].map((tab) => (
+                        {['events', 'workshops', 'paper-presentation', 'my-cart'].map((tab) => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
@@ -370,7 +384,15 @@ const EventsPage = () => {
                                         transition={{ type: "spring", stiffness: 500, damping: 30 }}
                                     />
                                 )}
-                                <span className="relative z-10">{tab.replace('-', ' ')}</span>
+                                <span className="relative z-10 flex items-center gap-2">
+                                    {tab.replace('-', ' ')}
+                                    {tab === 'my-cart' && getCartCount() > 0 && (
+                                        <span className={`px-2 py-0.5 rounded-full text-xs font-black ${activeTab === 'my-cart' ? 'bg-white/20' : 'bg-[#e33e33]'
+                                            }`}>
+                                            {getCartCount()}
+                                        </span>
+                                    )}
+                                </span>
                             </button>
                         ))}
                     </div>
