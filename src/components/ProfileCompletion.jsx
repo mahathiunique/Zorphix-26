@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { auth, db } from '../firebase'
 import { onAuthStateChanged } from 'firebase/auth'
-import { doc, setDoc } from 'firebase/firestore'
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
 import { FaUser, FaPhone, FaUniversity, FaBriefcase } from 'react-icons/fa'
 
 const ProfileCompletion = () => {
@@ -21,8 +21,9 @@ const ProfileCompletion = () => {
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
-      if (!u) navigate('/register')
-      else {
+      if (!u) {
+        navigate('/register')
+      } else {
         setUser(u)
         setForm((prev) => ({ ...prev, name: u.displayName || '' }))
       }
@@ -41,13 +42,22 @@ const ProfileCompletion = () => {
     if (!user || !isFormValid) return
 
     setSaving(true)
+
     await setDoc(doc(db, 'users', user.uid), {
       uid: user.uid,
       email: user.email,
-      photoURL: user.photoURL,
-      ...form,
+      photoURL: user.photoURL || null,
+      name: form.name,
+      phone: form.phone,
+      college: form.college,
+      department: form.department,
+      year: form.year,
+
+      // ✅ QR now contains a VERIFY URL
+      qrData: `${window.location.origin}/verify/${user.uid}`,
+
       profileCompleted: true,
-      createdAt: new Date()
+      createdAt: serverTimestamp()
     })
 
     navigate('/')
@@ -66,10 +76,9 @@ const ProfileCompletion = () => {
         {/* USER HEADER */}
         <div className="flex items-center gap-4 mb-4">
           <img
-            src={user?.photoURL}
+            src={user?.photoURL || '/avatar.png'}
             alt="profile"
-            className="w-14 h-14 rounded-full border-2 border-[#e33e33]
-                       hover:scale-105 transition-transform duration-300"
+            className="w-14 h-14 rounded-full border-2 border-[#e33e33]"
           />
           <div>
             <h2 className="text-lg font-bold uppercase tracking-wide">
@@ -83,7 +92,7 @@ const ProfileCompletion = () => {
           Complete Your Profile
         </h3>
 
-        {/* INPUT FIELD TEMPLATE */}
+        {/* INPUT FIELDS */}
         {[
           { label: 'Name', name: 'name', icon: <FaUser /> },
           { label: 'Phone Number', name: 'phone', icon: <FaPhone />, type: 'tel' },
@@ -95,8 +104,7 @@ const ProfileCompletion = () => {
               {field.label}
             </label>
             <div className="flex items-center border-b border-gray-700
-                            focus-within:border-[#e33e33]
-                            transition-colors duration-300">
+                            focus-within:border-[#e33e33] transition-colors">
               <span className="text-gray-500 mr-2">{field.icon}</span>
               <input
                 type={field.type || 'text'}
@@ -104,8 +112,7 @@ const ProfileCompletion = () => {
                 value={form[field.name]}
                 onChange={handleChange}
                 required
-                className="w-full bg-transparent py-2 outline-none
-                           focus:text-white transition-all"
+                className="w-full bg-transparent py-2 outline-none"
               />
             </div>
           </div>
@@ -119,7 +126,7 @@ const ProfileCompletion = () => {
             value={form.year}
             onChange={handleChange}
             className="w-full bg-black border border-gray-700 py-2 mt-1
-                       focus:border-[#e33e33] transition-colors"
+                       focus:border-[#e33e33]"
           >
             <option value="1">1st Year</option>
             <option value="2">2nd Year</option>
@@ -133,10 +140,9 @@ const ProfileCompletion = () => {
           type="submit"
           disabled={!isFormValid || saving}
           className={`w-full mt-6 py-3 font-bold uppercase tracking-widest rounded
-            transition-all duration-300
             ${
               isFormValid
-                ? 'bg-gradient-to-r from-[#e33e33] to-[#97b85d] hover:scale-[1.02]'
+                ? 'bg-gradient-to-r from-[#e33e33] to-[#97b85d]'
                 : 'bg-gray-700 cursor-not-allowed'
             }`}
         >
@@ -144,7 +150,6 @@ const ProfileCompletion = () => {
         </button>
       </form>
 
-      {/* ANIMATION KEYFRAMES */}
       <style>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(20px); }

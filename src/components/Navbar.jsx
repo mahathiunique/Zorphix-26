@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from '../firebase'
 import zorphixLogo from '../assets/zorphix-logo.png'
@@ -7,6 +7,7 @@ import zorphixLogo from '../assets/zorphix-logo.png'
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [user, setUser] = useState(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (currentUser) => {
@@ -38,13 +39,22 @@ const Navbar = () => {
     { symbol: 'AI', value: '+67.9%', up: true }
   ]
 
+  const handleLogout = async () => {
+    await signOut(auth)
+    navigate('/register')
+  }
+
   return (
     <>
       {/* ================= DESKTOP NAVBAR ================= */}
       <nav className="fixed top-0 left-0 right-0 z-[100] bg-black/80 backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+
           {/* Logo */}
-          <div className="flex items-center gap-3">
+          <div
+            className="flex items-center gap-3 cursor-pointer"
+            onClick={() => navigate('/')}
+          >
             <img
               src={zorphixLogo}
               alt="Zorphix Logo"
@@ -68,6 +78,17 @@ const Navbar = () => {
               </Link>
             ))}
 
+            {/* ✅ PROFILE (only after login) */}
+            {user && (
+              <Link
+                to="/profile"
+                className="text-gray-300 hover:text-white font-mono uppercase text-sm tracking-wider relative group"
+              >
+                Profile
+                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-[#e33e33] to-[#97b85d] group-hover:w-full transition-all duration-300" />
+              </Link>
+            )}
+
             {!user ? (
               <Link
                 to="/register"
@@ -77,7 +98,7 @@ const Navbar = () => {
               </Link>
             ) : (
               <button
-                onClick={() => signOut(auth)}
+                onClick={handleLogout}
                 className="px-6 py-2 border border-[#e33e33] text-[#e33e33] font-mono uppercase text-sm font-bold rounded-lg hover:bg-[#e33e33] hover:text-black transition"
               >
                 Logout
@@ -95,7 +116,7 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* ================= MOBILE SIDEBAR ================= */}
+      {/* ================= MOBILE SIDEBAR OVERLAY ================= */}
       {isSidebarOpen && (
         <div
           className="fixed inset-0 bg-black/60 z-[105]"
@@ -103,6 +124,7 @@ const Navbar = () => {
         />
       )}
 
+      {/* ================= MOBILE SIDEBAR ================= */}
       <div
         className={`fixed top-0 right-0 h-full w-64 bg-black z-[110] transform transition-transform ${
           isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
@@ -120,6 +142,17 @@ const Navbar = () => {
             </Link>
           ))}
 
+          {/* ✅ PROFILE (mobile) */}
+          {user && (
+            <Link
+              to="/profile"
+              onClick={toggleSidebar}
+              className="block text-gray-300 uppercase font-mono"
+            >
+              Profile
+            </Link>
+          )}
+
           {!user ? (
             <Link
               to="/register"
@@ -131,7 +164,7 @@ const Navbar = () => {
           ) : (
             <button
               onClick={() => {
-                signOut(auth)
+                handleLogout()
                 toggleSidebar()
               }}
               className="block mt-4 w-full px-4 py-3 border border-[#e33e33] text-[#e33e33] rounded"

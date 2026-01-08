@@ -5,6 +5,7 @@ import About from './components/About'
 import EventsPage from './components/EventsPage'
 import Register from './components/Register'
 import ProfileCompletion from './components/ProfileCompletion'
+import Profile from './components/Profile'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
 
@@ -29,8 +30,11 @@ const App = () => {
           <Route path="/events" element={<EventsPage />} />
           <Route path="/register" element={<Register />} />
 
-          {/* 🔐 NEW PROFILE COMPLETION ROUTE */}
+          {/* 🔐 Profile completion */}
           <Route path="/complete-profile" element={<ProfileCompletion />} />
+
+          {/* ✅ Profile page (THIS WAS MISSING) */}
+          <Route path="/profile" element={<Profile />} />
         </Routes>
 
         <Footer />
