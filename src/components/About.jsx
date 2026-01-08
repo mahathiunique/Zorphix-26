@@ -192,10 +192,10 @@ const About = () => {
                 <div className="text-center py-20 border-t border-white/10 bg-black/60 backdrop-blur-md rounded-2xl p-8 mt-12 border border-white/10">
                     <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Ready to Invest in <span className="text-[#97b85d]">Your Future?</span></h2>
                     <p className="text-gray-400 max-w-2xl mx-auto mb-10 text-lg">
-                        Join the most innovative technical symposium of 2026. Secure your spot on the register.
+                        Join the most innovative technical symposium of 2026. Secure your spot via your Profile.
                     </p>
                     <div className="flex gap-6 justify-center">
-                        <Link to="/" className="px-8 py-4 bg-[#97b85d] text-black font-bold rounded hover:bg-white transition-colors text-lg">
+                        <Link to="/events" className="px-8 py-4 bg-[#97b85d] text-black font-bold rounded hover:bg-white transition-colors text-lg">
                             Initialize Registration
                         </Link>
                         <Link to="/" className="px-8 py-4 border border-white/20 text-white font-bold rounded hover:bg-white/10 transition-colors text-lg">

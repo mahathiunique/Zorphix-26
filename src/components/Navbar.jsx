@@ -9,7 +9,7 @@ const Navbar = () => {
         { name: 'Home', href: '/' },
         { name: 'About', href: '/about' },
         { name: 'Events', href: '/events' },
-        { name: 'Register', href: '/register' }
+        { name: 'Profile', href: '/profile' }
     ];
 
     const toggleSidebar = () => {
@@ -47,7 +47,7 @@ const Navbar = () => {
                         {/* Desktop Navigation Links */}
                         <div className="hidden md:flex items-center gap-8">
                             {navLinks.map((link) => (
-                                link.name === 'Register' ? (
+                                link.name === 'Profile' ? (
                                     <Link
                                         key={link.name}
                                         to={link.href}
@@ -148,14 +148,14 @@ const Navbar = () => {
                             key={link.name}
                             to={link.href.replace('#', '/').replace('//', '/')}
                             onClick={toggleSidebar}
-                            className={`${link.name === 'Register'
+                            className={`${link.name === 'Profile'
                                 ? 'bg-gradient-to-r from-[#e33e33] to-[#97b85d] text-white border-none shadow-[0_0_10px_rgba(227,62,51,0.3)]'
                                 : 'text-gray-300 hover:text-white hover:bg-white/5 border-transparent hover:border-white/10'
                                 } px-4 py-3 rounded-lg transition-all duration-300 font-mono uppercase text-sm tracking-wider border group`}
                             style={{ animationDelay: `${index * 50}ms` }}
                         >
                             <div className="flex items-center justify-between">
-                                <span className={link.name === 'Register' ? 'font-bold' : ''}>{link.name}</span>
+                                <span className={link.name === 'Profile' ? 'font-bold' : ''}>{link.name}</span>
                                 <svg
                                     className="w-4 h-4 opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-1 transition-all duration-300"
                                     fill="none"

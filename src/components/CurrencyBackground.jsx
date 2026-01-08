@@ -7,14 +7,17 @@ const CurrencyBackground = () => {
 
     React.useEffect(() => {
         const symbols = ['$', '€', '£', '¥', '₹', '₿', 'Ξ', '◈', '∞'];
-        const newParticles = [...Array(50)].map(() => ({
-            symbol: symbols[Math.floor(Math.random() * symbols.length)],
-            color: Math.random() > 0.5 ? '#97b85d' : '#e33e33',
-            duration: 15 + Math.random() * 20,
-            delay: -(Math.random() * 20),
-            size: 15 + Math.random() * 30,
-            left: Math.random() * 100
-        }));
+        const newParticles = [...Array(50)].map(() => {
+            const colors = ['#97b85d', '#e33e33', '#FFD700', '#FFC107']; // Green, Red, Gold, Amber
+            return {
+                symbol: symbols[Math.floor(Math.random() * symbols.length)],
+                color: colors[Math.floor(Math.random() * colors.length)],
+                duration: 15 + Math.random() * 20,
+                delay: -(Math.random() * 20),
+                size: 15 + Math.random() * 30,
+                left: Math.random() * 100
+            };
+        });
         setParticles(newParticles);
     }, []);
 

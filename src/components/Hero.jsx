@@ -90,7 +90,7 @@ const Hero = () => {
                     {/* Logo and Name Container */}
                     <div className="relative z-10 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10 animate-float">
 
-                        
+
 
                         {/* Name Image with Glitch Effect */}
                         <div className="relative w-56 sm:w-64 md:w-64 lg:w-96">
@@ -179,7 +179,7 @@ const Hero = () => {
                         <div className="absolute inset-0 bg-[#e33e33] transform -translate-x-full skew-x-12 group-hover:translate-x-0 transition-transform duration-300"></div>
                     </button>
                     <button className="relative px-8 py-3 md:px-8 md:py-3 bg-transparent border border-[#97b85d] text-[#97b85d] font-bold uppercase tracking-widest hover:bg-[#97b85d] hover:text-black transition-all duration-300 group overflow-hidden text-base md:text-base w-full sm:w-auto">
-                        <a href="/register" className="relative z-10">Register</a>
+                        <a href="/events" className="relative z-10">Register</a>
                         <div className="absolute inset-0 bg-[#97b85d] transform translate-x-full skew-x-12 group-hover:translate-x-0 transition-transform duration-300"></div>
                     </button>
                 </div>

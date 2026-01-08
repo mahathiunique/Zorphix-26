@@ -47,7 +47,7 @@ const Footer = () => {
                         <nav className="flex flex-col gap-3 flex-grow">
                             <FooterLink to="/" text="Home" num="01" />
                             <FooterLink to="/events" text="Events" num="02" />
-                            <FooterLink to="/register" text="Register" num="03" />
+                            <FooterLink to="/profile" text="Profile" num="03" />
                             <FooterLink to="/about" text="About" num="04" />
                         </nav>
                     </div>

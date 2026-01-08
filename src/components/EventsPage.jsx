@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import {
     FaCode,
     FaTerminal,
@@ -22,8 +23,10 @@ import { doc, getDoc, updateDoc, arrayUnion, setDoc } from 'firebase/firestore';
 import EventModal from './EventModal';
 
 const EventsPage = () => {
+    const navigate = useNavigate();
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [activeTab, setActiveTab] = useState('events');
+    const [isProfileComplete, setIsProfileComplete] = useState(false);
     const [selectedEventsList, setSelectedEventsList] = useState(() => {
         try {
             const stored = localStorage.getItem('selectedEvents');
@@ -44,6 +47,14 @@ const EventsPage = () => {
 
                     if (docSnap.exists()) {
                         const data = docSnap.data();
+
+                        // Check profile completion
+                        if (data.profileCompleted || (data.college && data.phone)) {
+                            setIsProfileComplete(true);
+                        } else {
+                            setIsProfileComplete(false);
+                        }
+
                         if (data.events && Array.isArray(data.events)) {
                             // Database has Mixed Case (e.g. "Pixel Reforge"), mapped to title for local logic
                             const dbEvents = data.events;
@@ -72,8 +83,16 @@ const EventsPage = () => {
     const handleRegisterEvent = async (event) => {
         if (!auth.currentUser) {
             alert("Please login to register for events!");
+            navigate('/profile');
             return;
         }
+
+        if (!isProfileComplete) {
+            alert("Please complete your profile first!");
+            navigate('/profile');
+            return;
+        }
+        return;
 
         try {
             const userRef = doc(db, 'registrations', auth.currentUser.uid);
@@ -102,6 +121,17 @@ const EventsPage = () => {
     };
 
     const handleAddeEvent = (event) => {
+        if (!auth.currentUser) {
+            alert("Please login to add events!");
+            navigate('/profile');
+            return;
+        }
+
+        if (!isProfileComplete) {
+            alert("Please complete your profile to add events!");
+            navigate('/profile');
+            return;
+        }
         // Prevent removing/toggling if already registered
         if (registeredEventsList.includes(event.name)) return;
 
@@ -749,6 +779,11 @@ const EventsPage = () => {
 
                                             <button
                                                 onClick={() => {
+                                                    if (!isProfileComplete) {
+                                                        alert("Please complete your profile before payment!");
+                                                        navigate('/profile');
+                                                        return;
+                                                    }
                                                     if (calculateTotals().amountToPay === 0) {
                                                         alert("No payment required!");
                                                     } else {
