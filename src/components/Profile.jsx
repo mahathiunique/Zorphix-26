@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth, googleProvider, db } from '../firebase';
 import { signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
-import { FaGoogle, FaUserTie, FaUniversity, FaBuilding, FaPhone, FaCheckCircle, FaBriefcase, FaChartLine, FaSignOutAlt, FaWallet, FaCoins, FaDownload } from 'react-icons/fa';
+import { FaGoogle, FaUserTie, FaUniversity, FaBuilding, FaPhone, FaCheckCircle, FaBriefcase, FaChartLine, FaSignOutAlt, FaWallet, FaCoins, FaDownload, FaPen } from 'react-icons/fa';
 import * as htmlToImage from 'html-to-image';
 import CoinBackground from './CoinBackground';
 import CurrencyBackground from './CurrencyBackground';
@@ -164,7 +164,7 @@ const Profile = () => {
             {/* Vignette Overlay */}
             <div className="fixed inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#000000_90%)] z-0 pointer-events-none"></div>
 
-            <div className="relative z-10 container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[85vh]">
+            <div className="relative z-10 container mx-auto px-2 py-8 flex flex-col items-center justify-center min-h-[85vh]">
                 <AnimatePresence mode='wait'>
                     {!user ? (
                         /* ================== UNAUTHENTICATED VIEW ================== */
@@ -237,12 +237,12 @@ const Profile = () => {
                                             onClick={handleSignOut}
                                             className="group flex items-center gap-3 px-6 py-3 bg-black/40 hover:bg-[#e33e33] text-gray-400 hover:text-white rounded-2xl text-xs font-bold font-mono uppercase tracking-widest border border-white/5 hover:border-[#e33e33] transition-all backdrop-blur-md"
                                         >
-                                            <FaSignOutAlt className="group-hover:-translate-x-1 transition-transform" /> Disconnect
+                                            <FaSignOutAlt className="group-hover:-translate-x-1 transition-transform" /> Sign Out
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="px-8 md:px-16 pb-16 relative z-10">
+                                <div className="px-2 md:px-16 pb-16 relative z-10">
                                     {/* Avatar & User Info - Compact Version */}
                                     <div className="flex flex-col md:flex-row items-end md:items-center gap-6 -mt-16 mb-8">
                                         <div className="relative group perspective-1000">
@@ -261,7 +261,16 @@ const Profile = () => {
                                         </div>
 
                                         <div className="flex-1 mb-4">
-                                            <h2 className="text-4xl md:text-6xl font-black text-white mb-4 tracking-tight leading-none">{user.displayName}</h2>
+                                            <div className="flex items-center gap-4 mb-4">
+                                                <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight leading-none">{user.displayName}</h2>
+                                                <button
+                                                    onClick={() => setIsProfileComplete(false)}
+                                                    className="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10 border border-transparent hover:border-white/10"
+                                                    title="Edit Profile"
+                                                >
+                                                    <FaPen className="text-lg" />
+                                                </button>
+                                            </div>
                                             <div className="flex flex-wrap gap-4 text-xs font-bold font-mono text-gray-400">
                                                 <span className={`px-4 py-2 rounded-xl border flex items-center gap-3 ${isProfileComplete ? 'bg-[#97b85d]/10 border-[#97b85d]/30 text-[#97b85d]' : 'bg-[#e33e33]/10 border-[#e33e33]/30 text-[#e33e33]'}`}>
                                                     <div className="w-2 h-2 rounded-full bg-[#97b85d] animate-pulse"></div>
@@ -420,31 +429,14 @@ const Profile = () => {
                                                     </div>
                                                 </div>
 
-                                                <div className="flex flex-col md:flex-row gap-4">
-                                                    <button
-                                                        onClick={() => navigate('/events')}
-                                                        className="flex-1 py-4 bg-white text-black font-black text-lg uppercase tracking-widest rounded-xl hover:bg-gray-100 transition-all shadow-[0_10px_30px_rgba(255,255,255,0.2)] hover:shadow-[0_20px_40px_rgba(255,255,255,0.3)] transform hover:-translate-y-1 relative overflow-hidden group"
-                                                    >
-                                                        <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
-                                                        Access Events Module
-                                                    </button>
 
-
-
-                                                    <button
-                                                        onClick={() => setIsProfileComplete(false)}
-                                                        className="px-6 py-4 border-2 border-white/10 hover:border-white/30 hover:bg-white/5 text-gray-400 hover:text-white rounded-xl font-mono font-bold uppercase text-xs tracking-widest transition-all"
-                                                    >
-                                                        Modify
-                                                    </button>
-                                                </div>
                                             </>
                                             {registeredEventsList.length > 0 && (
                                                 /* ================== TICKET VIEW ================== */
                                                 <motion.div
                                                     initial={{ scale: 0.95, opacity: 0 }}
                                                     animate={{ scale: 1, opacity: 1 }}
-                                                    className="w-full"
+                                                    className="w-full mt-10"
                                                 >
                                                     <div className="mb-6 flex justify-between items-center">
 
