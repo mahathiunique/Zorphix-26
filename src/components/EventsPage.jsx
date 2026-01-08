@@ -14,7 +14,8 @@ import {
     FaWrench,
     FaScroll,
     FaShoppingCart,
-    FaWallet
+    FaWallet,
+    FaCheckCircle
 } from 'react-icons/fa';
 import { auth, db } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -65,13 +66,8 @@ const EventsPage = () => {
                             // Update state
                             setRegisteredEventsList(dbEvents);
 
-                            // Merge DB events with existing local selection to ensure nothing is lost
-                            setSelectedEventsList(prev => {
-                                const newSet = new Set([...prev, ...dbEvents]);
-                                const newList = Array.from(newSet);
-                                localStorage.setItem('selectedEvents', JSON.stringify(newList));
-                                return newList;
-                            });
+                            // REMOVED: Merge DB events with existing local selection to ensure nothing is lost
+                            // We now strictly separate Cart (local) vs Registered (DB)
                         }
                     }
                 } catch (error) {
@@ -218,8 +214,13 @@ const EventsPage = () => {
     const getCartEvents = () => {
         const allEvents = [...technicalEvents, ...workshops, ...paperPresentation];
         return allEvents.filter(event =>
-            selectedEventsList.includes(event.name) || registeredEventsList.includes(event.name)
+            selectedEventsList.includes(event.name) && !registeredEventsList.includes(event.name)
         );
+    };
+
+    const getRegisteredEvents = () => {
+        const allEvents = [...technicalEvents, ...workshops, ...paperPresentation];
+        return allEvents.filter(event => registeredEventsList.includes(event.name));
     };
 
     const parsePrice = (priceStr) => {
@@ -230,14 +231,17 @@ const EventsPage = () => {
     const calculateTotals = () => {
         const allEvents = [...technicalEvents, ...workshops, ...paperPresentation];
 
-        // Get full event objects for calculations
-        const selectedEvents = allEvents.filter(e => selectedEventsList.includes(e.name));
+        // Filter selected events to EXCLUDE those already registered
+        // This prevents double counting in "Amount to Pay" if logic fails to clear local storage
+        const selectedEvents = allEvents.filter(e =>
+            selectedEventsList.includes(e.name) && !registeredEventsList.includes(e.name)
+        );
+
         const registeredEvents = allEvents.filter(e => registeredEventsList.includes(e.name));
 
-        // Use name sets to avoid duplicates if an event is somehow in both lists (logic should prevent this, but robustness helps)
+        // Use name sets to avoid duplicates
         const uniqueNames = new Set([...selectedEventsList, ...registeredEventsList]);
 
-        // Calculate
         const totalEvents = uniqueNames.size;
 
         const alreadyPaidValue = registeredEvents.reduce((acc, curr) => acc + parsePrice(curr.price), 0);
@@ -545,6 +549,21 @@ const EventsPage = () => {
                                         {paperPresentation.map((event, index) => renderEventCard(event, index))}
                                     </div>
                                 </section>
+
+                                {/* Registered Events Section */}
+                                {getRegisteredEvents().length > 0 && (
+                                    <section>
+                                        <div className="flex items-center gap-4 mb-8">
+                                            <div className="p-3 rounded-xl bg-gradient-to-br from-blue-600 to-blue-900 shadow-lg">
+                                                <FaCheckCircle className="text-2xl text-white" />
+                                            </div>
+                                            <h2 className="text-3xl md:text-4xl font-bold text-white tracking-widest">REGISTERED EVENTS</h2>
+                                        </div>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                            {getRegisteredEvents().map((event, index) => renderEventCard(event, index))}
+                                        </div>
+                                    </section>
+                                )}
 
                                 {/* Cart Section */}
                                 <section>

@@ -431,108 +431,109 @@ const Profile = () => {
 
 
                                             </>
-                                            {registeredEventsList.length > 0 && (
-                                                /* ================== TICKET VIEW ================== */
-                                                <motion.div
-                                                    initial={{ scale: 0.95, opacity: 0 }}
-                                                    animate={{ scale: 1, opacity: 1 }}
-                                                    className="w-full mt-10"
-                                                >
-                                                    <div className="mb-6 flex justify-between items-center">
+                                            {/* Ticket Section */
+                                                (
+                                                    /* ================== TICKET VIEW ================== */
+                                                    <motion.div
+                                                        initial={{ scale: 0.95, opacity: 0 }}
+                                                        animate={{ scale: 1, opacity: 1 }}
+                                                        className="w-full mt-10"
+                                                    >
+                                                        <div className="mb-6 flex justify-between items-center">
 
-                                                        <h3 className="text-white font-bold uppercase tracking-widest text-sm">Official Entry Pass</h3>
-                                                    </div>
+                                                            <h3 className="text-white font-bold uppercase tracking-widest text-sm">Official Entry Pass</h3>
+                                                        </div>
 
-                                                    <div ref={ticketRef} className="flex flex-col md:flex-row bg-[#111] rounded-3xl overflow-hidden shadow-[0_0_80px_rgba(227,62,51,0.15)] border border-[#333]">
-                                                        {/* Ticket Left Side */}
-                                                        <div className="flex-1 p-8 md:p-12 relative overflow-hidden">
-                                                            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
-                                                            <div className="absolute top-0 right-0 w-64 h-64 rounded-bl-full pointer-events-none" style={{ background: 'linear-gradient(to bottom right, rgba(227,62,51,0.1), transparent)' }}></div>
+                                                        <div ref={ticketRef} className="flex flex-col md:flex-row bg-[#111] rounded-3xl overflow-hidden shadow-[0_0_80px_rgba(227,62,51,0.15)] border border-[#333]">
+                                                            {/* Ticket Left Side */}
+                                                            <div className="flex-1 p-8 md:p-12 relative overflow-hidden">
+                                                                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
+                                                                <div className="absolute top-0 right-0 w-64 h-64 rounded-bl-full pointer-events-none" style={{ background: 'linear-gradient(to bottom right, rgba(227,62,51,0.1), transparent)' }}></div>
 
-                                                            <div className="relative z-10 flex flex-col h-full justify-between gap-8">
-                                                                <div>
-                                                                    <div className="flex justify-between items-start mb-8">
-                                                                        <div>
-                                                                            <p className="text-[#e33e33] text-xs font-mono uppercase tracking-[0.3em] mb-2">Symposium Pass</p>
-                                                                            <h1 className="text-3xl md:text-5xl font-serif text-white tracking-wide">ZORPHIX '26</h1>
-                                                                        </div>
-                                                                        <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center bg-white/5">
-                                                                            <FaUserTie className="text-white/50" />
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div className="grid grid-cols-2 gap-8 mb-8">
-                                                                        <div>
-                                                                            <p className="text-gray-500 text-[10px] uppercase tracking-widest mb-1">Attendee</p>
-                                                                            <p className="text-white font-mono text-lg font-bold">{user.displayName}</p>
-                                                                        </div>
-                                                                        <div>
-                                                                            <p className="text-gray-500 text-[10px] uppercase tracking-widest mb-1">Pass ID</p>
-                                                                            <p className="text-[#97b85d] font-mono text-lg font-bold">#{user.uid.slice(0, 6).toUpperCase()}</p>
-                                                                        </div>
-                                                                    </div>
-
+                                                                <div className="relative z-10 flex flex-col h-full justify-between gap-8">
                                                                     <div>
-                                                                        <p className="text-gray-500 text-[10px] uppercase tracking-widest mb-3">Registered Events</p>
-                                                                        <div className="flex flex-wrap gap-2">
-                                                                            {registeredEventsList.map(event => (
-                                                                                <span key={event} className="px-3 py-1 bg-[#1a1a1a] border border-[#333] rounded text-[10px] md:text-xs text-gray-300 font-mono uppercase tracking-wider">
-                                                                                    {event}
-                                                                                </span>
-                                                                            ))}
-                                                                            {registeredEventsList.length === 0 && <span className="text-gray-600 text-xs italic">No events registered yet.</span>}
+                                                                        <div className="flex justify-between items-start mb-8">
+                                                                            <div>
+                                                                                <p className="text-[#e33e33] text-xs font-mono uppercase tracking-[0.3em] mb-2">Symposium Pass</p>
+                                                                                <h1 className="text-3xl md:text-5xl font-serif text-white tracking-wide">ZORPHIX '26</h1>
+                                                                            </div>
+                                                                            <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center bg-white/5">
+                                                                                <FaUserTie className="text-white/50" />
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div className="grid grid-cols-2 gap-8 mb-8">
+                                                                            <div>
+                                                                                <p className="text-gray-500 text-[10px] uppercase tracking-widest mb-1">Attendee</p>
+                                                                                <p className="text-white font-mono text-lg font-bold">{user.displayName}</p>
+                                                                            </div>
+                                                                            <div>
+                                                                                <p className="text-gray-500 text-[10px] uppercase tracking-widest mb-1">Pass ID</p>
+                                                                                <p className="text-[#97b85d] font-mono text-lg font-bold">#{user.uid.slice(0, 6).toUpperCase()}</p>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div>
+                                                                            <p className="text-gray-500 text-[10px] uppercase tracking-widest mb-3">Registered Events</p>
+                                                                            <div className="flex flex-wrap gap-2">
+                                                                                {registeredEventsList.map(event => (
+                                                                                    <span key={event} className="px-3 py-1 bg-[#1a1a1a] border border-[#333] rounded text-[10px] md:text-xs text-gray-300 font-mono uppercase tracking-wider">
+                                                                                        {event}
+                                                                                    </span>
+                                                                                ))}
+                                                                                {registeredEventsList.length === 0 && <span className="text-gray-600 text-xs italic">No events registered yet.</span>}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div className="flex justify-between items-end border-t border-[#333] pt-6">
+                                                                        <div>
+                                                                            <p className="text-gray-600 text-[9px] uppercase tracking-widest mb-1">Date</p>
+                                                                            <p className="text-gray-400 font-mono text-xs">March 15-16, 2026</p>
+                                                                        </div>
+                                                                        <div className="text-right">
+                                                                            <p className="text-gray-600 text-[9px] uppercase tracking-widest mb-1">Total Value</p>
+                                                                            <p className="text-white font-mono text-xl">₹{calculateTotalPaid()}</p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                            </div>
 
-                                                                <div className="flex justify-between items-end border-t border-[#333] pt-6">
-                                                                    <div>
-                                                                        <p className="text-gray-600 text-[9px] uppercase tracking-widest mb-1">Date</p>
-                                                                        <p className="text-gray-400 font-mono text-xs">March 15-16, 2026</p>
-                                                                    </div>
-                                                                    <div className="text-right">
-                                                                        <p className="text-gray-600 text-[9px] uppercase tracking-widest mb-1">Total Value</p>
-                                                                        <p className="text-white font-mono text-xl">₹{calculateTotalPaid()}</p>
-                                                                    </div>
+                                                            {/* Ticket Right Side (QR) */}
+                                                            <div className="md:w-80 bg-white relative flex flex-col items-center justify-center p-8 border-l-4 border-dashed border-[#111]">
+                                                                <div className="absolute top-[-10px] left-[-12px] w-6 h-6 bg-[#000] rounded-full"></div>
+                                                                <div className="absolute bottom-[-10px] left-[-12px] w-6 h-6 bg-[#000] rounded-full"></div>
+
+                                                                <div className="text-center mb-6">
+                                                                    <p className="text-black font-bold uppercase tracking-[0.2em] text-xs mb-1">Scan for Entry</p>
+                                                                    <p className="text-gray-400 text-[9px] uppercase tracking-widest">Admit One</p>
+                                                                </div>
+
+                                                                <div className="p-4 bg-white border-2 border-black rounded-lg mb-6 shadow-xl">
+                                                                    <img
+                                                                        src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${user.uid}`}
+                                                                        alt="Entry QR Code"
+                                                                        crossOrigin="anonymous"
+                                                                        className="w-32 h-32 md:w-36 md:h-36"
+                                                                    />
+                                                                </div>
+
+                                                                <p className="text-[10px] text-gray-400 font-mono text-center mb-8 break-all px-4">
+                                                                    {user.uid}
+                                                                </p>
+
+                                                                <div className="ticket-actions w-full">
+                                                                    <button
+                                                                        onClick={handleDownloadTicket}
+                                                                        className="w-full py-3 bg-[#e33e33] text-white font-bold uppercase tracking-widest text-xs hover:bg-[#c62828] transition-colors flex items-center justify-center gap-2 rounded-lg"
+                                                                    >
+                                                                        <FaDownload /> Download Ticket
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </div>
-
-                                                        {/* Ticket Right Side (QR) */}
-                                                        <div className="md:w-80 bg-white relative flex flex-col items-center justify-center p-8 border-l-4 border-dashed border-[#111]">
-                                                            <div className="absolute top-[-10px] left-[-12px] w-6 h-6 bg-[#000] rounded-full"></div>
-                                                            <div className="absolute bottom-[-10px] left-[-12px] w-6 h-6 bg-[#000] rounded-full"></div>
-
-                                                            <div className="text-center mb-6">
-                                                                <p className="text-black font-bold uppercase tracking-[0.2em] text-xs mb-1">Scan for Entry</p>
-                                                                <p className="text-gray-400 text-[9px] uppercase tracking-widest">Admit One</p>
-                                                            </div>
-
-                                                            <div className="p-4 bg-white border-2 border-black rounded-lg mb-6 shadow-xl">
-                                                                <img
-                                                                    src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${user.uid}`}
-                                                                    alt="Entry QR Code"
-                                                                    crossOrigin="anonymous"
-                                                                    className="w-32 h-32 md:w-36 md:h-36"
-                                                                />
-                                                            </div>
-
-                                                            <p className="text-[10px] text-gray-400 font-mono text-center mb-8 break-all px-4">
-                                                                {user.uid}
-                                                            </p>
-
-                                                            <div className="ticket-actions w-full">
-                                                                <button
-                                                                    onClick={handleDownloadTicket}
-                                                                    className="w-full py-3 bg-[#e33e33] text-white font-bold uppercase tracking-widest text-xs hover:bg-[#c62828] transition-colors flex items-center justify-center gap-2 rounded-lg"
-                                                                >
-                                                                    <FaDownload /> Download Ticket
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </motion.div>
-                                            )}
+                                                    </motion.div>
+                                                )}
                                         </motion.div>
                                     )}
                                 </div>
